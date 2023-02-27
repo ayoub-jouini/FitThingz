@@ -9,8 +9,10 @@ const app = express();
 
 app.use(express.json());
 
+//routes
+
 //page not found error 404
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
 });
