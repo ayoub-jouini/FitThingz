@@ -83,4 +83,4 @@ const coachSchema = new Schema<ICoach>({
   ],
 });
 
-export default model<ICoach>("User", coachSchema);
+export default model<ICoach>("Coach", coachSchema);
