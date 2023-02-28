@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
 
-import User from "./User";
+import User, { IUser } from "./User";
 import Identite, { IIdentite } from "./Identite";
 import Experience, { IExperience } from "./Experience";
 import Tarification, { ITarification } from "./Tarification";
 import Commentaire, { ICommentaire } from "./Commentaire";
 
 interface ICoach {
-  user: Schema.Types.ObjectId;
+  user: IUser;
   identite: IIdentite;
   experience: IExperience[];
   conn_aca: string;
