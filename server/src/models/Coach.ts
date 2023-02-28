@@ -18,6 +18,7 @@ export interface ICoach {
   exercice: IExercice[];
   programme: IProgramme[];
   regime: IRegime[];
+  sportif: IUser[];
   commentaire: ICommentaire[];
 }
 
@@ -34,6 +35,7 @@ const coachSchema = new Schema<ICoach>({
   exercice: [{ type: Schema.Types.ObjectId, ref: Exercice, required: true }],
   programme: [{ type: Schema.Types.ObjectId, ref: Programme, required: true }],
   regime: [{ type: Schema.Types.ObjectId, ref: Regime, required: true }],
+  sportif: [{ type: Schema.Types.ObjectId, ref: User, required: true }],
   commentaire: [
     { type: Schema.Types.ObjectId, ref: Commentaire, required: true },
   ],
