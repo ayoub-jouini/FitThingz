@@ -5,13 +5,19 @@ import Identite, { IIdentite } from "./Identite";
 import Experience, { IExperience } from "./Experience";
 import Tarification, { ITarification } from "./Tarification";
 import Commentaire, { ICommentaire } from "./Commentaire";
+import Exercice, { IExercice } from "./Exercice";
+import Programme, { IProgramme } from "./Programme";
+import Regime, { IRegime } from "./Regime";
 
-interface ICoach {
+export interface ICoach {
   user: IUser;
   identite: IIdentite;
   experience: IExperience[];
   conn_aca: string;
   tarification: ITarification[];
+  exercice: IExercice[];
+  programme: IProgramme[];
+  regime: IRegime[];
   commentaire: ICommentaire[];
 }
 
@@ -25,6 +31,9 @@ const coachSchema = new Schema<ICoach>({
   tarification: [
     { type: Schema.Types.ObjectId, ref: Tarification, required: true },
   ],
+  exercice: [{ type: Schema.Types.ObjectId, ref: Exercice, required: true }],
+  programme: [{ type: Schema.Types.ObjectId, ref: Programme, required: true }],
+  regime: [{ type: Schema.Types.ObjectId, ref: Regime, required: true }],
   commentaire: [
     { type: Schema.Types.ObjectId, ref: Commentaire, required: true },
   ],
