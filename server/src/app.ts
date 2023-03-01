@@ -11,6 +11,7 @@ import User from "./models/User";
 import Token from "./models/Token";
 
 import authRouter from "./routes/auth";
+import userRoutes from "./routes/user";
 
 const app = express();
 
@@ -44,10 +45,12 @@ passport.use(
       }
       //@ts-ignore
       if (accessToken.accessTokenTime < Date.now()) {
+        Token.deleteOne({ accessToken: token });
         return done(null, false);
       }
       const user = await User.findById(accessToken.userId).exec();
       if (!user) {
+        Token.deleteOne({ accessToken: token });
         return done(null, false);
       }
       return done(null, user);
@@ -57,10 +60,10 @@ passport.use(
   })
 );
 
-// passport.authenticate("bearer", { session: false }),
-
 //routes
 app.use("/api/auth", authRouter);
+app.use(passport.authenticate("bearer", { session: false }));
+app.use("/api/user", userRoutes);
 
 //page not found error 404
 app.use((req: Request, res: Response, next: NextFunction) => {

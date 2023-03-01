@@ -1,23 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import bycrypt from "bcryptjs";
-
-import { createToken, updateRefreshToken } from "../utils/token";
+import { validationResult } from "express-validator";
 
 import Token from "../models/Token";
-import User from "../models/User";
-import HttpError from "../utils/HttpError";
+import User, { IUser } from "../models/User";
 
-interface UserRegister {
-  nom: string;
-  prenom: string;
-  date_naiss: string;
-  sexe: string;
-  email: string;
-  password: string;
-  phone: number;
-  lieu: string;
-  type: string;
-}
+import { createToken, updateRefreshToken } from "../utils/token";
+import HttpError from "../utils/HttpError";
 
 export const login = async (
   req: Request,
@@ -25,6 +14,12 @@ export const login = async (
   next: NextFunction
 ) => {
   const { email, password } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
 
   let token;
   try {
@@ -63,7 +58,13 @@ export const register = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userRegistre: UserRegister = req.body;
+  const userRegistre: IUser = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
 
   let token;
 
@@ -85,7 +86,7 @@ export const register = async (
     }
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not save user.",
+      "Something went wrong, could not save user." + err,
       500
     );
     return next(error);
@@ -93,14 +94,44 @@ export const register = async (
   res.json({ token });
 };
 
+export const validateEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};
+
+export const validatePhone = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};
+
 export const refreshToken = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { refreshToken } = req.body;
-  let accessToken;
 
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
+
+  let accessToken;
   try {
     const existingToken = await Token.findOne({
       refreshToken,

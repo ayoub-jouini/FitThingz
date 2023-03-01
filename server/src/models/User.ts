@@ -2,14 +2,15 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
 export interface IUser {
+  _id?: string;
   nom: string;
   prenom: string;
   date_naiss: string;
   sexe: string;
   email: string;
-  password: string;
+  password?: string;
   phone: number;
-  avatar: string;
+  avatar?: string;
   lieu: string;
   type: string;
 }
