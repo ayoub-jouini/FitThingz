@@ -14,6 +14,7 @@ import authRouter from "./routes/auth";
 import userRoutes from "./routes/user";
 import exerciceRoutes from "./routes/exercice";
 import alimentRoutes from "./routes/aliment";
+import programmeRoutes from "./routes/programme";
 
 const app = express();
 
@@ -68,6 +69,7 @@ app.use(passport.authenticate("bearer", { session: false }));
 app.use("/api/user", userRoutes);
 app.use("/api/exercice", exerciceRoutes);
 app.use("/api/aliment", alimentRoutes);
+app.use("/api/programme", programmeRoutes);
 
 //page not found error 404
 app.use((req: Request, res: Response, next: NextFunction) => {
