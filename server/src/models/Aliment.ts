@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 import User, { IUser } from "./User";
 
 export interface IAliment {
+  _id?: string;
   createur: IUser;
   titre: string;
   description: string;

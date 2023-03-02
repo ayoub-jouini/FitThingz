@@ -86,14 +86,14 @@ export const getExerciceByCreator = async (
   res: Response,
   next: NextFunction
 ) => {
-  const creator: string = req.params.creator;
+  const createur: string = req.params.creator;
 
   const page: number = parseInt(req.query.page as string) || 1;
   const limit: number = parseInt(req.query.limit as string) || 10;
 
   let exercices: IExercice[];
   try {
-    exercices = await Exercice.find({ creator })
+    exercices = await Exercice.find({ createur })
       .skip((page - 1) * limit)
       .limit(limit);
     if (!exercices) {
@@ -391,7 +391,7 @@ export const updateExercice = async (
     return next(error);
   }
 
-  res.json({ message: "created!" });
+  res.json({ message: "updated!" });
 };
 
 export const deleteExercice = async (
