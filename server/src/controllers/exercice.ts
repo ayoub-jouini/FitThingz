@@ -274,14 +274,15 @@ export const getExercicesByTags = async (
   res: Response,
   next: NextFunction
 ) => {
-  const tags: string = req.params.tags;
+  let tags: string[];
+  if (typeof req.query.tags === "string") tags = req.query.tags.split(",");
 
   const page: number = parseInt(req.query.page as string) || 1;
   const limit: number = parseInt(req.query.limit as string) || 10;
 
   let exercices: IExercice[];
   try {
-    exercices = await Exercice.find({ tags: { $in: tags } })
+    exercices = await Exercice.find({ tags: { $all: tags } })
       .skip((page - 1) * limit)
       .limit(limit);
     if (!exercices) {

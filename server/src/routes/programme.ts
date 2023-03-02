@@ -12,16 +12,16 @@ router.get("/id/:id", programmeControllers.getProgrammeById);
 
 router.get("/creator/:creator", programmeControllers.getProgrammesByCreator);
 
-router.get("/exercice/:exercice", programmeControllers.getProgrammesByExercice);
+router.get("/exercice", programmeControllers.getProgrammesByExercices);
 
 router.get("/tags/:tags", programmeControllers.getProgrammesByTags);
 
 router.post("/", programmeControllers.createProgramme);
 
-router.patch("/add/:id", programmeControllers.addExercice);
+router.patch("/add/:id", programmeControllers.addExercices);
 
 router.patch(
-  "/delete/:idProframme/:idExercice",
+  "/delete/:idProframme/:jour/:idExercice",
   programmeControllers.deleteExercice
 );
 

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { body } from "express-validator";
 
 import * as exerciceControllers from "../controllers/exercice";
 
@@ -16,11 +17,25 @@ router.get("/bodypart/:bodypart", exerciceControllers.getExercicesByBodyPart);
 
 router.get("/target/:taget", exerciceControllers.getExercicesByTarget);
 
-router.get("/tags/tag", exerciceControllers.getExercicesByTags);
+router.get("/tags", exerciceControllers.getExercicesByTags);
 
-router.post("/", exerciceControllers.createExercice);
+router.post(
+  "/",
+  body("nom").notEmpty(),
+  body("bodyPart").notEmpty(),
+  body("target").notEmpty(),
+  body("equipment").notEmpty(),
+  exerciceControllers.createExercice
+);
 
-router.patch("/:id", exerciceControllers.updateExercice);
+router.patch(
+  "/:id",
+  //   body("nom").notEmpty(),
+  //   body("bodyPart").notEmpty(),
+  //   body("target").notEmpty(),
+  //   body("equipment").notEmpty(),
+  exerciceControllers.updateExercice
+);
 
 router.delete("/:id", exerciceControllers.deleteExercice);
 

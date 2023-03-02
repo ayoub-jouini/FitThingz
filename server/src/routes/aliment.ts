@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { body } from "express-validator";
 
 import * as alimentControllers from "../controllers/aliment";
 
@@ -22,9 +23,27 @@ router.get("/fats/:fats", alimentControllers.getAlimentsByFats);
 
 router.get("/proteins/:proteins", alimentControllers.getAlimentByProteins);
 
-router.post("/", alimentControllers.createAliment);
+router.post(
+  "/",
+  body("titre").notEmpty(),
+  body("description").notEmpty(),
+  body("dosage").notEmpty().isNumeric(),
+  body("calories").notEmpty().isNumeric(),
+  body("carbs").notEmpty().isNumeric(),
+  body("fats").notEmpty().isNumeric(),
+  body("proteins").notEmpty().isNumeric(),
+  alimentControllers.createAliment
+);
 
-router.patch("/:id", alimentControllers.updateAliment);
+router.patch(
+  "/:id",
+  body("dosage").isNumeric(),
+  body("calories").isNumeric(),
+  body("carbs").isNumeric(),
+  body("fats").isNumeric(),
+  body("proteins").isNumeric(),
+  alimentControllers.updateAliment
+);
 
 router.delete("/:id", alimentControllers.deleteAliment);
 
