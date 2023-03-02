@@ -67,26 +67,39 @@ export const getUserById = async (
     return next(error);
   }
 
-  res.json({ user });
+  res.json({
+    user: {
+      _id: user._id,
+      nom: user.nom,
+      prenom: user.prenom,
+      date_naiss: user.date_naiss,
+      sexe: user.sexe,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      lieu: user.lieu,
+      type: user.type,
+    },
+  });
 };
 
-export const getUsersByName = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const getUsersByName = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
-export const uploadAvatar = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const uploadAvatar = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
-export const updateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const updateUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
 export const deleteUser = async (
   req: Request,

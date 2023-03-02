@@ -7,11 +7,11 @@ router.get("/", userControllers.getAllUsers);
 
 router.get("/id/:id", userControllers.getUserById);
 
-router.get("/name/:name", userControllers.getUsersByName);
+// router.get("/name/:name", userControllers.getUsersByName);
 
-router.patch("/:id", userControllers.updateUser);
+// router.patch("/id/:id", userControllers.updateUser);
 
-router.patch("/avatar/:id", userControllers.uploadAvatar);
+// router.patch("/avatar/:id", userControllers.uploadAvatar);
 
 router.delete("/:id", userControllers.deleteUser);
 

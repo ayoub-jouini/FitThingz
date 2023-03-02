@@ -94,29 +94,29 @@ export const register = async (
   res.json({ token });
 };
 
-export const validateEmail = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const validateEmail = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
-export const validatePhone = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const validatePhone = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
-export const forgotPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const forgotPassword = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
-export const resetPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+// export const resetPassword = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {};
 
 export const refreshToken = async (
   req: Request,
