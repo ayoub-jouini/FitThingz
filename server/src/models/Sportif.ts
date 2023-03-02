@@ -13,15 +13,16 @@ interface histoBles {
 }
 
 export interface ISportif {
+  _id?: string;
   user: IUser;
   taille: number;
   poids: number;
-  histo_bles: histoBles[];
-  allergies: string[];
-  coach: ICoach;
-  salle: ISalleDeSport;
-  regime: IRegime;
-  programme: IProgramme;
+  histo_bles?: histoBles[];
+  allergies?: string[];
+  coach?: ICoach;
+  salle?: ISalleDeSport;
+  regime?: IRegime;
+  programme?: IProgramme;
 }
 
 const sportifSchema = new Schema<ISportif>({
@@ -35,14 +36,13 @@ const sportifSchema = new Schema<ISportif>({
         bodyPart: { type: String, required: true },
         description: { type: String, required: true },
       }),
-      require: true,
     },
   ],
-  allergies: [{ type: String, require: true }],
-  coach: { type: Schema.Types.ObjectId, ref: Coach, required: true },
-  salle: { type: Schema.Types.ObjectId, ref: SalleDeSport, required: true },
-  regime: { type: Schema.Types.ObjectId, ref: Regime, required: true },
-  programme: { type: Schema.Types.ObjectId, ref: Programme, required: true },
+  allergies: [{ type: String }],
+  coach: { type: Schema.Types.ObjectId, ref: Coach },
+  salle: { type: Schema.Types.ObjectId, ref: SalleDeSport },
+  regime: { type: Schema.Types.ObjectId, ref: Regime },
+  programme: { type: Schema.Types.ObjectId, ref: Programme },
 });
 
 export default model<ISportif>("Sportif", sportifSchema);

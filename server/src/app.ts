@@ -15,6 +15,7 @@ import userRoutes from "./routes/user";
 import exerciceRoutes from "./routes/exercice";
 import alimentRoutes from "./routes/aliment";
 import programmeRoutes from "./routes/programme";
+import sportifRoutes from "./routes/sportif";
 
 const app = express();
 
@@ -70,6 +71,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/exercice", exerciceRoutes);
 app.use("/api/aliment", alimentRoutes);
 app.use("/api/programme", programmeRoutes);
+app.use("/api/sportif", sportifRoutes);
 
 //page not found error 404
 app.use((req: Request, res: Response, next: NextFunction) => {
