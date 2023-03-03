@@ -3,6 +3,7 @@ import User, { IUser } from "./User";
 import Commentaire, { ICommentaire } from "./Commentaire";
 
 export interface IPost {
+  _id?: string;
   createur: IUser;
   date_pub: string;
   description: string;

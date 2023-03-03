@@ -9,6 +9,7 @@ interface Jour {
 }
 
 export interface IRegime {
+  _id?: string;
   createur: IUser;
   nom: string;
   image: string;
@@ -16,7 +17,8 @@ export interface IRegime {
   description: string;
   duree: number;
   tags: string[];
-  jour: Jour[];
+  jours: Jour[];
+  verif?: boolean;
 }
 
 const regimeSchema = new Schema<IRegime>({
@@ -27,7 +29,7 @@ const regimeSchema = new Schema<IRegime>({
   description: { type: String, required: true },
   duree: { type: Number, required: true },
   tags: [{ type: String, required: true }],
-  jour: [
+  jours: [
     {
       type: new Schema<Jour>({
         dayNumber: { type: Number, required: true },
@@ -35,6 +37,7 @@ const regimeSchema = new Schema<IRegime>({
       }),
     },
   ],
+  verif: { type: Boolean, required: true, default: false },
 });
 
 export default model<IRegime>("Regime", regimeSchema);

@@ -10,6 +10,7 @@ import Programme, { IProgramme } from "./Programme";
 import Regime, { IRegime } from "./Regime";
 
 export interface ICoach {
+  _id?: string;
   user: IUser;
   identite: IIdentite;
   experience: IExperience[];
@@ -20,6 +21,7 @@ export interface ICoach {
   regime: IRegime[];
   sportif: IUser[];
   commentaire: ICommentaire[];
+  verif?: boolean;
 }
 
 const coachSchema = new Schema<ICoach>({
@@ -39,6 +41,7 @@ const coachSchema = new Schema<ICoach>({
   commentaire: [
     { type: Schema.Types.ObjectId, ref: Commentaire, required: true },
   ],
+  verif: { type: Boolean, required: true, default: false },
 });
 
 export default model<ICoach>("Coach", coachSchema);

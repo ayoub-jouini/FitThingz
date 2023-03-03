@@ -6,6 +6,7 @@ import Tarification, { ITarification } from "./Tarification";
 import { ISportif } from "./Sportif";
 
 export interface ISalleDeSport {
+  _id?: string;
   createur: IUser;
   nom: string;
   description: string;
@@ -17,6 +18,7 @@ export interface ISalleDeSport {
   sportif: IUser[];
   tarification: ITarification[];
   commentaire: ICommentaire[];
+  verif?: boolean;
 }
 
 const salleDeSportSchema = new Schema<ISalleDeSport>({
@@ -35,6 +37,7 @@ const salleDeSportSchema = new Schema<ISalleDeSport>({
   commentaire: [
     { type: Schema.Types.ObjectId, ref: Commentaire, required: true },
   ],
+  verif: { type: Boolean, required: true, default: false },
 });
 
 export default model<ISalleDeSport>("SalleDeSport", salleDeSportSchema);
