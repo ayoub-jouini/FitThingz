@@ -17,7 +17,10 @@ router.patch("/validate/:id", coachControllers.validateCoach);
 
 router.patch("/tarification/:id", coachControllers.addTarification);
 
-router.patch("/commentaire/:id", coachControllers.addCommentaire);
+router.patch(
+  "/commentaire/:idCoach/:idCommentaire",
+  coachControllers.addCommentaire
+);
 
 router.patch("/:id", coachControllers.updateCoach);
 

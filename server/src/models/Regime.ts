@@ -18,7 +18,6 @@ export interface IRegime {
   duree: number;
   tags: string[];
   jours: Jour[];
-  verif?: boolean;
 }
 
 const regimeSchema = new Schema<IRegime>({
@@ -37,7 +36,6 @@ const regimeSchema = new Schema<IRegime>({
       }),
     },
   ],
-  verif: { type: Boolean, required: true, default: false },
 });
 
 export default model<IRegime>("Regime", regimeSchema);
