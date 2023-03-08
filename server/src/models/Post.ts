@@ -5,7 +5,7 @@ import Commentaire, { ICommentaire } from "./Commentaire";
 export interface IPost {
   _id?: string;
   createur: IUser;
-  date_pub: string;
+  date_pub: Date;
   description: string;
   image: string;
   commentaire: ICommentaire[];
@@ -14,7 +14,7 @@ export interface IPost {
 
 const postSchema = new Schema<IPost>({
   createur: { type: Schema.Types.ObjectId, ref: User, required: true },
-  date_pub: { type: String, required: true },
+  date_pub: { type: Date, required: true, default: Date.now() },
   description: { type: String, required: true },
   image: { type: String, required: true },
   commentaire: [
