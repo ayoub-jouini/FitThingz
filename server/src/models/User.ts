@@ -5,13 +5,13 @@ export interface IUser {
   _id?: string;
   nom: string;
   prenom: string;
-  date_naiss: string;
-  sexe: string;
+  date_naiss?: string;
+  sexe?: string;
   email: string;
   password?: string;
   phone: number;
   avatar?: string;
-  lieu: string;
+  lieu?: string;
   type: string;
 }
 

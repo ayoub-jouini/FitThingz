@@ -1,14 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
-import passport from "passport";
-import { Strategy as BearerStrategy } from "passport-http-bearer";
+import fs from "fs";
+import path from "path";
 
 import connect from "./configs/db";
 import vars from "./configs/vars";
 import HttpError from "./utils/HttpError";
-
-import User from "./models/User";
-import Token from "./models/Token";
+import authorization from "./middlewares/authorization";
 
 import authRouter from "./routes/auth";
 import userRoutes from "./routes/user";
@@ -18,6 +16,8 @@ import programmeRoutes from "./routes/programme";
 import sportifRoutes from "./routes/sportif";
 
 const app = express();
+
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 // set security HTTP headers
 app.use(helmet());
@@ -37,36 +37,9 @@ app.use((req, res, next) => {
   next();
 });
 
-//passport
-app.use(passport.initialize());
-
-passport.use(
-  new BearerStrategy(async (token, done) => {
-    try {
-      const accessToken = await Token.findOne({ accessToken: token }).exec();
-      if (!accessToken) {
-        return done(null, false);
-      }
-      //@ts-ignore
-      if (accessToken.accessTokenTime < Date.now()) {
-        Token.deleteOne({ accessToken: token });
-        return done(null, false);
-      }
-      const user = await User.findById(accessToken.userId).exec();
-      if (!user) {
-        Token.deleteOne({ accessToken: token });
-        return done(null, false);
-      }
-      return done(null, user);
-    } catch (error) {
-      return done(error);
-    }
-  })
-);
-
 //routes
 app.use("/api/auth", authRouter);
-app.use(passport.authenticate("bearer", { session: false }));
+app.use(authorization);
 app.use("/api/user", userRoutes);
 app.use("/api/exercice", exerciceRoutes);
 app.use("/api/aliment", alimentRoutes);
@@ -81,6 +54,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 //error handler
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
+  if (res.headersSent) {
+    return next(error);
+  }
   if (!error) {
     return;
   }

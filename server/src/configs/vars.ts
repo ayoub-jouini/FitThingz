@@ -4,6 +4,7 @@ dotenv.config();
 export default {
   port: process.env.PORT,
   url: process.env.URL,
-  secret: process.env.SECRET_TOKEN,
+  accessSecret: process.env.SECRET_ACCESS_TOKEN,
+  refreshSecret: process.env.SECRET_REFRESH_TOKEN,
   db: process.env.DB_URL,
 };
