@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Exercice, { IExercice } from "../models/Exercice";
 import { validationResult } from "express-validator";
@@ -318,7 +319,7 @@ export const getExercicesByTags = async (
 };
 
 export const createExercice = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -332,7 +333,7 @@ export const createExercice = async (
 
   try {
     const createdExercice = new Exercice({
-      createur: req.user,
+      createur: req.userData,
       nom: exercice.nom,
       bodyPart: exercice.bodyPart,
       target: exercice.target,
@@ -352,7 +353,7 @@ export const createExercice = async (
 };
 
 export const updateExercice = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -372,7 +373,7 @@ export const updateExercice = async (
       return next(error);
     }
 
-    if (existingExercice.createur !== req.user) {
+    if (existingExercice.createur !== req.userData) {
       const error = new HttpError("you can't update this exercice", 404);
       return next(error);
     }
@@ -396,7 +397,7 @@ export const updateExercice = async (
 };
 
 export const deleteExercice = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -409,7 +410,7 @@ export const deleteExercice = async (
       return next(error);
     }
 
-    if (exercice.createur !== req.user) {
+    if (exercice.createur !== req.userData) {
       const error = new HttpError("you can't delete this exercice", 404);
       return next(error);
     }

@@ -131,12 +131,6 @@ export const register = async (
 //   next: NextFunction
 // ) => {};
 
-// export const validatePhone = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};
-
 // export const forgotPassword = async (
 //   req: Request,
 //   res: Response,

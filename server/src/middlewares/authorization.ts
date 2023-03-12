@@ -6,7 +6,7 @@ import vars from "../configs/vars";
 
 import { IUser } from "../models/User";
 
-interface AuthReq extends Request {
+export interface AuthReq extends Request {
   userData: IUser;
 }
 

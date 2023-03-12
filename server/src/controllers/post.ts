@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Post, { IPost } from "../models/Post";
 import Commentaire, { ICommentaire } from "../models/Commentaire";
@@ -172,7 +173,7 @@ export const getPostsByTags = async (
 // ) => {};
 
 export const createPost = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -186,7 +187,7 @@ export const createPost = async (
 
   try {
     const createdPost = new Post({
-      createur: req.user,
+      createur: req.userData,
       description: post.description,
       image: post.image,
       tags: post.tags,
@@ -204,7 +205,7 @@ export const createPost = async (
 };
 
 export const addCommentaire = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -218,7 +219,6 @@ export const addCommentaire = async (
   }
 
   try {
-    //@ts-ignore
     const existingPost = await Post.findById(id);
     if (!existingPost) {
       const error = new HttpError("post does not exist", 404);
@@ -226,7 +226,7 @@ export const addCommentaire = async (
     }
 
     const newCommentaire: ICommentaire = new Commentaire({
-      user: req.user,
+      user: req.userData,
       avatar: commentaire.avatar,
       commentaire: commentaire.commentaire,
     });
@@ -246,7 +246,7 @@ export const addCommentaire = async (
 };
 
 export const deleteCommentaire = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -254,7 +254,6 @@ export const deleteCommentaire = async (
   const idCommentaire = req.params.idCommentaire;
 
   try {
-    //@ts-ignore
     const existingPost = await Post.findById(idPost);
     if (!existingPost) {
       const error = new HttpError("Post does not exist", 404);
@@ -265,7 +264,7 @@ export const deleteCommentaire = async (
       (value) => value._id === idCommentaire
     );
 
-    if (existingCommentaire.user !== req.user) {
+    if (existingCommentaire.user !== req.userData) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
@@ -289,7 +288,7 @@ export const deleteCommentaire = async (
 };
 
 export const updatePost = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -309,7 +308,7 @@ export const updatePost = async (
       return next(error);
     }
 
-    if (existingPost.createur !== req.user) {
+    if (existingPost.createur !== req.userData) {
       const error = new HttpError("you can't update this post", 404);
       return next(error);
     }
@@ -330,7 +329,7 @@ export const updatePost = async (
 };
 
 export const deletePost = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -343,8 +342,7 @@ export const deletePost = async (
       return next(error);
     }
 
-    //@ts-ignore
-    if (post.user !== req.user && req.user.type !== "admin") {
+    if (post.createur !== req.userData && req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this post", 404);
       return next(error);
     }

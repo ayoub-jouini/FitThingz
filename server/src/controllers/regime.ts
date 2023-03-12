@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Regime, { IRegime } from "../models/Regime";
 
@@ -224,7 +225,7 @@ export const getRegimesByTags = async (
 };
 
 export const createRegime = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -238,7 +239,7 @@ export const createRegime = async (
 
   try {
     const createdregime = new Regime({
-      createur: req.user,
+      createur: req.userData,
       nom: regime.nom,
       image: regime.image,
       type: regime.type,
@@ -271,7 +272,7 @@ export const deleteRepas = async (
 ) => {};
 
 export const updateRegime = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -291,7 +292,7 @@ export const updateRegime = async (
       return next(error);
     }
 
-    if (existingRegime.createur !== req.user) {
+    if (existingRegime.createur !== req.userData) {
       const error = new HttpError("you can't update this regime", 404);
       return next(error);
     }
@@ -317,7 +318,7 @@ export const updateRegime = async (
 };
 
 export const deleteRegime = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -330,7 +331,7 @@ export const deleteRegime = async (
       return next(error);
     }
 
-    if (regime.createur !== req.user) {
+    if (regime.createur !== req.userData) {
       const error = new HttpError("you can't delete this regime", 404);
       return next(error);
     }

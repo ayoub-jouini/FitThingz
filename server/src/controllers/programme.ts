@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Programme, { IProgramme } from "../models/Programme";
 import Exercice, { IExercice } from "../models/Exercice";
@@ -218,7 +219,7 @@ export const getProgrammesByTags = async (
 };
 
 export const createProgramme = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -232,7 +233,7 @@ export const createProgramme = async (
 
   try {
     const createdProgramme = new Programme({
-      createur: req.user,
+      createur: req.userData,
       nom: programme.nom,
       description: programme.description,
       duree: programme.duree,
@@ -295,7 +296,7 @@ export const deleteExercice = async (
 ) => {};
 
 export const updateProgramme = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -315,7 +316,7 @@ export const updateProgramme = async (
       return next(error);
     }
 
-    if (existingProgramme.createur !== req.user) {
+    if (existingProgramme.createur !== req.userData) {
       const error = new HttpError("you can't update this programme", 404);
       return next(error);
     }
@@ -342,7 +343,7 @@ export const updateProgramme = async (
 };
 
 export const deleteProgramme = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -355,7 +356,7 @@ export const deleteProgramme = async (
       return next(error);
     }
 
-    if (programme.createur !== req.user) {
+    if (programme.createur !== req.userData) {
       const error = new HttpError("you can't delete this programme", 404);
       return next(error);
     }

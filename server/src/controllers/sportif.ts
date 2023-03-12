@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Sportif, { ISportif } from "../models/Sportif";
 import User from "../models/User";
@@ -84,7 +85,7 @@ export const getSportifById = async (
 // ) => {};
 
 export const createSportif = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -96,21 +97,20 @@ export const createSportif = async (
     return next(error);
   }
 
-  //@ts-ignore
-  if (req.user.type !== "sportif") {
+  if (req.userData.type !== "sportif") {
     const error = new HttpError("action denied", 409);
     return next(error);
   }
 
   try {
-    const existingSportif = await Sportif.findOne({ user: req.user });
+    const existingSportif = await Sportif.findOne({ user: req.userData });
     if (existingSportif) {
       const error = new HttpError("sportif already exist", 401);
       return next(error);
     }
 
     const createdSportif = new Sportif({
-      user: req.user,
+      user: req.userData,
       taille: sportif.taille,
       poids: sportif.poids,
       histo_bles: sportif.histo_bles,
@@ -129,7 +129,7 @@ export const createSportif = async (
 };
 
 export const updateSportif = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -141,14 +141,13 @@ export const updateSportif = async (
     return next(error);
   }
 
-  //@ts-ignore
-  if (req.user.type !== "sportif") {
+  if (req.userData.type !== "sportif") {
     const error = new HttpError("action denied", 409);
     return next(error);
   }
 
   try {
-    const existingSportif = await Sportif.findOne({ user: req.user });
+    const existingSportif = await Sportif.findOne({ user: req.userData });
     if (!existingSportif) {
       const error = new HttpError("sportif does not exist", 401);
       return next(error);
@@ -172,7 +171,7 @@ export const updateSportif = async (
 };
 
 export const deleteSportif = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -185,14 +184,12 @@ export const deleteSportif = async (
       return next(error);
     }
 
-    //@ts-ignore
-    if (sportif.user !== req.user || req.user.type !== "admin") {
+    if (sportif.user !== req.userData || req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this sportif", 404);
       return next(error);
     }
 
-    //@ts-ignore
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.userData._id);
 
     user.type = "null";
 

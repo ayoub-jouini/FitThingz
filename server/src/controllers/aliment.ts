@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Aliment, { IAliment } from "../models/Aliment";
 
@@ -365,7 +366,7 @@ export const getAlimentByProteins = async (
 };
 
 export const createAliment = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -379,7 +380,7 @@ export const createAliment = async (
 
   try {
     const createdAliment = new Aliment({
-      createur: req.user,
+      createur: req.userData,
       titre: aliment.titre,
       description: aliment.description,
       dosage: aliment.dosage,
@@ -401,7 +402,7 @@ export const createAliment = async (
 };
 
 export const updateAliment = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -421,7 +422,7 @@ export const updateAliment = async (
       return next(error);
     }
 
-    if (existingAliment.createur !== req.user) {
+    if (existingAliment.createur !== req.userData) {
       const error = new HttpError("you can't update this aliment", 404);
       return next(error);
     }
@@ -447,7 +448,7 @@ export const updateAliment = async (
 };
 
 export const deleteAliment = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -460,7 +461,7 @@ export const deleteAliment = async (
       return next(error);
     }
 
-    if (aliment.createur !== req.user) {
+    if (aliment.createur !== req.userData) {
       const error = new HttpError("you can't delete this aliment", 404);
       return next(error);
     }

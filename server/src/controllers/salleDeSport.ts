@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import SalleDeSport, { ISalleDeSport } from "../models/SalleDeSport";
 import Tarification, { ITarification } from "../models/Tarification";
@@ -139,7 +140,7 @@ export const getSalleByOwner = async (
 };
 
 export const createSalle = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -153,7 +154,7 @@ export const createSalle = async (
 
   try {
     const createdsalle = new SalleDeSport({
-      createur: req.user,
+      createur: req.userData,
       description: salle.description,
       lieu: salle.lieu,
       ouverture: salle.ouverture,
@@ -180,7 +181,7 @@ export const validateSalle = async (
 ) => {};
 
 export const addTarification = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -194,14 +195,13 @@ export const addTarification = async (
   }
 
   try {
-    //@ts-ignore
     const existingsalle = await salle.findById(id);
     if (!existingsalle) {
       const error = new HttpError("salle does not exist", 404);
       return next(error);
     }
 
-    if (existingsalle.createur !== req.user) {
+    if (existingsalle.createur !== req.userData) {
       const error = new HttpError("you can't update this salle", 404);
       return next(error);
     }
@@ -229,7 +229,7 @@ export const addTarification = async (
 };
 
 export const deleteTarification = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -237,14 +237,13 @@ export const deleteTarification = async (
   const idSalle = req.params.idSalle;
 
   try {
-    //@ts-ignore
     const existingSalle = await SalleDeSport.findById(idSalle);
     if (!existingSalle) {
       const error = new HttpError("salle does not exist", 404);
       return next(error);
     }
 
-    if (existingSalle.createur !== req.user) {
+    if (existingSalle.createur !== req.userData) {
       const error = new HttpError("you can't update this salle", 404);
       return next(error);
     }
@@ -266,7 +265,7 @@ export const deleteTarification = async (
 };
 
 export const addCommentaire = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -280,7 +279,6 @@ export const addCommentaire = async (
   }
 
   try {
-    //@ts-ignore
     const existingSalle = await SalleDeSport.findById(id);
     if (!existingSalle) {
       const error = new HttpError("coach does not exist", 404);
@@ -288,7 +286,7 @@ export const addCommentaire = async (
     }
 
     const newCommentaire: ICommentaire = new Commentaire({
-      user: req.user,
+      user: req.userData,
       avatar: commentaire.avatar,
       commentaire: commentaire.commentaire,
     });
@@ -308,7 +306,7 @@ export const addCommentaire = async (
 };
 
 export const deleteCommentaire = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -316,7 +314,6 @@ export const deleteCommentaire = async (
   const idCommentaire = req.params.idCommentaire;
 
   try {
-    //@ts-ignore
     const existingSalle = await SalleDeSport.findById(idSalle);
     if (!existingSalle) {
       const error = new HttpError("coach does not exist", 404);
@@ -327,7 +324,7 @@ export const deleteCommentaire = async (
       (value) => value._id === idCommentaire
     );
 
-    if (existingCommentaire.user !== req.user) {
+    if (existingCommentaire.user !== req.userData) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
@@ -351,7 +348,7 @@ export const deleteCommentaire = async (
 };
 
 export const updateSalle = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -371,7 +368,7 @@ export const updateSalle = async (
       return next(error);
     }
 
-    if (existingsalle.createur !== req.user) {
+    if (existingsalle.createur !== req.userData) {
       const error = new HttpError("you can't update this salle", 404);
       return next(error);
     }
@@ -397,7 +394,7 @@ export const updateSalle = async (
 };
 
 export const deleteSalle = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -410,8 +407,7 @@ export const deleteSalle = async (
       return next(error);
     }
 
-    //@ts-ignore
-    if (salle.createur !== req.user && req.user.type !== "admin") {
+    if (salle.createur !== req.userData && req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this salle", 404);
       return next(error);
     }

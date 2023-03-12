@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
 
 import Coach, { ICoach } from "../models/Coach";
 import Tarification, { ITarification } from "../models/Tarification";
@@ -88,7 +89,7 @@ export const getCoachById = async (
 // ) => {};
 
 export const createCoach = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -102,9 +103,8 @@ export const createCoach = async (
 
   try {
     const createdcoach = new Coach({
-      //@ts-ignore
-      _id: req.user._id,
-      user: req.user,
+      _id: req.userData._id,
+      user: req.userData,
       identite: coach.identite,
       experience: coach.experience,
       conn_aca: coach.conn_aca,
@@ -122,7 +122,7 @@ export const createCoach = async (
 };
 
 export const validateCoach = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -135,8 +135,7 @@ export const validateCoach = async (
     return next(error);
   }
 
-  //@ts-ignore
-  if (req.user.type !== "admin") {
+  if (req.userData.type !== "admin") {
     const error = new HttpError("you can't update this coach", 404);
     return next(error);
   }
@@ -163,7 +162,7 @@ export const validateCoach = async (
 };
 
 export const addTarification = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -176,14 +175,13 @@ export const addTarification = async (
   }
 
   try {
-    //@ts-ignore
-    const existingcoach = await Coach.findById(req.user._id);
+    const existingcoach = await Coach.findById(req.userData._id);
     if (!existingcoach) {
       const error = new HttpError("coach does not exist", 404);
       return next(error);
     }
 
-    if (existingcoach.user !== req.user) {
+    if (existingcoach.user !== req.userData) {
       const error = new HttpError("you can't update this coach", 404);
       return next(error);
     }
@@ -211,21 +209,20 @@ export const addTarification = async (
 };
 
 export const deleteTarification = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
   const id = req.params.id;
 
   try {
-    //@ts-ignore
-    const existingcoach = await Coach.findById(req.user._id);
+    const existingcoach = await Coach.findById(req.userData._id);
     if (!existingcoach) {
       const error = new HttpError("coach does not exist", 404);
       return next(error);
     }
 
-    if (existingcoach.user !== req.user) {
+    if (existingcoach.user !== req.userData) {
       const error = new HttpError("you can't update this coach", 404);
       return next(error);
     }
@@ -247,7 +244,7 @@ export const deleteTarification = async (
 };
 
 export const addCommentaire = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -261,7 +258,6 @@ export const addCommentaire = async (
   }
 
   try {
-    //@ts-ignore
     const existingcoach = await Coach.findById(id);
     if (!existingcoach) {
       const error = new HttpError("coach does not exist", 404);
@@ -269,7 +265,7 @@ export const addCommentaire = async (
     }
 
     const newCommentaire: ICommentaire = new Commentaire({
-      user: req.user,
+      user: req.userData,
       avatar: commentaire.avatar,
       commentaire: commentaire.commentaire,
     });
@@ -289,7 +285,7 @@ export const addCommentaire = async (
 };
 
 export const deleteCommentaire = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -297,7 +293,6 @@ export const deleteCommentaire = async (
   const idCommentaire = req.params.idCommentaire;
 
   try {
-    //@ts-ignore
     const existingcoach = await Coach.findById(idCoach);
     if (!existingcoach) {
       const error = new HttpError("coach does not exist", 404);
@@ -308,7 +303,7 @@ export const deleteCommentaire = async (
       (value) => value._id === idCommentaire
     );
 
-    if (existingCommentaire.user !== req.user) {
+    if (existingCommentaire.user !== req.userData) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
@@ -332,7 +327,7 @@ export const deleteCommentaire = async (
 };
 
 export const updateCoach = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -352,7 +347,7 @@ export const updateCoach = async (
       return next(error);
     }
 
-    if (existingcoach.user !== req.user) {
+    if (existingcoach.user !== req.userData) {
       const error = new HttpError("you can't update this coach", 404);
       return next(error);
     }
@@ -374,7 +369,7 @@ export const updateCoach = async (
 };
 
 export const deleteCoach = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
 ) => {
@@ -387,8 +382,7 @@ export const deleteCoach = async (
       return next(error);
     }
 
-    //@ts-ignore
-    if (coach.user !== req.user && req.user.type !== "admin") {
+    if (coach.user !== req.userData && req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this coach", 404);
       return next(error);
     }
