@@ -4,6 +4,7 @@ import { validationResult } from "express-validator";
 import Jwt from "jsonwebtoken";
 
 import vars from "../configs/vars";
+import transporter from "../configs/transporter";
 import HttpError from "../utils/HttpError";
 
 import User, { IUser } from "../models/User";
@@ -41,6 +42,7 @@ export const login = async (
         phone: user.phone,
         avatar: user.avatar,
         type: user.type,
+        emailConfirmed: user.emailConfirmed,
       },
       vars.accessSecret,
       { expiresIn: "1h" }
@@ -100,6 +102,7 @@ export const register = async (
         phone: user.phone,
         avatar: user.avatar,
         type: user.type,
+        emailConfirmed: user.emailConfirmed,
       },
       vars.accessSecret,
       { expiresIn: "1h" }
@@ -125,11 +128,62 @@ export const register = async (
   res.json({ accessToken, refreshToken });
 };
 
-// export const validateEmail = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};
+export const sendConfirmationToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email: string = req.body.email;
+  try {
+    const user: IUser = await User.findOne({ email });
+    if (!user) {
+      const error = new HttpError("could not find user", 404);
+      return next(error);
+    }
+    const token = Jwt.sign({ email }, vars.emailSecret, { expiresIn: "1" });
+    const mailOptions = {
+      from: vars.email,
+      to: email,
+      subject: "Email Confirmation",
+      html: `Click <a href="${vars.frontURL}/confirm-email/${token}">here</a> to confirm your email address.`,
+    };
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not send email." + err,
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: `Confirmation token sent to ${email}.` });
+};
+
+export const confirmEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token: string = req.params.token;
+  try {
+    const decodedToken: any = Jwt.verify(token, vars.emailSecret);
+    const email: string = decodedToken.email;
+    const user: IUser = await User.findOneAndUpdate(
+      { email },
+      { emailConfirmed: true }
+    );
+    if (!user) {
+      const error = new HttpError("could not find user", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not confirm email." + err,
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Email confirmed!" });
+};
 
 // export const forgotPassword = async (
 //   req: Request,
@@ -171,6 +225,7 @@ export const refreshToken = async (
         phone: user.phone,
         avatar: user.avatar,
         type: user.type,
+        emailConfirmed: user.emailConfirmed,
       },
       vars.accessSecret,
       { expiresIn: "1h" }

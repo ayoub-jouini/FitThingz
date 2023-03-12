@@ -28,6 +28,7 @@ const authorization = (req: AuthReq, res: Response, next: NextFunction) => {
       phone: decodedToken.phone,
       avatar: decodedToken.avatar,
       type: decodedToken.type,
+      emailConfirmed: decodedToken.emailConfirmed,
     };
     next();
   } catch (err) {

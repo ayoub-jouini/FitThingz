@@ -7,6 +7,7 @@ import connect from "./configs/db";
 import vars from "./configs/vars";
 import HttpError from "./utils/HttpError";
 import authorization from "./middlewares/authorization";
+import verifyEmailConfirmation from "./middlewares/verifyEmailConfirmation";
 
 import authRouter from "./routes/auth";
 import userRoutes from "./routes/user";
@@ -39,7 +40,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/auth", authRouter);
-app.use(authorization);
+app.use(authorization, verifyEmailConfirmation);
 app.use("/api/user", userRoutes);
 app.use("/api/exercice", exerciceRoutes);
 app.use("/api/aliment", alimentRoutes);
