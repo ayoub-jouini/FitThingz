@@ -50,4 +50,8 @@ router.post("/send-confirmation-token", authControllers.sendConfirmationToken);
 
 router.get("/confirm-email/:token", authControllers.confirmEmail);
 
+router.post("/forgot-password", authControllers.forgotPassword);
+
+router.post("/reset-password/:token", authControllers.resetPassword);
+
 export default router;

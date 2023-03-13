@@ -185,17 +185,63 @@ export const confirmEmail = async (
   res.json({ message: "Email confirmed!" });
 };
 
-// export const forgotPassword = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email } = req.body;
+  try {
+    const user: IUser = await User.findOne({ email });
+    if (!user) {
+      const error = new HttpError("User not found.", 404);
+      return next(error);
+    }
+    const token = Jwt.sign({ _id: user._id }, vars.passwordSecret, {
+      expiresIn: "1h",
+    });
+    const mailOptions = {
+      to: user.email,
+      subject: "Password Reset Request",
+      text: `Click on the link to reset your password: ${vars.frontURL}/reset-password/${token}`,
+    };
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not send email." + err,
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "Password reset email sent" });
+};
 
-// export const resetPassword = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.params.token;
+    const { password } = req.body;
+
+    const decodedToken: any = Jwt.verify(token, vars.passwordSecret);
+
+    const user: IUser = await User.findById(decodedToken._id);
+    if (!user) {
+      const error = new HttpError("User not found.", 404);
+      return next(error);
+    }
+    await User.findByIdAndUpdate(user._id, { password });
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update password." + err,
+      500
+    );
+    return next(error);
+  }
+  res.status(200).json({ message: "Password reset successfully" });
+};
 
 export const refreshToken = async (
   req: Request,
