@@ -167,7 +167,7 @@ export const updateSportif = async (
     return next(error);
   }
 
-  res.json({ message: "created!" });
+  res.json({ message: "updated!" });
 };
 
 export const deleteSportif = async (

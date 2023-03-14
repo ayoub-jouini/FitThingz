@@ -89,17 +89,67 @@ export const getUserById = async (
 //   next: NextFunction
 // ) => {};
 
-// export const uploadAvatar = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};
+export const uploadAvatar = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
 
-// export const updateUser = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      const error = new HttpError("there is no user", 404);
+      return next(error);
+    }
+
+    user.avatar = req.file.path;
+
+    await user.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update users." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
+
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+  const { nom, prenom, phone, lieu } = req.body;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      const error = new HttpError("there is no user", 404);
+      return next(error);
+    }
+
+    user.nom = nom;
+    user.prenom = prenom;
+    user.phone = phone;
+    user.lieu = lieu;
+
+    await user.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update users." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
 
 export const deleteUser = async (
   req: Request,

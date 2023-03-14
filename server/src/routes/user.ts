@@ -1,6 +1,8 @@
 import { Router } from "express";
 import * as userControllers from "../controllers/user";
 
+import fileUpload from "../middlewares/fileUpload";
+
 const router = Router();
 
 router.get("/", userControllers.getAllUsers);
@@ -9,9 +11,13 @@ router.get("/id/:id", userControllers.getUserById);
 
 // router.get("/name/:name", userControllers.getUsersByName);
 
-// router.patch("/id/:id", userControllers.updateUser);
+router.patch("/id/:id", userControllers.updateUser);
 
-// router.patch("/avatar/:id", userControllers.uploadAvatar);
+router.patch(
+  "/avatar/:id",
+  fileUpload.single("avatar"),
+  userControllers.uploadAvatar
+);
 
 router.delete("/:id", userControllers.deleteUser);
 
