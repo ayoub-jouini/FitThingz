@@ -14,6 +14,7 @@ export interface IUser {
   lieu?: string;
   type: string;
   emailConfirmed?: boolean;
+  statut?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -28,6 +29,7 @@ const userSchema = new Schema<IUser>({
   lieu: { type: String, required: true },
   type: { type: String, required: true },
   emailConfirmed: { type: Boolean, default: false },
+  statut: { type: String, required: true, default: "active" },
 });
 
 userSchema.pre("save", function (next) {

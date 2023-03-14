@@ -19,6 +19,8 @@ router.patch(
   userControllers.uploadAvatar
 );
 
+router.patch("/deactivate/:id", userControllers.deactivateAccount);
+
 router.delete("/:id", userControllers.deleteUser);
 
 export default router;

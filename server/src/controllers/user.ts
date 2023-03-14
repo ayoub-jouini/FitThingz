@@ -151,6 +151,31 @@ export const updateUser = async (
   res.json({ message: "updated!" });
 };
 
+export const deactivateAccount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+
+  try {
+    const user = await User.findByIdAndUpdate(id, { status: "inactive" });
+    if (!user) {
+      const error = new HttpError("there is no user", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not deactivate Account." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({ message: "deactivated!" });
+};
+
 export const deleteUser = async (
   req: Request,
   res: Response,
