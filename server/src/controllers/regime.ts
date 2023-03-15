@@ -17,6 +17,7 @@ export const getAllRegimes = async (
   let regimes: IRegime[];
   try {
     regimes = await Regime.find({})
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!regimes) {
@@ -59,7 +60,7 @@ export const getRegimeById = async (
   const id: string = req.params.id;
   let regime: IRegime;
   try {
-    regime = await Regime.findById(id);
+    regime = await Regime.findById(id).populate("createur");
     if (!regime) {
       const error = new HttpError("there is no regime", 404);
       return next(error);
@@ -142,6 +143,7 @@ export const getRegimesByType = async (
   let regimes: IRegime[];
   try {
     regimes = await Regime.find({ bodyPart })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!regimes) {
@@ -190,6 +192,7 @@ export const getRegimesByTags = async (
   let regimes: IRegime[];
   try {
     regimes = await Regime.find({ tags: { $all: tags } })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!regimes) {
@@ -239,7 +242,7 @@ export const createRegime = async (
 
   try {
     const createdregime = new Regime({
-      createur: req.userData,
+      createur: req.userData._id,
       nom: regime.nom,
       image: regime.image,
       type: regime.type,
@@ -292,7 +295,7 @@ export const updateRegime = async (
       return next(error);
     }
 
-    if (existingRegime.createur !== req.userData) {
+    if (existingRegime.createur !== req.userData._id) {
       const error = new HttpError("you can't update this regime", 404);
       return next(error);
     }
@@ -331,7 +334,7 @@ export const deleteRegime = async (
       return next(error);
     }
 
-    if (regime.createur !== req.userData) {
+    if (regime.createur !== req.userData._id) {
       const error = new HttpError("you can't delete this regime", 404);
       return next(error);
     }

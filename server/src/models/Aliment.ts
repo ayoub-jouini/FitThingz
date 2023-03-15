@@ -4,7 +4,7 @@ import User, { IUser } from "./User";
 
 export interface IAliment {
   _id?: string;
-  createur: IUser;
+  createur: Schema.Types.ObjectId;
   titre: string;
   description: string;
   dosage: number;

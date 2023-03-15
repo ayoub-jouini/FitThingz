@@ -14,6 +14,10 @@ import userRoutes from "./routes/user";
 import exerciceRoutes from "./routes/exercice";
 import alimentRoutes from "./routes/aliment";
 import programmeRoutes from "./routes/programme";
+import coachRoutes from "./routes/coach";
+import postRoutes from "./routes/post";
+import regimeRoutes from "./routes/regime";
+import salleRoutes from "./routes/salleDeSport";
 import sportifRoutes from "./routes/sportif";
 
 const app = express();
@@ -42,10 +46,14 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRouter);
 app.use(authorization, verifyEmailConfirmation);
 app.use("/api/user", userRoutes);
+app.use("/api/coach", coachRoutes);
+app.use("/api/salle", salleRoutes);
+app.use("/api/sporif", sportifRoutes);
 app.use("/api/exercice", exerciceRoutes);
-app.use("/api/aliment", alimentRoutes);
 app.use("/api/programme", programmeRoutes);
-app.use("/api/sportif", sportifRoutes);
+app.use("/api/aliment", alimentRoutes);
+app.use("/api/regime", regimeRoutes);
+app.use("/api/post", postRoutes);
 
 //page not found error 404
 app.use((req: Request, res: Response, next: NextFunction) => {

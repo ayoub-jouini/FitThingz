@@ -19,6 +19,7 @@ export const getAllSalles = async (
   let salles: ISalleDeSport[];
   try {
     salles = await SalleDeSport.find({})
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!salles) {
@@ -65,7 +66,9 @@ export const getSalleById = async (
   const id: string = req.params.id;
   let salle: ISalleDeSport;
   try {
-    salle = await SalleDeSport.findById(id);
+    salle = await SalleDeSport.findById(id)
+      .populate("createur")
+      .populate("sportif");
     if (!salle) {
       const error = new HttpError("there is no salle", 404);
       return next(error);
@@ -101,6 +104,7 @@ export const getSalleByOwner = async (
   let salles: ISalleDeSport[];
   try {
     salles = await SalleDeSport.find({ createur })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!salles) {
@@ -154,7 +158,7 @@ export const createSalle = async (
 
   try {
     const createdsalle = new SalleDeSport({
-      createur: req.userData,
+      createur: req.userData._id,
       description: salle.description,
       lieu: salle.lieu,
       ouverture: salle.ouverture,
@@ -243,7 +247,7 @@ export const deleteTarification = async (
       return next(error);
     }
 
-    if (existingSalle.createur !== req.userData) {
+    if (existingSalle.createur !== req.userData._id) {
       const error = new HttpError("you can't update this salle", 404);
       return next(error);
     }
@@ -324,7 +328,10 @@ export const deleteCommentaire = async (
       (value) => value._id === idCommentaire
     );
 
-    if (existingCommentaire.user !== req.userData) {
+    if (
+      existingCommentaire.user !== req.userData._id &&
+      existingSalle.createur !== req.userData._id
+    ) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
@@ -368,7 +375,7 @@ export const updateSalle = async (
       return next(error);
     }
 
-    if (existingsalle.createur !== req.userData) {
+    if (existingsalle.createur !== req.userData._id) {
       const error = new HttpError("you can't update this salle", 404);
       return next(error);
     }
@@ -407,7 +414,7 @@ export const deleteSalle = async (
       return next(error);
     }
 
-    if (salle.createur !== req.userData && req.userData.type !== "admin") {
+    if (salle.createur !== req.userData._id && req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this salle", 404);
       return next(error);
     }

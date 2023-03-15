@@ -11,7 +11,7 @@ interface Jour {
 
 export interface IProgramme {
   _id?: string;
-  createur: IUser;
+  createur: Schema.Types.ObjectId;
   nom: string;
   description: string;
   jours: Jour[];

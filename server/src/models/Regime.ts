@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 import Repas, { IRepas } from "./Repas";
-import User, { IUser } from "./User";
+import User from "./User";
 
 interface Jour {
   dayNumber: number;
@@ -10,7 +10,7 @@ interface Jour {
 
 export interface IRegime {
   _id?: string;
-  createur: IUser;
+  createur: Schema.Types.ObjectId;
   nom: string;
   image: string;
   type: string;

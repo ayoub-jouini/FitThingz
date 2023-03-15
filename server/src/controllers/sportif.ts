@@ -18,6 +18,7 @@ export const getAllSportifs = async (
   let sportifs: ISportif[];
   try {
     sportifs = await Sportif.find({})
+      .populate("user")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!sportifs) {
@@ -61,7 +62,7 @@ export const getSportifById = async (
   const id: string = req.params.id;
   let sportif: ISportif;
   try {
-    sportif = await Sportif.findById(id);
+    sportif = await Sportif.findById(id).populate("user");
     if (!sportif) {
       const error = new HttpError("there is no sportif", 404);
       return next(error);
@@ -110,7 +111,7 @@ export const createSportif = async (
     }
 
     const createdSportif = new Sportif({
-      user: req.userData,
+      user: req.userData._id,
       taille: sportif.taille,
       poids: sportif.poids,
       histo_bles: sportif.histo_bles,
@@ -147,7 +148,7 @@ export const updateSportif = async (
   }
 
   try {
-    const existingSportif = await Sportif.findOne({ user: req.userData });
+    const existingSportif = await Sportif.findOne({ user: req.userData._id });
     if (!existingSportif) {
       const error = new HttpError("sportif does not exist", 401);
       return next(error);
@@ -184,7 +185,7 @@ export const deleteSportif = async (
       return next(error);
     }
 
-    if (sportif.user !== req.userData || req.userData.type !== "admin") {
+    if (sportif.user !== req.userData._id || req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this sportif", 404);
       return next(error);
     }

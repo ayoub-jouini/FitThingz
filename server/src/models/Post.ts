@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
-import User, { IUser } from "./User";
+import User from "./User";
 import Commentaire, { ICommentaire } from "./Commentaire";
 
 export interface IPost {
   _id?: string;
-  createur: IUser;
+  createur: Schema.Types.ObjectId;
   date_pub: Date;
   description: string;
   image: string;

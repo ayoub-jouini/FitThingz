@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 
-import User, { IUser } from "./User";
+import User from "./User";
 
 export interface IExercice {
   _id?: string;
-  createur: IUser;
+  createur: Schema.Types.ObjectId;
   nom: string;
   bodyPart: string;
   target: string;

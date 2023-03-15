@@ -59,7 +59,7 @@ export const getProgrammeById = async (
   const id: string = req.params.id;
   let programme: IProgramme;
   try {
-    programme = await Programme.findById(id);
+    programme = await Programme.findById(id).populate("createur");
     if (!programme) {
       const error = new HttpError("there is no programme", 404);
       return next(error);
@@ -233,7 +233,7 @@ export const createProgramme = async (
 
   try {
     const createdProgramme = new Programme({
-      createur: req.userData,
+      createur: req.userData._id,
       nom: programme.nom,
       description: programme.description,
       duree: programme.duree,
@@ -316,7 +316,7 @@ export const updateProgramme = async (
       return next(error);
     }
 
-    if (existingProgramme.createur !== req.userData) {
+    if (existingProgramme.createur !== req.userData._id) {
       const error = new HttpError("you can't update this programme", 404);
       return next(error);
     }
@@ -356,7 +356,7 @@ export const deleteProgramme = async (
       return next(error);
     }
 
-    if (programme.createur !== req.userData) {
+    if (programme.createur !== req.userData._id) {
       const error = new HttpError("you can't delete this programme", 404);
       return next(error);
     }

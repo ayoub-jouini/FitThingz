@@ -19,6 +19,7 @@ export const getAllCoachs = async (
   let coach: ICoach[];
   try {
     coach = await Coach.find({})
+      .populate("user")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!coach) {
@@ -65,7 +66,12 @@ export const getCoachById = async (
 
   let coach: ICoach;
   try {
-    coach = await Coach.findById(id);
+    coach = await Coach.findById(id)
+      .populate("user")
+      .populate("sportif")
+      .populate("regime")
+      .populate("programme")
+      .populate("exercice");
     if (!coach) {
       const error = new HttpError("there is no coach", 404);
       return next(error);
@@ -103,8 +109,7 @@ export const createCoach = async (
 
   try {
     const createdcoach = new Coach({
-      _id: req.userData._id,
-      user: req.userData,
+      user: req.userData._id,
       identite: coach.identite,
       experience: coach.experience,
       conn_aca: coach.conn_aca,
@@ -127,7 +132,6 @@ export const validateCoach = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
-  const coach = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -181,7 +185,7 @@ export const addTarification = async (
       return next(error);
     }
 
-    if (existingcoach.user !== req.userData) {
+    if (existingcoach.user !== req.userData._id) {
       const error = new HttpError("you can't update this coach", 404);
       return next(error);
     }
@@ -222,7 +226,7 @@ export const deleteTarification = async (
       return next(error);
     }
 
-    if (existingcoach.user !== req.userData) {
+    if (existingcoach.user !== req.userData._id) {
       const error = new HttpError("you can't update this coach", 404);
       return next(error);
     }
@@ -303,7 +307,10 @@ export const deleteCommentaire = async (
       (value) => value._id === idCommentaire
     );
 
-    if (existingCommentaire.user !== req.userData) {
+    if (
+      existingCommentaire.user !== req.userData._id &&
+      existingcoach.user !== req.userData._id
+    ) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
@@ -347,7 +354,7 @@ export const updateCoach = async (
       return next(error);
     }
 
-    if (existingcoach.user !== req.userData) {
+    if (existingcoach.user !== req.userData._id) {
       const error = new HttpError("you can't update this coach", 404);
       return next(error);
     }
@@ -382,7 +389,7 @@ export const deleteCoach = async (
       return next(error);
     }
 
-    if (coach.user !== req.userData && req.userData.type !== "admin") {
+    if (coach.user !== req.userData._id && req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this coach", 404);
       return next(error);
     }

@@ -18,6 +18,7 @@ export const getAllPosts = async (
   let posts: IPost[];
   try {
     posts = await Post.find({})
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!posts) {
@@ -58,7 +59,7 @@ export const getPostById = async (
   const id: string = req.params.id;
   let post: IPost;
   try {
-    post = await Post.findById(id);
+    post = await Post.findById(id).populate("createur");
     if (!post) {
       const error = new HttpError("there is no post", 404);
       return next(error);
@@ -134,6 +135,7 @@ export const getPostsByTags = async (
   let posts: IPost[];
   try {
     posts = await Post.find({ tags: { $all: tags } })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!posts) {
@@ -187,7 +189,7 @@ export const createPost = async (
 
   try {
     const createdPost = new Post({
-      createur: req.userData,
+      createur: req.userData._id,
       description: post.description,
       image: post.image,
       tags: post.tags,
@@ -264,7 +266,10 @@ export const deleteCommentaire = async (
       (value) => value._id === idCommentaire
     );
 
-    if (existingCommentaire.user !== req.userData) {
+    if (
+      existingCommentaire.user !== req.userData._id &&
+      existingPost.createur !== req.userData._id
+    ) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
@@ -308,7 +313,7 @@ export const updatePost = async (
       return next(error);
     }
 
-    if (existingPost.createur !== req.userData) {
+    if (existingPost.createur !== req.userData._id) {
       const error = new HttpError("you can't update this post", 404);
       return next(error);
     }
@@ -342,7 +347,7 @@ export const deletePost = async (
       return next(error);
     }
 
-    if (post.createur !== req.userData && req.userData.type !== "admin") {
+    if (post.createur !== req.userData._id && req.userData.type !== "admin") {
       const error = new HttpError("you can't delete this post", 404);
       return next(error);
     }

@@ -1,25 +1,25 @@
 import { Schema, model } from "mongoose";
 
-import User, { IUser } from "./User";
+import User from "./User";
 import Identite, { IIdentite } from "./Identite";
 import Experience, { IExperience } from "./Experience";
 import Tarification, { ITarification } from "./Tarification";
 import Commentaire, { ICommentaire } from "./Commentaire";
-import Exercice, { IExercice } from "./Exercice";
-import Programme, { IProgramme } from "./Programme";
-import Regime, { IRegime } from "./Regime";
+import Exercice from "./Exercice";
+import Programme from "./Programme";
+import Regime from "./Regime";
 
 export interface ICoach {
   _id?: string;
-  user: IUser;
+  user: Schema.Types.ObjectId;
   identite: IIdentite;
   experience: IExperience[];
   conn_aca: string;
   tarification: ITarification[];
-  exercice: IExercice[];
-  programme: IProgramme[];
-  regime: IRegime[];
-  sportif: IUser[];
+  exercice: Schema.Types.ObjectId[];
+  programme: Schema.Types.ObjectId[];
+  regime: Schema.Types.ObjectId[];
+  sportif: Schema.Types.ObjectId[];
   commentaire: ICommentaire[];
   verif?: boolean;
 }

@@ -14,7 +14,7 @@ interface histoBles {
 
 export interface ISportif {
   _id?: string;
-  user: IUser;
+  user: Schema.Types.ObjectId;
   taille: number;
   poids: number;
   histo_bles?: histoBles[];

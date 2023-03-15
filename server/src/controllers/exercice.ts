@@ -59,7 +59,7 @@ export const getExerciceById = async (
   const id: string = req.params.id;
   let exercice: IExercice;
   try {
-    exercice = await Exercice.findById(id);
+    exercice = await Exercice.findById(id).populate("createur");
     if (!exercice) {
       const error = new HttpError("there is no exercice", 404);
       return next(error);
@@ -142,6 +142,7 @@ export const getExercicesByBodyPart = async (
   let exercices: IExercice[];
   try {
     exercices = await Exercice.find({ bodyPart })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!exercices) {
@@ -189,6 +190,7 @@ export const getExercicesByTarget = async (
   let exercices: IExercice[];
   try {
     exercices = await Exercice.find({ target })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!exercices) {
@@ -236,6 +238,7 @@ export const getExercicesByEquipment = async (
   let exercices: IExercice[];
   try {
     exercices = await Exercice.find({ equipment })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!exercices) {
@@ -284,6 +287,7 @@ export const getExercicesByTags = async (
   let exercices: IExercice[];
   try {
     exercices = await Exercice.find({ tags: { $all: tags } })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!exercices) {
@@ -333,7 +337,7 @@ export const createExercice = async (
 
   try {
     const createdExercice = new Exercice({
-      createur: req.userData,
+      createur: req.userData._id,
       nom: exercice.nom,
       bodyPart: exercice.bodyPart,
       target: exercice.target,
@@ -373,7 +377,7 @@ export const updateExercice = async (
       return next(error);
     }
 
-    if (existingExercice.createur !== req.userData) {
+    if (existingExercice.createur !== req.userData._id) {
       const error = new HttpError("you can't update this exercice", 404);
       return next(error);
     }
@@ -410,7 +414,7 @@ export const deleteExercice = async (
       return next(error);
     }
 
-    if (exercice.createur !== req.userData) {
+    if (exercice.createur !== req.userData._id) {
       const error = new HttpError("you can't delete this exercice", 404);
       return next(error);
     }

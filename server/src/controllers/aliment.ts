@@ -17,6 +17,7 @@ export const getAllAliment = async (
   let aliment: IAliment[];
   try {
     aliment = await Aliment.find({})
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!aliment) {
@@ -60,7 +61,7 @@ export const getAlimentById = async (
 
   let aliment: IAliment;
   try {
-    aliment = await Aliment.findById(id);
+    aliment = await Aliment.findById(id).populate("createur");
     if (!aliment) {
       const error = new HttpError("there is no aliment", 404);
       return next(error);
@@ -143,6 +144,7 @@ export const getAlimentsByDosage = async (
   let aliment: IAliment[];
   try {
     aliment = await Aliment.find({ dosage })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!aliment) {
@@ -190,6 +192,7 @@ export const getAlimentsByCalories = async (
   let aliment: IAliment[];
   try {
     aliment = await Aliment.find({ calories })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!aliment) {
@@ -237,6 +240,7 @@ export const getAlimentByCarbs = async (
   let aliment: IAliment[];
   try {
     aliment = await Aliment.find({ carbs })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!aliment) {
@@ -284,6 +288,7 @@ export const getAlimentsByFats = async (
   let aliment: IAliment[];
   try {
     aliment = await Aliment.find({ fats })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!aliment) {
@@ -331,6 +336,7 @@ export const getAlimentByProteins = async (
   let aliment: IAliment[];
   try {
     aliment = await Aliment.find({ proteins })
+      .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);
     if (!aliment) {
@@ -380,7 +386,7 @@ export const createAliment = async (
 
   try {
     const createdAliment = new Aliment({
-      createur: req.userData,
+      createur: req.userData._id,
       titre: aliment.titre,
       description: aliment.description,
       dosage: aliment.dosage,
@@ -422,7 +428,7 @@ export const updateAliment = async (
       return next(error);
     }
 
-    if (existingAliment.createur !== req.userData) {
+    if (existingAliment.createur !== req.userData._id) {
       const error = new HttpError("you can't update this aliment", 404);
       return next(error);
     }
@@ -461,7 +467,7 @@ export const deleteAliment = async (
       return next(error);
     }
 
-    if (aliment.createur !== req.userData) {
+    if (aliment.createur !== req.userData._id) {
       const error = new HttpError("you can't delete this aliment", 404);
       return next(error);
     }

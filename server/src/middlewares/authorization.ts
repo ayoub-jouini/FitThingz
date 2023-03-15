@@ -1,13 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import Jwt from "jsonwebtoken";
+import { Schema } from "mongoose";
 
 import HttpError from "../utils/HttpError";
 import vars from "../configs/vars";
 
-import { IUser } from "../models/User";
-
 export interface AuthReq extends Request {
-  userData: IUser;
+  userData: {
+    _id: Schema.Types.ObjectId;
+    nom: string;
+    prenom: string;
+    avatar: string;
+    type: string;
+    emailConfirmed: boolean;
+  };
 }
 
 const authorization = (req: AuthReq, res: Response, next: NextFunction) => {
@@ -24,8 +30,8 @@ const authorization = (req: AuthReq, res: Response, next: NextFunction) => {
       _id: decodedToken._id,
       nom: decodedToken.nom,
       prenom: decodedToken.prenom,
-      email: decodedToken.email,
-      phone: decodedToken.phone,
+      // email: decodedToken.email,
+      // phone: decodedToken.phone,
       avatar: decodedToken.avatar,
       type: decodedToken.type,
       emailConfirmed: decodedToken.emailConfirmed,
