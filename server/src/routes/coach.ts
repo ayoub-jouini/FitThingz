@@ -22,6 +22,8 @@ router.patch(
   coachControllers.addCommentaire
 );
 
+router.patch("/disponibilite", coachControllers.disponibiliteToggel);
+
 router.patch("/:id", coachControllers.updateCoach);
 
 router.delete("/:id", coachControllers.deleteCoach);

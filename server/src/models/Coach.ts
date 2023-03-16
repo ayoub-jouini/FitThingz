@@ -22,6 +22,7 @@ export interface ICoach {
   sportif: Schema.Types.ObjectId[];
   spotifDemande?: Schema.Types.ObjectId[];
   commentaire: ICommentaire[];
+  disponibilite: boolean;
   verif?: boolean;
 }
 

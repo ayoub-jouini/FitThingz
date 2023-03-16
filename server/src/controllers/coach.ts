@@ -50,6 +50,7 @@ export const getAllCoachs = async (
       regime: coach[i].regime,
       sportif: coach[i].sportif,
       commentaire: coach[i].commentaire,
+      disponibilite: coach[i].disponibilite,
       verif: coach[i].verif,
     };
     coachArray.push(singlecoach);
@@ -158,6 +159,40 @@ export const validateCoach = async (
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save coach." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
+
+export const disponibiliteToggel = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const disponibilite = req.body.disponibilite;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
+
+  try {
+    const coach = await Coach.findById({ user: req.userData._id });
+    if (!coach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+
+    coach.disponibilite = disponibilite;
+
+    coach.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update coach." + err,
       500
     );
     return next(error);
