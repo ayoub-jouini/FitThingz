@@ -278,7 +278,11 @@ export const updateExercices = async (
         return next(error);
       }
     }
-    programme.jours[Number(jour) - 1].exercices = exercices;
+    for (let i = 0; i < programme.jours.length; i++) {
+      if (programme.jours[i].dayNumber === Number(jour)) {
+        programme.jours[i].exercices = exercices;
+      }
+    }
     programme.save();
   } catch (err) {
     const error = new HttpError(

@@ -19,9 +19,7 @@ router.get("/tags", regimeControllers.getRegimesByTags);
 
 router.post("/", regimeControllers.createRegime);
 
-router.patch("/repas/add/:id", regimeControllers.addRepas);
-
-router.patch("/repas/delete/:id", regimeControllers.deleteRegime);
+router.patch("/repas/:id/:jour", regimeControllers.updateRepas);
 
 router.patch("/:id", regimeControllers.updateRegime);
 

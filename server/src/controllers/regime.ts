@@ -262,17 +262,40 @@ export const createRegime = async (
   res.json({ message: "created!" });
 };
 
-export const addRepas = async (
+export const updateRepas = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
-
-export const deleteRepas = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+) => {
+  const id: string = req.params.id;
+  const jour: string = req.params.jour;
+  const repas = req.body.repas;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
+  try {
+    const regime = await Regime.findById(id);
+    if (!regime) {
+      const error = new HttpError("there is no regime", 404);
+      return next(error);
+    }
+    for (let i = 0; i < regime.jours.length; i++) {
+      if (regime.jours[i].dayNumber === Number(jour)) {
+        regime.jours[i].repas = repas;
+      }
+    }
+    regime.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find regimes." + err,
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "added!" });
+};
 
 export const updateRegime = async (
   req: AuthReq,
