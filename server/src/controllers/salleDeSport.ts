@@ -179,10 +179,43 @@ export const createSalle = async (
 };
 
 export const validateSalle = async (
-  req: Request,
+  req: AuthReq,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  const id = req.params.id;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
+
+  if (req.userData.type !== "admin") {
+    const error = new HttpError("you can't update this Salle", 404);
+    return next(error);
+  }
+
+  try {
+    const existingSalle = await SalleDeSport.findById(id);
+    if (!existingSalle) {
+      const error = new HttpError("Salle does not exist", 404);
+      return next(error);
+    }
+
+    existingSalle.verif = true;
+
+    await existingSalle.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not save Salle." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
 
 export const addTarification = async (
   req: AuthReq,
