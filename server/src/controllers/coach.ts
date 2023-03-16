@@ -7,6 +7,7 @@ import { AuthReq } from "../middlewares/authorization";
 import Coach, { ICoach } from "../models/Coach";
 import Tarification, { ITarification } from "../models/Tarification";
 import Commentaire, { ICommentaire } from "../models/Commentaire";
+import Sportif from "../models/Sportif";
 
 export const getAllCoachs = async (
   req: Request,
@@ -315,13 +316,9 @@ export const deleteCommentaire = async (
       return next(error);
     }
 
-    existingcoach.update({
+    await existingcoach.update({
       $pull: { commentaire: { $elemMatch: { _id: idCommentaire } } },
     });
-
-    await existingcoach.save();
-
-    await existingcoach.save();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save Commentaire." + err,
@@ -373,6 +370,77 @@ export const updateCoach = async (
   }
 
   res.json({ message: "updated!" });
+};
+
+export const demandCoach = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const idCoach = req.params.idCoach;
+
+  try {
+    const coach = await Coach.findById(idCoach);
+    if (!coach) {
+      const error = new HttpError("coach does not exist", 404);
+      return next(error);
+    }
+
+    const sportif = await Sportif.findOne({ user: req.userData._id });
+    if (!!sportif.coach) {
+      const error = new HttpError("you already have a coach", 402);
+      return next(error);
+    }
+
+    coach.spotifDemande.push(req.userData._id);
+
+    await coach.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find coach." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "send!" });
+};
+
+export const demandResponse = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const idSportif = req.params.idSportif;
+
+  try {
+    const sportif = await Sportif.findOne({ user: idSportif });
+
+    if (!sportif || !!sportif.coach) {
+      const error = new HttpError(
+        "sportif does not exist || have a coach",
+        404
+      );
+      return next(error);
+    }
+
+    const coach = await Coach.findOne(req.userData._id);
+
+    if (!coach) {
+      const error = new HttpError("coach does not exist", 404);
+      return next(error);
+    }
+
+    await coach.update({ $pull: { spotifDemande: idSportif } });
+    coach.sportif.push(sportif.user);
+    await coach.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update coach." + err,
+      500
+    );
+    return next(error);
+  }
 };
 
 export const deleteCoach = async (

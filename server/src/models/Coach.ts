@@ -20,6 +20,7 @@ export interface ICoach {
   programme: Schema.Types.ObjectId[];
   regime: Schema.Types.ObjectId[];
   sportif: Schema.Types.ObjectId[];
+  spotifDemande?: Schema.Types.ObjectId[];
   commentaire: ICommentaire[];
   verif?: boolean;
 }
@@ -36,6 +37,7 @@ const coachSchema = new Schema<ICoach>({
   programme: [{ type: Schema.Types.ObjectId, ref: Programme }],
   regime: [{ type: Schema.Types.ObjectId, ref: Regime }],
   sportif: [{ type: Schema.Types.ObjectId, ref: User }],
+  spotifDemande: [{ type: Schema.Types.ObjectId, ref: User }],
   commentaire: [{ type: Schema.Types.ObjectId, ref: Commentaire }],
   verif: { type: Boolean, required: true, default: false },
 });
