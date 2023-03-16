@@ -135,14 +135,14 @@ export const getRegimesByType = async (
   res: Response,
   next: NextFunction
 ) => {
-  const bodyPart: string = req.params.bodypart;
+  const type: string = req.params.type;
 
   const page: number = parseInt(req.query.page as string) || 1;
   const limit: number = parseInt(req.query.limit as string) || 10;
 
   let regimes: IRegime[];
   try {
-    regimes = await Regime.find({ bodyPart })
+    regimes = await Regime.find({ type })
       .populate("createur")
       .skip((page - 1) * limit)
       .limit(limit);

@@ -133,42 +133,42 @@ export const getProgrammesByExercices = async (
   res: Response,
   next: NextFunction
 ) => {
-  // let exercices: string[];
-  // if (typeof req.query.exercices === "string")
-  //   exercices = req.query.exercices.split(",");
-  // const page: number = parseInt(req.query.page as string) || 1;
-  // const limit: number = parseInt(req.query.limit as string) || 10;
-  // let programmes: IProgramme[];
-  // try {
-  //   programmes = await Programme.find({ jours: { $elemMatch: { exercices } } })
-  //     .skip((page - 1) * limit)
-  //     .limit(limit);
-  //   if (!programmes) {
-  //     const error = new HttpError("there is no programmes", 404);
-  //     return next(error);
-  //   }
-  // } catch (err) {
-  //   const error = new HttpError(
-  //     "Something went wrong, could not find programmes." + err,
-  //     500
-  //   );
-  //   return next(error);
-  // }
-  // let programmesArray: IProgramme[] = [];
-  // for (let i = 0; i < programmes.length; i++) {
-  //   const singleProgramme: IProgramme = {
-  //     _id: programmes[i]._id,
-  //     createur: programmes[i].createur,
-  //     nom: programmes[i].nom,
-  //     description: programmes[i].description,
-  //     jours: programmes[i].jours,
-  //     duree: programmes[i].duree,
-  //     image: programmes[i].image,
-  //     tags: programmes[i].tags,
-  //   };
-  //   programmesArray.push(singleProgramme);
-  // }
-  // res.json({ programme: programmesArray });
+  let exercices: string[];
+  if (typeof req.query.exercices === "string")
+    exercices = req.query.exercices.split(",");
+  const page: number = parseInt(req.query.page as string) || 1;
+  const limit: number = parseInt(req.query.limit as string) || 10;
+  let programmes: IProgramme[];
+  try {
+    programmes = await Programme.find({ jours: { $elemMatch: { exercices } } })
+      .skip((page - 1) * limit)
+      .limit(limit);
+    if (!programmes) {
+      const error = new HttpError("there is no programmes", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find programmes." + err,
+      500
+    );
+    return next(error);
+  }
+  let programmesArray: IProgramme[] = [];
+  for (let i = 0; i < programmes.length; i++) {
+    const singleProgramme: IProgramme = {
+      _id: programmes[i]._id,
+      createur: programmes[i].createur,
+      nom: programmes[i].nom,
+      description: programmes[i].description,
+      jours: programmes[i].jours,
+      duree: programmes[i].duree,
+      image: programmes[i].image,
+      tags: programmes[i].tags,
+    };
+    programmesArray.push(singleProgramme);
+  }
+  res.json({ programme: programmesArray });
 };
 
 export const getProgrammesByTags = async (
@@ -252,48 +252,43 @@ export const createProgramme = async (
   res.json({ message: "created!" });
 };
 
-export const addExercices = async (
+export const updateExercices = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // const id: string = req.params.id;
-  // const exercices = req.body;
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   const error = new HttpError("Invalid inputs passed", 401);
-  //   return next(error);
-  // }
-  // try {
-  //   const programme = await Programme.findById(id);
-  //   if (!programme) {
-  //     const error = new HttpError("there is no programme", 404);
-  //     return next(error);
-  //   }
-  //   for (let exercice in exercices) {
-  //     const singleexercice: IExercice = await Exercice.findById(exercice);
-  //     if (!singleexercice) {
-  //       const error = new HttpError("exercice does not exist", 404);
-  //       return next(error);
-  //     }
-  //     programme.exercice.push(singleexercice);
-  //   }
-  //   programme.save();
-  // } catch (err) {
-  //   const error = new HttpError(
-  //     "Something went wrong, could not find programmes." + err,
-  //     500
-  //   );
-  //   return next(error);
-  // }
-  // res.json({ message: "added!" });
+  const id: string = req.params.id;
+  const jour: string = req.params.jour;
+  const exercices = req.body.exercices;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
+  try {
+    const programme = await Programme.findById(id);
+    if (!programme) {
+      const error = new HttpError("there is no programme", 404);
+      return next(error);
+    }
+    for (let exercice in exercices) {
+      const singleexercice: IExercice = await Exercice.findById(exercice);
+      if (!singleexercice) {
+        const error = new HttpError("exercice does not exist", 404);
+        return next(error);
+      }
+    }
+    programme.jours[Number(jour) - 1].exercices = exercices;
+    programme.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find programmes." + err,
+      500
+    );
+    return next(error);
+  }
+  res.json({ message: "added!" });
 };
-
-export const deleteExercice = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
 
 export const updateProgramme = async (
   req: AuthReq,

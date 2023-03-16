@@ -18,15 +18,10 @@ router.get("/tags/:tags", programmeControllers.getProgrammesByTags);
 
 router.post("/", programmeControllers.createProgramme);
 
-router.patch("/add/:id", programmeControllers.addExercices);
-
-router.patch(
-  "/delete/:idProframme/:jour/:idExercice",
-  programmeControllers.deleteExercice
-);
+router.patch("/exercices/:id/:jour", programmeControllers.updateExercices);
 
 router.patch("/:id", programmeControllers.updateProgramme);
 
-router.delete("/:id", programmeControllers.deleteExercice);
+router.delete("/:id", programmeControllers.deleteProgramme);
 
 export default router;
