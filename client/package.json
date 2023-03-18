@@ -1,5 +1,5 @@
 {
-  "name": "fitthings-front",
+  "name": "fitthingz-front",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,7 +19,6 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-query": "^3.39.3",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "typescript": "5.0.2"
