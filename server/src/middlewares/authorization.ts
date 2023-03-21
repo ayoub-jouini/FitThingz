@@ -23,7 +23,8 @@ const authorization = (req: AuthReq, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization.split(" ")[1]; // Authorization: 'Bearer TOKEN'
     if (!token) {
-      throw new Error("Authentication failed!");
+      const error = new HttpError("Authentication failed!", 403);
+      return next(error);
     }
     const decodedToken: any = Jwt.verify(token, vars.accessSecret);
     req.userData = {
