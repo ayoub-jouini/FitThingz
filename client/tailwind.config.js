@@ -10,27 +10,20 @@ module.exports = {
   ],
   theme: {
     extend: {
-      typography: {
-        display: {
-          large: "72px",
-          medium: "64px",
-          small: "54px",
-        },
-        heading: {
-          h1: "42px",
-          h2: "36px",
-          h3: "28px",
-          h4: "24px",
-          h5: "18px",
-          h6: "14px",
-        },
-        paragraph: {
-          large: "16px",
-          medium: "14px",
-          small: "12px",
-        },
+      fontSize: {
+        "2xs": "0.75rem", //12px
+        xs: "0.875rem", //14px
+        sm: "1rem", //16px
+        base: "1.125rem", //18px
+        lg: "1.5rem", //24px
+        xl: "1.75rem", //28px
+        "2xl": "2.25rem", //36px
+        "3xl": "2.625rem", //42px
+        "4xl": "3.375rem", //54px
+        "5xl": "4rem", //64px
+        "6xl": "4.5rem", //72px
       },
-      palette: {
+      colors: {
         primary: "#7F0517",
         secondary: "#121212",
         tertiary: "#F5F5F5",
@@ -39,6 +32,8 @@ module.exports = {
         warning: "#E88010",
         textPrimary: "#383838",
         textSecondary: "#F5F5F5",
+        grisPrimary: "#D7D6D5",
+        grixSecondary: "#808080",
       },
     },
   },
