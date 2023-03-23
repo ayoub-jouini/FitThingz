@@ -1,11 +1,13 @@
-"use client";
-import Button from "../components/global/button/Button";
+import CallToAction from "@/components/landingPage/callToAction/CallToAction";
+import LandingPageNav from "../components/landingPage/nav/LandingPageNav";
+import LandingPageAbout from "@/components/landingPage/landingPageAbout/LandingPageAbout";
 
 export default function Home() {
-  const handleButton = () => {};
   return (
     <main>
-      <Button text="button" type="submit" handleButton={handleButton}></Button>
+      <LandingPageNav />
+      <CallToAction />
+      <LandingPageAbout />
     </main>
   );
 }

@@ -24,7 +24,7 @@ module.exports = {
         "6xl": "4.5rem", //72px
       },
       colors: {
-        primary: "#7F0517",
+        primary: "#A4022D",
         secondary: "#121212",
         tertiary: "#F5F5F5",
         success: "#B6D33B",
