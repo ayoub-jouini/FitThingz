@@ -9,9 +9,9 @@ const LandingPageNav: React.FC = () => {
 
   return (
     <Container>
-      <nav className="mt-8 flex justify-between">
+      <nav className="mt-6 flex justify-between items-center">
         <img alt="fitthings logo" src="logo.svg" />
-        <div className="flex justify-between w-3/12">
+        <div className="flex justify-between w-3/12 items-center">
           <Button
             type="button"
             text="Log In"

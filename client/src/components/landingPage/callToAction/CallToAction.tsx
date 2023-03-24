@@ -15,7 +15,7 @@ const CallToAction: React.FC = () => {
           </p>
           <CallToActionButtons />
         </div>
-        <img alt="" src="callToAction.svg" />
+        <img alt="" src="images/ManAndWomen.png" />
       </div>
     </Container>
   );
