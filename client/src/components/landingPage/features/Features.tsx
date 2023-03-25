@@ -2,7 +2,7 @@ import Container from "../../global/container/Container";
 
 const Features: React.FC = () => {
   return (
-    <div className="bg-primary py-10">
+    <div className="bg-primary py-16">
       <Container>
         <div className="flex justify-between">
           <div className="w-72 h-64	bg-tertiary rounded-3xl flex items-center justify-center">

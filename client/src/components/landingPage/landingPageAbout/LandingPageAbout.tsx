@@ -2,7 +2,7 @@ import Container from "../../global/container/Container";
 
 const LandingPageAbout: React.FC = () => {
   return (
-    <div className="bg-primary -mt-1 py-10">
+    <div className="bg-primary py-10">
       <Container>
         <div className="flex justify-between">
           <div className="flex items-end z-10">
