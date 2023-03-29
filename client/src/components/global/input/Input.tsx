@@ -8,6 +8,8 @@ interface Props {
   disabled?: boolean;
   value: string | number | readonly string[] | undefined;
   handleChange: (event: any) => void;
+  width?: string;
+  height: string;
 }
 
 const Input: React.FC<Props> = (props) => {
@@ -19,6 +21,8 @@ const Input: React.FC<Props> = (props) => {
     disabled = false,
     value,
     handleChange,
+    width,
+    height,
   } = props;
 
   let errorStyle: string;
@@ -34,16 +38,16 @@ const Input: React.FC<Props> = (props) => {
       errorStyle = "text-success border-success";
       break;
     default:
-      errorStyle = "border-primary text-textPrimary";
+      errorStyle = "border-grisTertiary text-textPrimary";
   }
 
   return (
-    <div className="flex flex-col w-80">
+    <div className={`my-1 flex flex-col ${width}`}>
       <label className="text-sm text-textPrimary font-medium mb-1">
         {label}
       </label>
       <input
-        className={`${errorStyle} h-12 rounded-2xl px-3 border-2 text-textPrimary disabled:border-grisPrimary`}
+        className={`${errorStyle} ${height} rounded-2xl px-3 border-2 text-textPrimary disabled:border-grisPrimary`}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}

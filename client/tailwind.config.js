@@ -34,6 +34,7 @@ module.exports = {
         textSecondary: "#F5F5F5",
         grisPrimary: "#D7D6D5",
         grixSecondary: "#808080",
+        grisTertiary: "#BAB9B9",
       },
     },
   },

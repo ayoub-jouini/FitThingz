@@ -6,7 +6,7 @@ interface Props {
   style?: "contained" | "outlined" | "text";
   size?: string;
   disabled?: boolean;
-  handleButton: () => void;
+  handleButton: (event?: any) => void;
 }
 
 const Button: React.FC<Props> = (props) => {
