@@ -36,6 +36,9 @@ module.exports = {
         grixSecondary: "#808080",
         grisTertiary: "#BAB9B9",
       },
+      backgroundImage: {
+        signup: "url(/images/Backgroundsignup.png)",
+      },
     },
   },
   plugins: [],
