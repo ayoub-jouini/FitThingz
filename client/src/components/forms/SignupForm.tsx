@@ -33,11 +33,14 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <form className="w-2/3 flex flex-col items-center" onSubmit={handleSubmit}>
-      <div className="w-full flex justify-between">
+    <form
+      className="w-full md:w-2/3 flex flex-col items-center "
+      onSubmit={handleSubmit}
+    >
+      <div className="w-full flex flex-col md:flex-row justify-between">
         <Input
           height="h-12"
-          width="w-60"
+          width="md:w-6/12 w-full md:mr-1"
           label="First Name"
           placeholder="First Name"
           value={firstName}
@@ -45,7 +48,7 @@ const SignupForm: React.FC = () => {
         />
         <Input
           height="h-12"
-          width="w-60"
+          width="md:w-6/12 w-full md:ml-1"
           label="Last Name"
           placeholder="Last Name"
           value={lastName}
