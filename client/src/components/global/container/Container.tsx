@@ -4,7 +4,7 @@ interface Props {
 
 const Container: React.FC<Props> = (props) => {
   const { children } = props;
-  return <div className="px-28">{children}</div>;
+  return <div className="md:px-28 px-4">{children}</div>;
 };
 
 export default Container;
