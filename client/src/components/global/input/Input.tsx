@@ -47,7 +47,7 @@ const Input: React.FC<Props> = (props) => {
         {label}
       </label>
       <input
-        className={`${errorStyle} ${height} rounded-2xl px-3 border-2 text-textPrimary disabled:border-grisPrimary`}
+        className={`${errorStyle} ${height} rounded-2xl px-3 border-2 text-textPrimary disabled:border-grisPrimary bg-tertiary`}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}

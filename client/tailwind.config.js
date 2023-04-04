@@ -15,6 +15,7 @@ module.exports = {
         xs: "0.875rem", //14px
         sm: "1rem", //16px
         base: "1.125rem", //18px
+        l: "1.25rem", //20px
         lg: "1.5rem", //24px
         xl: "1.75rem", //28px
         "2xl": "2.25rem", //36px
