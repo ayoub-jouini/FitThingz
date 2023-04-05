@@ -40,7 +40,9 @@ const LoginForm: React.FC = () => {
         value={password}
         handleChange={handlePassword}
       />
-      <p className="w-full text-right">Forget Password</p>
+      <p className="w-full text-right underline underline-offset-1">
+        Forget Password
+      </p>
       <div className="my-6">
         <Button
           size="xl"

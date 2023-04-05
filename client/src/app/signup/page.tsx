@@ -15,7 +15,7 @@ export default function Signup() {
           </p>
         </div>
         <div className="w-full flex justify-center">
-          <div className="md:bg-tertiary md:w-6/12 md:border-2 border-primary rounded-3xl py-4 md:py-14 my-5 md:my-10 flex flex-col items-center">
+          <div className="md:bg-tertiary xl:w-6/12 md:w-2/3 md:border-2 border-primary rounded-3xl py-4 md:py-14 my-5 md:my-10 flex flex-col items-center">
             <div className="mb-5">
               <h1 className="text-2xl md:text-2xl font-semibold text-center text-primary">
                 Let's Get Started
