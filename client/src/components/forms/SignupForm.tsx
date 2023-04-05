@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
+import SignupModal from "../modals/SignupModal";
 
 const SignupForm: React.FC = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -13,6 +14,8 @@ const SignupForm: React.FC = () => {
   const [phone, setPhone] = useState<string>("");
   const [gender, setGender] = useState<string>("male");
   const [dateOfBirth, setDateOfBirth] = useState<string>("");
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleFirstName = (event: any) => {
     setFirstName(event.target.value);
@@ -32,6 +35,7 @@ const SignupForm: React.FC = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    setShowModal(true);
   };
 
   const handleGender = (event: any) => {
@@ -153,6 +157,8 @@ const SignupForm: React.FC = () => {
           handleButton={handleSubmit}
         />
       </div>
+
+      <SignupModal showModal={showModal} setShowModal={setShowModal} />
     </form>
   );
 };
