@@ -1,6 +1,6 @@
-import CoachForm from "../../../components/forms/CoachForm";
+import AthleteForm from "../../../components/forms/AthleteForm";
 
-export default function Coach() {
+export default function Athlete() {
   return (
     <main className="flex justify-between">
       <div
@@ -10,27 +10,28 @@ export default function Coach() {
         <div className="bg-tertiary rounded-3xl w-9/12 p-2 flex py-5 px-3 items-start my-2">
           <img alt="" src="/icons/Benefits.svg" className="" />
           <p className="font-medium	text-l ml-3">
-            Enhance your coaching skills and grow your client base with us.
+            Access to top-quality coaching from experienced professionals.
           </p>
         </div>
         <div className="bg-tertiary rounded-3xl w-9/12 p-2 flex py-5 px-3 items-start my-2">
           <img alt="" src="/icons/Benefits.svg" className="" />
           <p className="font-medium	text-l ml-3">
-            Effortlessly manage your clients and their progress in one place.
+            Increased motivation and accountability through regular check-ins
+            and progress tracking
           </p>
         </div>
         <div className="bg-tertiary rounded-3xl w-9/12 p-2 flex py-5 px-3 items-start my-2">
           <img alt="" src="/icons/Benefits.svg" className="" />
           <p className="font-medium	text-l ml-3">
-            Customize your programs to meet the needs and goals of each
-            individual client.
+            Convenient and flexible scheduling options to accommodate busy
+            lifestyles.
           </p>
         </div>
         <div className="bg-tertiary rounded-3xl w-9/12 p-2 flex py-5 px-3 items-start my-2">
           <img alt="" src="/icons/Benefits.svg" className="" />
           <p className="font-medium	text-l ml-3">
-            Stay organized with all client information in one centralized
-            platform
+            A better understanding of nutrition and how it impacts athletic
+            performance.
           </p>
         </div>
         <div className="absolute bottom-0 left-1">
@@ -46,7 +47,7 @@ export default function Coach() {
             We'd love to get to know you better!
           </p>
         </div>
-        <CoachForm />
+        <AthleteForm />
       </div>
     </main>
   );
