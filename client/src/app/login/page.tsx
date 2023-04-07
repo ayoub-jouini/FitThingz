@@ -5,7 +5,7 @@ export default function login() {
   return (
     <main
       style={{ backgroundImage: "url(/images/Backgroundsignup1.png)" }}
-      className="w-screen h-screen bg-cover bg-no-repeat bg-bottom py-5"
+      className="h-screen bg-cover bg-no-repeat bg-bottom py-5"
     >
       <Container>
         <div className="flex justify-between items-center">
