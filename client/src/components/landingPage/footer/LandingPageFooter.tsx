@@ -1,7 +1,7 @@
 const LandingPageFooter: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-around h-48 -mt-16">
-      <img className="" alt="" src="images/logo2.png" />
+      <img className="" alt="" src="/icons/logo2.png" />
       <p className="font-normal	text-lg text-textPrimary">
         Take Your Fitness Journey To The Next Level With Our All-In-One Sports
         Platform.

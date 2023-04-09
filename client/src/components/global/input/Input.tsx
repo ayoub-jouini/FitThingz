@@ -1,6 +1,7 @@
 "use client";
 
 interface Props {
+  type: string;
   label: string;
   placeholder: string;
   status?: "error" | "warning" | "success";
@@ -14,6 +15,7 @@ interface Props {
 
 const Input: React.FC<Props> = (props) => {
   const {
+    type,
     label,
     placeholder,
     errorMessage,
@@ -47,6 +49,7 @@ const Input: React.FC<Props> = (props) => {
         {label}
       </label>
       <input
+        type={type}
         className={`${errorStyle} ${height} rounded-2xl px-3 border-2 text-textPrimary disabled:border-grisPrimary bg-tertiary`}
         value={value}
         onChange={handleChange}

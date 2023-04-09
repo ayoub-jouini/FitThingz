@@ -1,5 +1,6 @@
 import Container from "../../components/global/container/Container";
 import SignupForm from "../../components/forms/SignupForm";
+import Link from "next/link";
 
 export default function Signup() {
   return (
@@ -27,7 +28,9 @@ export default function Signup() {
             <SignupForm />
             <p className="">
               already have an account ?
-              <span className="font-semibold">sign in!</span>
+              <Link href="/login">
+                <span className="font-semibold">sign in!</span>
+              </Link>
             </p>
           </div>
         </div>

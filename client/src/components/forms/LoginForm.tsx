@@ -30,6 +30,7 @@ const LoginForm: React.FC = () => {
       onSubmit={handleSubmit}
     >
       <Input
+        type="email"
         height="h-12 my-2"
         width="w-full"
         label="Email"
@@ -38,6 +39,7 @@ const LoginForm: React.FC = () => {
         handleChange={handleEmail}
       />
       <Input
+        type="password"
         height="h-12 my-2"
         width="w-full"
         label="Password"
