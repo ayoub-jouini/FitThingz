@@ -1,8 +1,16 @@
-import { Urbanist } from "next/font/google";
-
+"use client";
 import "./globals.css";
 
+import { Urbanist } from "next/font/google";
+import { Provider } from "react-redux";
+
+import store from "../store/store";
+
+import { checkAuth } from "../store/features/auth/checkAuthThunk";
+
 const urbanist = Urbanist({ subsets: ["latin"] });
+
+store.dispatch(checkAuth());
 
 export const metadata = {
   title: "Create Next App",
@@ -16,7 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${urbanist.className} bg-tertiary`}>{children}</body>
+      <body className={`${urbanist.className} bg-tertiary`}>
+        <Provider store={store}>{children}</Provider>
+      </body>
     </html>
   );
 }

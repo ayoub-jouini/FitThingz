@@ -13,7 +13,7 @@ const initialState: User = {
 };
 
 const loadingSlice = createSlice({
-  name: "auth",
+  name: "loading",
   initialState: initialState,
   reducers: {
     startloading(state) {

@@ -3,8 +3,12 @@
 import { useState } from "react";
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/features/auth/authThunk";
 
 const LoginForm: React.FC = () => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -17,6 +21,7 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    dispatch<any>(login(email, password));
   };
 
   return (

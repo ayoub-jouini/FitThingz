@@ -18,7 +18,7 @@ router.post(
   body("prenom").notEmpty().isAlpha(),
   body("phone").isLength({ min: 8 }),
   body("email").isEmail(),
-  body("lieu").notEmpty(),
+  // body("lieu").notEmpty(),
   body("password").isLength({ min: 8 }),
   body("sexe").custom((value) => {
     if (value !== "m" && value !== "f") {
