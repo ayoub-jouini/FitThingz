@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
+import axios from "axios";
 
 const ForgotPasswordForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -13,6 +14,16 @@ const ForgotPasswordForm: React.FC = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    try {
+      axios.post(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/forgot-password`,
+        {
+          email,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -21,6 +32,7 @@ const ForgotPasswordForm: React.FC = () => {
       onSubmit={handleSubmit}
     >
       <Input
+        type="email"
         height="h-12 my-2"
         width="w-full"
         label="Email"

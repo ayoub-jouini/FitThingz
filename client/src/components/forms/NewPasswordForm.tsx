@@ -1,10 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
 
-const ForgotPasswordForm: React.FC = () => {
+interface Props {
+  token: string;
+}
+
+const NewPasswordForm: React.FC<Props> = ({ token }) => {
+  const router = useRouter();
   const [password, setPassword] = useState<string>("");
 
   const handlePassword = (event: any) => {
@@ -13,6 +21,17 @@ const ForgotPasswordForm: React.FC = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    try {
+      axios.post(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/reset-password/${token}`,
+        {
+          password,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    router.push("/login");
   };
 
   return (
@@ -21,6 +40,7 @@ const ForgotPasswordForm: React.FC = () => {
       onSubmit={handleSubmit}
     >
       <Input
+        type="password"
         height="h-12 my-2"
         width="w-full"
         label="Password"
@@ -40,4 +60,4 @@ const ForgotPasswordForm: React.FC = () => {
   );
 };
 
-export default ForgotPasswordForm;
+export default NewPasswordForm;

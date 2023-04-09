@@ -1,7 +1,11 @@
-import ForgotPasswordForm from "../../../components/forms/forgotPasswordForm";
+import NewPasswordForm from "../../../components/forms/NewPasswordForm";
 import Container from "../../../components/global/container/Container";
 
-export default function ForgotPassword() {
+export default function ForgotPassword({
+  params,
+}: {
+  params: { token: string };
+}) {
   return (
     <main
       style={{ backgroundImage: "url(/images/Backgroundsignup1.png)" }}
@@ -25,7 +29,7 @@ export default function ForgotPassword() {
                 access all featuress.
               </p>
             </div>
-            <ForgotPasswordForm />
+            <NewPasswordForm token={params.token} />
           </div>
         </div>
       </Container>

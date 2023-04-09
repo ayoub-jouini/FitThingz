@@ -21,8 +21,8 @@ export default function ForgotPassword() {
                 Forgot password
               </h1>
               <p className="w-2/3 text-lg md:text-base font-normal text-center text-textPrimary">
-                Enter your email for the verification proccess,we will send 4
-                digits code to your email.
+                Enter your email for the verification proccess,we will send a
+                link to your email.
               </p>
             </div>
             <ForgotPasswordForm />

@@ -5,6 +5,7 @@ import Input from "../global/input/Input";
 import Button from "../global/button/Button";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/features/auth/authThunk";
+import Link from "next/link";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const LoginForm: React.FC = () => {
         handleChange={handlePassword}
       />
       <p className="w-full text-right underline underline-offset-1">
-        Forget Password
+        <Link href="/forgotPassword">Forget Password</Link>
       </p>
       <div className="my-6">
         <Button

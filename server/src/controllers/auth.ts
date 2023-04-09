@@ -203,7 +203,7 @@ export const forgotPassword = async (
     const mailOptions = {
       to: user.email,
       subject: "Password Reset Request",
-      text: `Click on the link to reset your password: ${vars.frontURL}/reset-password/${token}`,
+      text: `Click on the link to reset your password: ${vars.frontURL}/forgotPassword/${token}`,
     };
     await transporter.sendMail(mailOptions);
   } catch (err) {
@@ -227,13 +227,17 @@ export const resetPassword = async (
 
     const decodedToken: any = Jwt.verify(token, vars.passwordSecret);
 
-    const user: IUser = await User.findById(decodedToken._id);
+    const user = await User.findById(decodedToken._id);
     if (!user) {
       const error = new HttpError("User not found.", 404);
       return next(error);
     }
-    await User.findByIdAndUpdate(user._id, { password });
+    await User.findById(user._id);
+    user.password = password;
+    await user.save();
   } catch (err) {
+    console.log(err);
+
     const error = new HttpError(
       "Something went wrong, could not update password." + err,
       500
