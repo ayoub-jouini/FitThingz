@@ -1,9 +1,18 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import { logout } from "../../../store/features/auth/authThunk";
+import { useDispatch } from "react-redux";
 
 export default function CoachDashboard() {
-  const auth = useSelector((state: any) => state.auth);
+  const dispatch = useDispatch();
 
-  return <main>coach dashboard</main>;
+  const handleLogout = () => {
+    dispatch<any>(logout());
+  };
+
+  return (
+    <main>
+      <button onClick={handleLogout}>logout</button>
+    </main>
+  );
 }

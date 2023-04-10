@@ -1,15 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
 
 import { useDispatch } from "react-redux";
 import { registre } from "../../store/features/auth/authThunk";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const SignupForm: React.FC = () => {
+  let auth: any = useSelector((state: any) => state.auth);
+
   const dispatch = useDispatch();
+
+  const router = useRouter();
+  useEffect(() => {
+    if (auth.type === "coach") {
+      router.push("/signup/coach");
+    } else if (auth.type === "sportif") {
+      router.push("/signup/athlete");
+    }
+  }, [auth]);
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");

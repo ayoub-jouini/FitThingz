@@ -1,14 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/features/auth/authThunk";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 const LoginForm: React.FC = () => {
+  let auth: any = useSelector((state: any) => state.auth);
+
   const dispatch = useDispatch();
+
+  const router = useRouter();
+  useEffect(() => {
+    if (auth.type === "coach") {
+      router.push("/dashboard/coach");
+    } else if (auth.type === "sportif") {
+      router.push("/dashboard/athlete");
+    }
+  }, [auth]);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
