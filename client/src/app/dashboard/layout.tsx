@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function DashbordLayout({
@@ -7,10 +9,16 @@ export default function DashbordLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const auth = useSelector((state: any) => state.auth);
+  let auth: any = useSelector((state: any) => state.auth);
 
-  if (auth) {
-    return <main>{children}</main>;
-  }
-  return <main>you are not logged in</main>;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!auth.accessToken) {
+      router.push("/login");
+    }
+    console.log(auth);
+  }, [auth]);
+
+  return <div>{children}</div>;
 }

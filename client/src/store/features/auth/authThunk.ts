@@ -14,12 +14,26 @@ export const login =
         }
       );
 
+      localStorage.setItem("id", response.data.id);
+      localStorage.setItem("type", response.data.type);
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
+      localStorage.setItem(
+        "accessTokenExpiresIn",
+        response.data.accessTokenExpiresIn
+      );
+      localStorage.setItem(
+        "RefreshTokenExpiresIn",
+        response.data.RefreshTokenExpiresIn
+      );
       dispatch(
         authActions.setCredentials({
+          id: response.data.id,
+          type: response.data.type,
           accessToken: response.data.accessToken,
           refreshToken: response.data.refreshToken,
+          accessTokenExpiresIn: response.data.accessTokenExpiresIn,
+          RefreshTokenExpiresIn: response.data.RefreshTokenExpiresIn,
         })
       );
       dispatch(LoadingActions.finishLoaging({ error: false, success: true }));
@@ -70,14 +84,45 @@ export const registre = (data: IRegistre) => async (dispatch: any) => {
       }
     );
 
+    localStorage.setItem("id", response.data.id);
+    localStorage.setItem("type", response.data.type);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
+    localStorage.setItem(
+      "accessTokenExpiresIn",
+      response.data.accessTokenExpiresIn
+    );
+    localStorage.setItem(
+      "RefreshTokenExpiresIn",
+      response.data.RefreshTokenExpiresIn
+    );
     dispatch(
       authActions.setCredentials({
+        id: response.data.id,
+        type: response.data.type,
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
+        accessTokenExpiresIn: response.data.accessTokenExpiresIn,
+        RefreshTokenExpiresIn: response.data.RefreshTokenExpiresIn,
       })
     );
+    dispatch(LoadingActions.finishLoaging({ error: false, success: true }));
+  } catch (err) {
+    dispatch(LoadingActions.finishLoaging({ error: true, success: false }));
+  }
+};
+
+export const logout = () => async (dispatch: any) => {
+  try {
+    dispatch(LoadingActions.startloading());
+
+    localStorage.removeItem("id");
+    localStorage.removeItem("type");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessTokenExpiresIn");
+    localStorage.removeItem("RefreshTokenExpiresIn");
+    dispatch(authActions.logOut());
     dispatch(LoadingActions.finishLoaging({ error: false, success: true }));
   } catch (err) {
     dispatch(LoadingActions.finishLoaging({ error: true, success: false }));
