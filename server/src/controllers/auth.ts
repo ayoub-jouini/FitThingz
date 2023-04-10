@@ -22,8 +22,9 @@ export const login = async (
   }
   let accessToken;
   let refreshToken;
+  let user;
   try {
-    const user = await User.findOne({ email });
+    user = await User.findOne({ email });
     if (!user) {
       const error = new HttpError("user does not exist.", 404);
       return next(error);
@@ -45,14 +46,14 @@ export const login = async (
         emailConfirmed: user.emailConfirmed,
       },
       vars.accessSecret,
-      { expiresIn: "1h" }
+      { expiresIn: "30m" }
     );
     refreshToken = Jwt.sign(
       {
         _id: user._id,
       },
       vars.refreshSecret,
-      { expiresIn: "1m" }
+      { expiresIn: "1M" }
     );
     if (!accessToken || !refreshToken) {
       const error = new HttpError("could not create accessToken", 403);
@@ -65,9 +66,19 @@ export const login = async (
     );
     return next(error);
   }
+  const accessTokenExpiresIn = new Date();
+  accessTokenExpiresIn.setMinutes(accessTokenExpiresIn.getMinutes() + 30);
+
+  const RefreshTokenExpiresIn = new Date();
+  RefreshTokenExpiresIn.setMonth(RefreshTokenExpiresIn.getMonth() + 1);
+
   res.json({
+    id: user._id,
+    type: user.type,
     accessToken,
     refreshToken,
+    accessTokenExpiresIn,
+    RefreshTokenExpiresIn,
   });
 };
 
@@ -84,6 +95,7 @@ export const register = async (
   }
   let accessToken;
   let refreshToken;
+  let user;
   try {
     const existingUser = await User.findOne({
       email: userRegistre.email,
@@ -92,7 +104,7 @@ export const register = async (
       const error = new HttpError("user already exist.", 409);
       return next(error);
     }
-    const user = await User.create(userRegistre);
+    user = await User.create(userRegistre);
     accessToken = Jwt.sign(
       {
         _id: user._id,
@@ -105,14 +117,14 @@ export const register = async (
         emailConfirmed: user.emailConfirmed,
       },
       vars.accessSecret,
-      { expiresIn: "1h" }
+      { expiresIn: "30m" }
     );
     refreshToken = Jwt.sign(
       {
         _id: user._id,
       },
       vars.refreshSecret,
-      { expiresIn: "1m" }
+      { expiresIn: "1M" }
     );
     if (!accessToken || !refreshToken) {
       const error = new HttpError("could not create accessToken", 403);
@@ -125,7 +137,21 @@ export const register = async (
     );
     return next(error);
   }
-  res.json({ accessToken, refreshToken });
+
+  const accessTokenExpiresIn = new Date();
+  accessTokenExpiresIn.setMinutes(accessTokenExpiresIn.getMinutes() + 30);
+
+  const RefreshTokenExpiresIn = new Date();
+  RefreshTokenExpiresIn.setMonth(RefreshTokenExpiresIn.getMonth() + 1);
+
+  res.json({
+    id: user._id,
+    type: user.type,
+    accessToken,
+    refreshToken,
+    accessTokenExpiresIn,
+    RefreshTokenExpiresIn,
+  });
 };
 
 export const sendConfirmationToken = async (
@@ -198,7 +224,7 @@ export const forgotPassword = async (
       return next(error);
     }
     const token = Jwt.sign({ _id: user._id }, vars.passwordSecret, {
-      expiresIn: "1h",
+      expiresIn: "30m",
     });
     const mailOptions = {
       to: user.email,
@@ -259,13 +285,14 @@ export const refreshToken = async (
     return next(error);
   }
   let accessToken;
+  let user;
   try {
     const existingToken: any = Jwt.verify(refreshToken, vars.refreshSecret);
     if (!existingToken) {
       const error = new HttpError("user is not loged in.", 404);
       return next(error);
     }
-    const user = await User.findById(existingToken._id);
+    user = await User.findById(existingToken._id);
     accessToken = Jwt.sign(
       {
         _id: user._id,
@@ -278,7 +305,7 @@ export const refreshToken = async (
         emailConfirmed: user.emailConfirmed,
       },
       vars.accessSecret,
-      { expiresIn: "1h" }
+      { expiresIn: "30m" }
     );
     if (!accessToken) {
       const error = new HttpError("could not update token", 403);
@@ -291,5 +318,9 @@ export const refreshToken = async (
     );
     return next(error);
   }
-  res.json({ accessToken });
+
+  const accessTokenExpiresIn = new Date();
+  accessTokenExpiresIn.setMinutes(accessTokenExpiresIn.getMinutes() + 30);
+
+  res.json({ accessToken, accessTokenExpiresIn });
 };
