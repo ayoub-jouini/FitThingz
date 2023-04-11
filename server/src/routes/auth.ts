@@ -14,8 +14,8 @@ router.post(
 
 router.post(
   "/register",
-  body("nom").notEmpty().isAlpha(),
-  body("prenom").notEmpty().isAlpha(),
+  body("nom").notEmpty(),
+  body("prenom").notEmpty(),
   body("phone").isLength({ min: 8 }),
   body("email").isEmail(),
   // body("lieu").notEmpty(),

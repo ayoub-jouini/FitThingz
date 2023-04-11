@@ -10,12 +10,19 @@ const AthleteForm: React.FC = () => {
   const [weight, setWeight] = useState<number>(50);
   const [allergies, setAllergies] = useState<string>("");
 
-  const handleHeight = (event: any) => {
-    setHeight(event.target.value);
+  const increaseHeight = () => {
+    setHeight(height + 1);
   };
-  const handleWeight = (event: any) => {
-    setWeight(event.target.value);
+  const decreaseHeight = () => {
+    setHeight(height - 1);
   };
+  const increaseWeight = () => {
+    setWeight(weight + 1);
+  };
+  const decreaWeight = () => {
+    setWeight(weight - 1);
+  };
+
   const handleAllergies = (event: any) => {
     setAllergies(event.target.value);
   };
@@ -35,13 +42,19 @@ const AthleteForm: React.FC = () => {
             How tall are you?
           </p>
           <div className=" flex justify-between my-8">
-            <div className="w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg">
+            <div
+              className="cursor-pointer w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg"
+              onClick={decreaseHeight}
+            >
               -
             </div>
             <p className="text-lg font-semibold text-textPrimary mx-6">
               {height}
             </p>
-            <div className="w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg">
+            <div
+              className="cursor-pointer w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg"
+              onClick={increaseHeight}
+            >
               +
             </div>
           </div>
@@ -54,13 +67,19 @@ const AthleteForm: React.FC = () => {
             How tall are you?
           </p>
           <div className=" flex justify-between my-8">
-            <div className="w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg">
+            <div
+              className="cursor-pointer w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg"
+              onClick={decreaWeight}
+            >
               -
             </div>
             <p className="text-lg font-semibold text-textPrimary mx-6">
               {weight}
             </p>
-            <div className="w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg">
+            <div
+              className="cursor-pointer w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg"
+              onClick={increaseWeight}
+            >
               +
             </div>
           </div>
@@ -70,6 +89,7 @@ const AthleteForm: React.FC = () => {
         </div>
       </div>
       <Input
+        type="text"
         handleChange={handleAllergies}
         value={allergies}
         height="h-12"

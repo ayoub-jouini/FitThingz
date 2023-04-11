@@ -3,6 +3,7 @@ import { authActions } from "./authSlice";
 import { logout } from "./authThunk";
 
 export const requestAccessToken = async (refreshToken: string) => {
+  console.log(refreshToken);
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/refreshToken`,
     {
@@ -28,7 +29,7 @@ export const checkAuth = () => async (dispatch: any) => {
     let RefreshTokenExpiresIn: string | Date | null = localStorage.getItem(
       "RefreshTokenExpiresIn"
     );
-
+    console.log(RefreshTokenExpiresIn);
     if (
       !refreshToken ||
       !type ||

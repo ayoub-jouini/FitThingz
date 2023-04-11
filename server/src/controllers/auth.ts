@@ -53,7 +53,7 @@ export const login = async (
         _id: user._id,
       },
       vars.refreshSecret,
-      { expiresIn: "1M" }
+      { expiresIn: "30d" }
     );
     if (!accessToken || !refreshToken) {
       const error = new HttpError("could not create accessToken", 403);
@@ -70,7 +70,7 @@ export const login = async (
   accessTokenExpiresIn.setMinutes(accessTokenExpiresIn.getMinutes() + 30);
 
   const RefreshTokenExpiresIn = new Date();
-  RefreshTokenExpiresIn.setMonth(RefreshTokenExpiresIn.getMonth() + 1);
+  RefreshTokenExpiresIn.setDate(RefreshTokenExpiresIn.getDate() + 30);
 
   res.json({
     id: user._id,
@@ -124,7 +124,7 @@ export const register = async (
         _id: user._id,
       },
       vars.refreshSecret,
-      { expiresIn: "1M" }
+      { expiresIn: "30d" }
     );
     if (!accessToken || !refreshToken) {
       const error = new HttpError("could not create accessToken", 403);
@@ -142,7 +142,7 @@ export const register = async (
   accessTokenExpiresIn.setMinutes(accessTokenExpiresIn.getMinutes() + 30);
 
   const RefreshTokenExpiresIn = new Date();
-  RefreshTokenExpiresIn.setMonth(RefreshTokenExpiresIn.getMonth() + 1);
+  RefreshTokenExpiresIn.setDate(RefreshTokenExpiresIn.getDate() + 30);
 
   res.json({
     id: user._id,
@@ -288,11 +288,16 @@ export const refreshToken = async (
   let user;
   try {
     const existingToken: any = Jwt.verify(refreshToken, vars.refreshSecret);
+
     if (!existingToken) {
       const error = new HttpError("user is not loged in.", 404);
       return next(error);
     }
     user = await User.findById(existingToken._id);
+    if (!user) {
+      const error = new HttpError("user does not exist.", 404);
+      return next(error);
+    }
     accessToken = Jwt.sign(
       {
         _id: user._id,
@@ -313,7 +318,7 @@ export const refreshToken = async (
     }
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not refres token.",
+      "Something went wrong, could not refres token." + err,
       500
     );
     return next(error);

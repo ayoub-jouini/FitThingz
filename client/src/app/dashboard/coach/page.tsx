@@ -1,5 +1,6 @@
 "use client";
 
+import CoachNavBar from "../../../components/nav/CoachNavBar";
 import { logout } from "../../../store/features/auth/authThunk";
 import { useDispatch } from "react-redux";
 
@@ -12,7 +13,8 @@ export default function CoachDashboard() {
 
   return (
     <main>
-      <button onClick={handleLogout}>logout</button>
+      <CoachNavBar />
+      {/* <button onClick={handleLogout}>logout</button> */}
     </main>
   );
 }
