@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { body } from "express-validator";
 
 import * as coachControllers from "../controllers/coach";
+import fileUpload from "../middlewares/fileUpload";
 
 const router = Router();
 
@@ -11,7 +11,7 @@ router.get("/id/:id", coachControllers.getCoachById);
 
 // router.get('/name/:name', coachControllers.getCoachByName);
 
-router.post("/", coachControllers.createCoach);
+router.post("/", fileUpload.single("file"), coachControllers.createCoach);
 
 router.patch("/validate/:id", coachControllers.validateCoach);
 

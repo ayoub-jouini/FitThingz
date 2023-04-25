@@ -112,9 +112,9 @@ export const createCoach = async (
   try {
     const createdcoach = new Coach({
       user: req.userData._id,
-      identite: coach.identite,
-      experience: coach.experience,
-      conn_aca: coach.conn_aca,
+      identite: [req.file.path[0], req.file.path[1]],
+      experience: req.file.path[2],
+      conn_aca: "any",
     });
     await createdcoach.save();
   } catch (err) {

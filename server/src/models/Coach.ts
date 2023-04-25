@@ -1,8 +1,6 @@
 import { Schema, model } from "mongoose";
 
 import User from "./User";
-import Identite, { IIdentite } from "./Identite";
-import Experience, { IExperience } from "./Experience";
 import Tarification, { ITarification } from "./Tarification";
 import Commentaire, { ICommentaire } from "./Commentaire";
 import Exercice from "./Exercice";
@@ -12,8 +10,8 @@ import Regime from "./Regime";
 export interface ICoach {
   _id?: string;
   user: Schema.Types.ObjectId;
-  identite: IIdentite;
-  experience: IExperience[];
+  identite: string;
+  experience: string[];
   conn_aca: string;
   tarification: ITarification[];
   exercice: Schema.Types.ObjectId[];
@@ -28,10 +26,8 @@ export interface ICoach {
 
 const coachSchema = new Schema<ICoach>({
   user: { type: Schema.Types.ObjectId, ref: User, required: true },
-  identite: { type: Schema.Types.ObjectId, ref: Identite, required: true },
-  experience: [
-    { type: Schema.Types.ObjectId, ref: Experience, required: true },
-  ],
+  identite: { type: String, required: true },
+  experience: [{ type: String, required: true }],
   conn_aca: { type: String, required: true },
   tarification: [{ type: Schema.Types.ObjectId, ref: Tarification }],
   exercice: [{ type: Schema.Types.ObjectId, ref: Exercice }],

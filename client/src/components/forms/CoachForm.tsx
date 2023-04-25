@@ -4,8 +4,11 @@ import { useRef, useState } from "react";
 import Button from "../global/button/Button";
 import axios from "axios";
 import Input from "../global/input/Input";
+import { useSelector } from "react-redux";
 
 const CoachForm: React.FC = () => {
+  const auth: any = useSelector((state: any) => state.auth);
+
   const [college, setCollege] = useState<string>("");
   const [cin, setCin] = useState<any>([]);
   const [diplome, setDiplome] = useState<any>();
@@ -44,16 +47,24 @@ const CoachForm: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("cin[]", cin[0]);
-    formData.append("cin[]", cin[1]);
-    formData.append("diplome", diplome);
+    // formData.append("files[]", cin[0]);
+    // formData.append("files[]", cin[1]);
+    formData.append("file", diplome);
 
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/login`,
-      {
-        college,
-      }
-    );
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/coach/`,
+        formData,
+        {
+          headers: {
+            authorization: "Bearer" + auth.accessToken,
+          },
+        }
+      );
+      console.log("c bon");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -81,6 +92,7 @@ const CoachForm: React.FC = () => {
         </div>
         <input
           type="file"
+          multiple
           className="hidden"
           ref={cinRef}
           onChange={handleCinFiles}

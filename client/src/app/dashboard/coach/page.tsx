@@ -21,7 +21,7 @@ export default function CoachDashboard() {
   return (
     <main>
       <CoachNavBar value={search} handleChange={handleSearch} />
-      {/* <button onClick={handleLogout}>logout</button> */}
+      <button onClick={handleLogout}>logout</button>
     </main>
   );
 }

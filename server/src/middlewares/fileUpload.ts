@@ -1,5 +1,5 @@
 import multer from "multer";
-import uuid from "uuid";
+import { v1 as uuidv1 } from "uuid";
 
 const MIME_TYPE_MAP = {
   "image/png": "png",
@@ -9,34 +9,26 @@ const MIME_TYPE_MAP = {
 
 const fileUpload = multer({
   limits: {
-    fileSize: 500000,
+    fileSize: 5 * 1024 * 1024, // 5MB
   },
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, "uploads/images");
     },
     filename: (req, file, cb) => {
-      if (
-        file.mimetype === "image/png" ||
-        file.mimetype === "image/jpg" ||
-        file.mimetype === "image/jpeg"
-      ) {
-        const ext: string = MIME_TYPE_MAP[file.mimetype];
-        cb(null, uuid.v1() + "." + ext);
-      }
+      //@ts-ignore
+      const ext = MIME_TYPE_MAP[file.mimetype];
+      cb(null, uuidv1() + "." + ext);
     },
   }),
   fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype === "image/png" ||
-      file.mimetype === "image/jpg" ||
-      file.mimetype === "image/jpeg"
-    ) {
-      cb(null, true);
-    } else {
-      let error = new Error("Invalid mime type!");
-      cb(error);
-    }
+    //@ts-ignore
+
+    // const isValid = !!MIME_TYPE_MAP[file.mimetype];
+    // let error = isValid ? null : new Error("invalid mime type!");
+    //@ts-ignore
+    cb(null, null);
+    console.log("hello");
   },
 });
 

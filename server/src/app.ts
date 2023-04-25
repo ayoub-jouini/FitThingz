@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/auth", authRouter);
-app.use(authorization, verifyEmailConfirmation);
+// app.use(authorization, verifyEmailConfirmation);
 app.use("/api/user", userRoutes);
 app.use("/api/coach", coachRoutes);
 app.use("/api/salle", salleRoutes);
@@ -65,7 +65,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
   if (req.file) {
     fs.unlink(req.file.path, (err) => {
-      console.log(err);
+      console.log("err");
     });
   }
   if (res.headersSent) {
