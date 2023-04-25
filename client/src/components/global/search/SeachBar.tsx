@@ -7,7 +7,7 @@ const SearchBar: React.FC<Props> = (props) => {
   const { value, handleChange } = props;
 
   return (
-    <div className="w-1/2 shadow h-14 rounded-[24px] flex justify-between items-center px-3 m-5">
+    <div className="w-1/2 shadow h-14 rounded-[24px] flex justify-between items-center px-3">
       <input
         className="bg-transparent outline-none w-11/12"
         type="search"
