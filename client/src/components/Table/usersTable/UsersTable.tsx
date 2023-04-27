@@ -1,9 +1,11 @@
+import Link from "next/link";
 import UsresTableRow from "./UsersTableRow";
 
 interface Props {}
 
 const tableData = [
   {
+    id: 1,
     avatar: "/images/Group11234.png",
     name: "Foulen el Fouleni",
     phone: "28726042",
@@ -11,6 +13,7 @@ const tableData = [
     date: "2/4/2023",
   },
   {
+    id: 2,
     avatar: "/images/Group11234.png",
     name: "Foulen el Fouleni",
     phone: "28726042",
@@ -18,6 +21,7 @@ const tableData = [
     date: "2/4/2023",
   },
   {
+    id: 3,
     avatar: "/images/Group11234.png",
     name: "Foulen el Fouleni",
     phone: "28726042",
@@ -28,7 +32,7 @@ const tableData = [
 
 const UsersTable: React.FC<Props> = (props) => {
   return (
-    <div className="mx-5">
+    <div className="">
       <div className="shadow rounded-[45px] px-10 flex flex-col justify-center items-center h-24">
         <p className="text-xl text-primary">{tableData.length}</p>
         <p className="text-sm text-textPrimary">Total Clients</p>
@@ -44,14 +48,16 @@ const UsersTable: React.FC<Props> = (props) => {
         </div>
         <div className="shadow rounded-[45px] px-10">
           {tableData.map((data, key) => (
-            <UsresTableRow
-              key={key}
-              avatar={data.avatar}
-              name={data.name}
-              phone={data.phone}
-              adress={data.adress}
-              date={data.date}
-            />
+            <Link href={`/dashboard/coach/athletes/${data.id}`}>
+              <UsresTableRow
+                key={key}
+                avatar={data.avatar}
+                name={data.name}
+                phone={data.phone}
+                adress={data.adress}
+                date={data.date}
+              />
+            </Link>
           ))}
         </div>
       </div>

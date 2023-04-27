@@ -8,6 +8,8 @@ import transporter from "../configs/transporter";
 import HttpError from "../utils/HttpError";
 
 import User, { IUser } from "../models/User";
+import Coach from "../models/Coach";
+import Sportif from "../models/Sportif";
 
 export const login = async (
   req: Request,
@@ -23,6 +25,8 @@ export const login = async (
   let accessToken;
   let refreshToken;
   let user;
+  let userVerif: string | null = null;
+
   try {
     user = await User.findOne({ email });
     if (!user) {
@@ -33,6 +37,24 @@ export const login = async (
     if (!hash) {
       const error = new HttpError("inccorect password.", 401);
       return next(error);
+    }
+
+    if (user.type === "coach") {
+      const coach = await Coach.findOne({ user: user._id });
+      if (!coach) {
+        userVerif = "not coach";
+      } else if (coach.verif === false) {
+        userVerif = "not verified";
+      } else {
+        userVerif = "verified";
+      }
+    } else if (user.type === "sportif") {
+      const sportif = await Sportif.findOne({ user: user._id });
+      if (!sportif) {
+        userVerif = "not sportif";
+      } else {
+        userVerif = "verified";
+      }
     }
     accessToken = Jwt.sign(
       {
@@ -79,6 +101,7 @@ export const login = async (
     refreshToken,
     accessTokenExpiresIn,
     RefreshTokenExpiresIn,
+    userVerif,
   });
 };
 

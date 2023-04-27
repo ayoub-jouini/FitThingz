@@ -1,30 +1,36 @@
 "use client";
 
+import Link from "next/link";
+import { useSelectedLayoutSegment } from "next/navigation";
+
 interface Props {}
 
 const CoachSideBarMenu: React.FC<Props> = (props) => {
-  let page = "athletes";
+  const page = useSelectedLayoutSegment();
+
   return (
     <div className="">
-      <div
+      <Link
+        href="/dashboard/coach/"
         className={`flex items-center h-11 pl-10 ${
-          page === "dashboard" && "bg-primary -ml-5 rounded-l-[19px]"
+          !page && "bg-primary -ml-5 rounded-l-[19px]"
         }`}
       >
-        {page === "dashboard" ? (
+        {!page ? (
           <img alt="" src="/icons/dashboardiconwhite.svg" className="mr-3" />
         ) : (
           <img alt="" src="/icons/dashboardicon.svg" className="mr-3" />
         )}
         <p
           className={`text-sm font-semibold ${
-            page === "dashboard" ? "text-tertiary" : "text-textPrimary"
+            !page ? "text-tertiary" : "text-textPrimary"
           }`}
         >
           Dashboard
         </p>
-      </div>
-      <div
+      </Link>
+      <Link
+        href="/dashboard/coach/athletes"
         className={`flex items-center h-11 pl-10 ${
           page === "athletes" && "bg-primary -ml-5 rounded-l-[19px]"
         }`}
@@ -41,8 +47,9 @@ const CoachSideBarMenu: React.FC<Props> = (props) => {
         >
           Athletes List
         </p>
-      </div>
-      <div
+      </Link>
+      <Link
+        href="/dashboard/coach/programs"
         className={`flex items-center h-11 pl-10 ${
           page === "programs" && "bg-primary -ml-5 rounded-l-[19px]"
         }`}
@@ -59,8 +66,9 @@ const CoachSideBarMenu: React.FC<Props> = (props) => {
         >
           Programs
         </p>
-      </div>
-      <div
+      </Link>
+      <Link
+        href="/dashboard/coach/exercices"
         className={`flex items-center h-11 pl-10 ${
           page === "exercices" && "bg-primary -ml-5 rounded-l-[19px]"
         }`}
@@ -77,8 +85,9 @@ const CoachSideBarMenu: React.FC<Props> = (props) => {
         >
           Exercices
         </p>
-      </div>
-      <div
+      </Link>
+      <Link
+        href="/dashboard/coach/nutrition"
         className={`flex items-center h-11 pl-10 ${
           page === "nutrition" && "bg-primary -ml-5 rounded-l-[19px]"
         }`}
@@ -95,7 +104,7 @@ const CoachSideBarMenu: React.FC<Props> = (props) => {
         >
           Nutrition
         </p>
-      </div>
+      </Link>
     </div>
   );
 };
