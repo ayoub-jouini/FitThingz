@@ -3,11 +3,13 @@ import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
 import { AuthReq } from "../middlewares/authorization";
+import cloudinary from "../configs/cloudinaySetup";
 
 import Coach, { ICoach } from "../models/Coach";
 import Tarification, { ITarification } from "../models/Tarification";
 import Commentaire, { ICommentaire } from "../models/Commentaire";
 import Sportif from "../models/Sportif";
+import { unlink } from "fs";
 
 export const getAllCoachs = async (
   req: Request,
@@ -103,6 +105,11 @@ export const createCoach = async (
 ) => {
   const coach = req.body;
 
+  //@ts-ignore
+  const cinFile = req.files[0];
+  //@ts-ignore
+  const diplomeFile = req.files[1];
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new HttpError("Invalid inputs passed", 401);
@@ -110,11 +117,46 @@ export const createCoach = async (
   }
 
   try {
+    const existingCoach = await Coach.findOne({
+      user: req.userData._id,
+    }).exec();
+
+    if (existingCoach) {
+      const error = new HttpError("coach already exist.", 409);
+      return next(error);
+    }
+
+    const uploadIdentite = await cloudinary.uploader.upload(
+      cinFile.path,
+      function (error: any, result: any) {
+        if (error) {
+          console.log(error);
+          return res.status(500).send(error);
+        }
+      }
+    );
+
+    unlink(cinFile.path, (err) => {
+      console.log(err);
+    });
+    const uploadExperience = await cloudinary.uploader.upload(
+      diplomeFile.path,
+      function (error: any, result: any) {
+        if (error) {
+          console.log(error);
+          return res.status(500).send(error);
+        }
+      }
+    );
+    unlink(diplomeFile.path, (err) => {
+      console.log(err);
+    });
+
     const createdcoach = new Coach({
       user: req.userData._id,
-      identite: [req.file.path[0], req.file.path[1]],
-      experience: req.file.path[2],
-      conn_aca: "any",
+      identite: uploadIdentite.public_id,
+      experience: uploadExperience.public_id,
+      conn_aca: coach.college,
     });
     await createdcoach.save();
   } catch (err) {

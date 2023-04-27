@@ -5,16 +5,19 @@ import Button from "../global/button/Button";
 import axios from "axios";
 import Input from "../global/input/Input";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const CoachForm: React.FC = () => {
   const auth: any = useSelector((state: any) => state.auth);
 
   const [college, setCollege] = useState<string>("");
-  const [cin, setCin] = useState<any>([]);
+  const [cin, setCin] = useState<any>();
   const [diplome, setDiplome] = useState<any>();
 
   const cinRef = useRef<HTMLInputElement>(null);
   const diplomeRef = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
 
   const handleCinnButtonClick = () => {
     if (cinRef.current) cinRef.current.click();
@@ -28,28 +31,19 @@ const CoachForm: React.FC = () => {
   };
 
   const handleCinFiles = (event: any) => {
-    let pickedFile = [];
-    if (event.target.files && event.target.files.length === 2) {
-      pickedFile.push(event.target.files[0]);
-      pickedFile.push(event.target.files[1]);
-      setCin(pickedFile);
-    }
+    setCin(event.target.files[0]);
   };
 
   const handleDiplomeFiles = (event: any) => {
-    let pickedFile;
-    if (event.target.files && event.target.files.length === 1) {
-      pickedFile = event.target.files[0];
-      setDiplome(pickedFile);
-    }
+    setDiplome(event.target.files[0]);
   };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const formData = new FormData();
-    // formData.append("files[]", cin[0]);
-    // formData.append("files[]", cin[1]);
-    formData.append("file", diplome);
+    formData.append("college", college);
+    formData.append("images", cin);
+    formData.append("images", diplome);
 
     try {
       const response = await axios.post(
@@ -57,13 +51,15 @@ const CoachForm: React.FC = () => {
         formData,
         {
           headers: {
-            authorization: "Bearer" + auth.accessToken,
+            authorization: "Bearer " + auth.accessToken,
           },
         }
       );
-      console.log("c bon");
+      if (response.status === 200) {
+        router.push("/signup/coach/send");
+      }
     } catch (err) {
-      console.log(err);
+      console.log(formData);
     }
   };
 
@@ -71,6 +67,7 @@ const CoachForm: React.FC = () => {
     <form
       className="w-full md:w-2/3 flex flex-col items-center "
       onSubmit={handleSubmit}
+      encType="multipart/form-data"
     >
       <Input
         type="text"
@@ -84,25 +81,41 @@ const CoachForm: React.FC = () => {
 
       <div className=" flex justify-evenly w-full my-10">
         <div
-          className="border-2 cursor-pointer border-primary rounded-3xl w-32 h-32 md:w-44 md:h-44 p-5"
+          className={`border-2 cursor-pointer border-primary rounded-3xl w-32 h-32 md:w-44 md:h-44 p-5 ${
+            cin && "bg-primary"
+          }`}
           onClick={handleCinnButtonClick}
         >
-          <img alt="" src="/icons/Document.svg" className="" />
-          <p className=" text-xs my-3">Copie CIN /passport</p>
+          {cin ? (
+            <img alt="" src="/icons/documentwhite.svg" className="" />
+          ) : (
+            <img alt="" src="/icons/Document.svg" className="" />
+          )}
+          <p className={`text-xs my-3 ${cin && "text-tertiary"}`}>
+            CIN /passport
+          </p>
         </div>
         <input
           type="file"
-          multiple
           className="hidden"
           ref={cinRef}
           onChange={handleCinFiles}
         />
         <div
-          className="border-2 cursor-pointer border-primary rounded-3xl w-32 h-32 md:w-44 md:h-44 p-5"
+          className={`border-2 cursor-pointer border-primary rounded-3xl w-32 h-32 md:w-44 md:h-44 p-5 ${
+            diplome && "bg-primary"
+          }`}
           onClick={handleDiplomeButtonClick}
         >
-          <img alt="" src="/icons/Document.svg" className="" />
-          <p className=" text-xs my-3">Copie CIN /passport</p>
+          {diplome ? (
+            <img alt="" src="/icons/documentwhite.svg" className="" />
+          ) : (
+            <img alt="" src="/icons/Document.svg" className="" />
+          )}
+
+          <p className={`text-xs my-3 ${diplome && "text-tertiary"}`}>
+            diploma
+          </p>
         </div>
         <input
           type="file"

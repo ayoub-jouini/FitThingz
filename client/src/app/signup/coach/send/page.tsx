@@ -1,9 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Button from "../../../../components/global/button/Button";
 
+import { logout } from "../../../../store/features/auth/authThunk";
+
+import { useDispatch } from "react-redux";
+
 export default function Send() {
-  const handleButton = () => {};
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const handleButton = () => {
+    dispatch<any>(logout());
+    router.push("/login");
+  };
   return (
     <main
       className="bg-cover h-screen bg-center flex flex-col justify-center items-center"

@@ -11,7 +11,7 @@ router.get("/id/:id", coachControllers.getCoachById);
 
 // router.get('/name/:name', coachControllers.getCoachByName);
 
-router.post("/", fileUpload.single("file"), coachControllers.createCoach);
+router.post("/", fileUpload.array("images", 2), coachControllers.createCoach);
 
 router.patch("/validate/:id", coachControllers.validateCoach);
 

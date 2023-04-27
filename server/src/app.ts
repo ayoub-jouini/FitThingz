@@ -44,7 +44,10 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/auth", authRouter);
-// app.use(authorization, verifyEmailConfirmation);
+app.use(
+  authorization
+  // , verifyEmailConfirmation
+);
 app.use("/api/user", userRoutes);
 app.use("/api/coach", coachRoutes);
 app.use("/api/salle", salleRoutes);

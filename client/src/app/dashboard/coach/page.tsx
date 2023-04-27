@@ -14,7 +14,7 @@ export default function CoachDashboard() {
   return (
     <div>
       <UsersTable />
-      {/* <button onClick={handleLogout}>logout</button> */}
+      <button onClick={handleLogout}>logout</button>
     </div>
   );
 }

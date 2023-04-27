@@ -11,7 +11,7 @@ export interface ICoach {
   _id?: string;
   user: Schema.Types.ObjectId;
   identite: string;
-  experience: string[];
+  experience: string;
   conn_aca: string;
   tarification: ITarification[];
   exercice: Schema.Types.ObjectId[];
@@ -27,7 +27,7 @@ export interface ICoach {
 const coachSchema = new Schema<ICoach>({
   user: { type: Schema.Types.ObjectId, ref: User, required: true },
   identite: { type: String, required: true },
-  experience: [{ type: String, required: true }],
+  experience: { type: String, required: true },
   conn_aca: { type: String, required: true },
   tarification: [{ type: Schema.Types.ObjectId, ref: Tarification }],
   exercice: [{ type: Schema.Types.ObjectId, ref: Exercice }],
