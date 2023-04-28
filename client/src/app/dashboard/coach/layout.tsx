@@ -20,19 +20,35 @@ export default function DashbordLayout({
 
   const [search, setSearch] = useState<string>("");
 
+  const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+  const [darkModeToggle, setDarkModeToggle] = useState<boolean>(true);
+
+  const handleToggleMenu = () => {
+    setToggleMenu(!toggleMenu);
+  };
+
   const handleSearch = (event: any) => {
     setSearch(event.target.value);
   };
   return (
     <main className="flex">
-      <div className="w-1/6 h-screen flex justify-center items-center py-5 ">
-        <CoachSideBar handleLogout={handleLogout} />
+      <div className="absolute md:relative md:w-1/6 h-screen flex justify-center items-center py-5 ">
+        <CoachSideBar
+          handleLogout={handleLogout}
+          handleToggleMenu={handleToggleMenu}
+          toggleMenu={toggleMenu}
+          darkModeToggle={darkModeToggle}
+          setDarkModeToggle={setDarkModeToggle}
+        />
       </div>
-      <div className="w-5/6">
+      <div className="md:w-5/6 mx-5 w-full">
         <CoachNavBar
           value={search}
           handleChange={handleSearch}
           handleLogout={handleLogout}
+          handleToggleMenu={handleToggleMenu}
+          darkModeToggle={darkModeToggle}
+          setDarkModeToggle={setDarkModeToggle}
         />
         {children}
       </div>
