@@ -51,11 +51,15 @@ const CoachNavBar: React.FC<Props> = (props) => {
               style={{ backgroundImage: "url(/images/Group11234.png)" }}
             />
             <p className="">Foulen el fouleni</p>
-            <img alt="" src="/icons/Vector1.svg" className="" />
+            <img
+              alt=""
+              src="/icons/Vector1.svg"
+              className={`${navMenuToggle && "rotate-180"}`}
+            />
           </div>
         </div>
         <div
-          className={`shadow rounded-[22px] p-5 bg-tertiary absolute right-5 top-20 ${
+          className={`shadow rounded-[22px] p-5 bg-tertiary absolute right-10 top-20 ${
             !navMenuToggle && "hidden"
           }`}
         >
