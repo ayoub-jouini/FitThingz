@@ -7,7 +7,7 @@ interface Props {
   id: string;
 }
 
-const UserNavigation: React.FC<Props> = (props) => {
+const AthleteNavigation: React.FC<Props> = (props) => {
   const { id } = props;
 
   const page = useSelectedLayoutSegment();
@@ -34,4 +34,4 @@ const UserNavigation: React.FC<Props> = (props) => {
   );
 };
 
-export default UserNavigation;
+export default AthleteNavigation;

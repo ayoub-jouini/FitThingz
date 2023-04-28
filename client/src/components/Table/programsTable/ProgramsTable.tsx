@@ -1,3 +1,5 @@
+import ProgramsTableRow from "./ProgramsTableRow";
+
 interface Props {}
 
 const data = [
@@ -5,21 +7,21 @@ const data = [
     id: 1,
     name: "program 1",
     type: "lose weight",
-    duree: "14days",
+    duree: "14 days",
     tags: ["tag1", "tag2", "tag3"],
   },
   {
     id: 1,
     name: "program 1",
     type: "lose weight",
-    duree: "14days",
+    duree: "14 days",
     tags: ["tag1", "tag2", "tag3"],
   },
   {
     id: 1,
     name: "program 1",
     type: "lose weight",
-    duree: "14days",
+    duree: "14 days",
     tags: ["tag1", "tag2", "tag3"],
   },
 ];
@@ -34,6 +36,16 @@ const ProgramsTable: React.FC<Props> = (props) => {
         <div className="text-textPrimary">Tags</div>
         <div className=""></div>
       </div>
+      {data.map((d, key) => (
+        <ProgramsTableRow
+          key={key}
+          id={d.id}
+          name={d.name}
+          type={d.type}
+          duree={d.duree}
+          tags={d.tags}
+        />
+      ))}
     </div>
   );
 };

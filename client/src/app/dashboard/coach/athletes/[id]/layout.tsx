@@ -1,7 +1,7 @@
-import UserNavigation from "../../../../../components/userData/UserNavigartion";
+import AthleteNavigation from "../../../../../components/navigation/AthleteNavigartion";
 import UserData from "../../../../../components/userData/UserData";
 
-export default function DashbordLayout({
+export default function AthleteProgramsLayout({
   children,
   params,
 }: {
@@ -11,7 +11,7 @@ export default function DashbordLayout({
   return (
     <div className="m-5">
       <UserData />
-      <UserNavigation id={params.id} />
+      <AthleteNavigation id={params.id} />
       {children}
     </div>
   );

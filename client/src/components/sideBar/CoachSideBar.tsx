@@ -1,8 +1,11 @@
 import CoachSideBarMenu from "./CoachSideBarMenu";
 
-interface Props {}
+interface Props {
+  handleLogout: () => void;
+}
 
-const CoachSideBar: React.FC<Props> = () => {
+const CoachSideBar: React.FC<Props> = (props) => {
+  const { handleLogout } = props;
   return (
     <div className="shadow rounded-[48px] w-10/12 h-full flex flex-col items-center justify-around">
       <div className="border-2 border-primary shadow rounded-full w-20 h-20 bg-white flex justify-center items-center">
@@ -19,7 +22,10 @@ const CoachSideBar: React.FC<Props> = () => {
             Transform Your Training with a Customized Program
           </p>
         </div>
-        <div className="bg-primary rounded-[22px] w-9/12 h-14 flex justify-evenly items-center">
+        <div
+          className="bg-primary rounded-[22px] w-9/12 h-14 flex justify-evenly items-center cursor-pointer"
+          onClick={handleLogout}
+        >
           <img alt="" src="/icons/logout.svg" className="" />
           <p className="font-semibold text-base text-white">Logout</p>
         </div>
