@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import CoachTarificationCarousel from "../coachTarification/CoachTarificationCarousel";
+import CoachProfilePersonalInfo from "./CoachProfilePersonalInfo";
+import EditCoachData from "./EditCoachData";
 
 const tarificationData = [
   {
@@ -33,9 +35,25 @@ const tarificationData = [
   },
 ];
 
-interface Props {}
+const CoachData = {
+  fistName: "Foulen",
+  lastName: "elfouleni",
+  email: "Foulenelfouleni@gmail.com",
+  phone: "28726420",
+  gender: "m",
+  dateofbirth: "01/09/1995",
+  diplome: "ijeza fel 3ouloum al e3lemeya",
+  address: "megrine",
+};
+
+interface Props {
+  showEdit: boolean;
+  showReview: boolean;
+}
 
 const CoachProfileData: React.FC<Props> = (props) => {
+  const { showEdit, showReview } = props;
+
   const [tarification, setTarification] = useState<number>(0);
 
   const handleNextTarification = () => {
@@ -55,51 +73,26 @@ const CoachProfileData: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className="grid grid-cols-5 gap-5">
-      <div className=" border-2 border-grisPrimary rounded-[45px] flex flex-col items-center col-span-3 px-20 py-7">
-        <div className=" flex justify-between w-full">
-          <div className="">
-            <div className="flex my-4">
-              <p className="text-base text-textPrimary">First name :</p>
-              <p className="text-base text-grixSecondary mx-3">Foulen</p>
-            </div>
-            <div className="flex my-4">
-              <p className="text-base text-textPrimary">Password :</p>
-              <p className="text-base text-grixSecondary mx-3">***********</p>
-            </div>
-            <div className="flex my-4">
-              <p className="text-base text-textPrimary">Gender :</p>
-              <p className="text-base text-grixSecondary mx-3">Male</p>
-            </div>
-          </div>
-          <div className="">
-            <div className="flex my-4">
-              <p className="text-base text-textPrimary">Last name :</p>
-              <p className="text-base text-grixSecondary mx-3">elfouleni</p>
-            </div>
-            <div className="flex my-4">
-              <p className="text-base text-textPrimary">date of birth :</p>
-              <p className="text-base text-grixSecondary mx-3">01/09/1995</p>
-            </div>
-            <div className="flex my-4">
-              <p className="text-base text-textPrimary">phone :</p>
-              <p className="text-base text-grixSecondary mx-3">28726420</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex self-start">
-          <p className="text-base text-textPrimary">Email :</p>
-          <p className="text-base text-grixSecondary mx-3">
-            Foulenelfouleni@gmail.com
-          </p>
-        </div>
-        <div className="flex self-start my-4">
-          <p className="text-base text-textPrimary">Diploma :</p>
-          <p className="text-base text-grixSecondary mx-3">
-            ijeza fel 3ouloum al e3lemeya
-          </p>
-        </div>
-      </div>
+    <div className={`grid-cols-5 gap-5 ${!showReview ? "grid" : "hidden"}`}>
+      <CoachProfilePersonalInfo
+        firstName={CoachData.fistName}
+        lastName={CoachData.lastName}
+        email={CoachData.email}
+        phone={CoachData.phone}
+        gender={CoachData.gender}
+        diplome={CoachData.diplome}
+        adress={CoachData.address}
+        birthDay={CoachData.dateofbirth}
+        showEdit={showEdit}
+      />
+      <EditCoachData
+        firstName={CoachData.fistName}
+        lastName={CoachData.lastName}
+        email={CoachData.email}
+        phone={CoachData.phone}
+        adress={CoachData.address}
+        showEdit={showEdit}
+      />
       <div className="px-10 py-7 border-2 border-grisPrimary rounded-[45px] col-span-2 ">
         {tarificationData.map((data, key) => (
           <CoachTarificationCarousel

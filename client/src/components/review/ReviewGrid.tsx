@@ -1,6 +1,8 @@
 import ReviewItem from "./ReviewItem";
 
-interface Props {}
+interface Props {
+  showReview: boolean;
+}
 
 const reviewData = [
   {
@@ -30,8 +32,10 @@ const reviewData = [
 ];
 
 const ReviewTable: React.FC<Props> = (props) => {
+  const { showReview } = props;
+
   return (
-    <div className="grid grid-cols-2 gap-5">
+    <div className={`grid-cols-2 gap-5 ${!showReview ? "hidden" : "grid"}`}>
       {reviewData.map((review, key) => (
         <ReviewItem
           avatar={review.avatar}

@@ -75,17 +75,6 @@ const SignupForm: React.FC = () => {
         type,
       })
     );
-    console.log(
-      firstName,
-      lastName,
-      email,
-      password,
-      gender,
-      adress,
-      dateOfBirth,
-      phone,
-      type
-    );
   };
 
   return (
