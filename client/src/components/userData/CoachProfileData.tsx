@@ -4,6 +4,7 @@ import { useState } from "react";
 import CoachTarificationCarousel from "../coachTarification/CoachTarificationCarousel";
 import CoachProfilePersonalInfo from "./CoachProfilePersonalInfo";
 import EditCoachData from "./EditCoachData";
+import EditTarificationModal from "../modals/EditTarificationModal";
 
 const tarificationData = [
   {
@@ -56,6 +57,9 @@ const CoachProfileData: React.FC<Props> = (props) => {
 
   const [tarification, setTarification] = useState<number>(0);
 
+  const [EditTarificationModalState, setEditTarificationModalState] =
+    useState<boolean>(true);
+
   const handleNextTarification = () => {
     if (tarification + 1 === tarificationData.length) {
       setTarification(0);
@@ -70,6 +74,10 @@ const CoachProfileData: React.FC<Props> = (props) => {
     } else {
       setTarification(tarification - 1);
     }
+  };
+
+  const ShowEditTrificationModal = () => {
+    setEditTarificationModalState(!EditTarificationModal);
   };
 
   return (
@@ -95,18 +103,30 @@ const CoachProfileData: React.FC<Props> = (props) => {
       />
       <div className="px-10 py-7 border-2 border-grisPrimary rounded-[45px] col-span-2 ">
         {tarificationData.map((data, key) => (
-          <CoachTarificationCarousel
-            key={key}
-            id={key}
-            title={data.title}
-            description={data.description}
-            duration={data.duration}
-            price={data.price}
-            promo={data.promo}
-            tarification={tarification}
-            handleNextTarification={handleNextTarification}
-            handlePreviousTarification={handlePreviousTarification}
-          />
+          <>
+            <CoachTarificationCarousel
+              key={key}
+              id={key}
+              title={data.title}
+              description={data.description}
+              duration={data.duration}
+              price={data.price}
+              promo={data.promo}
+              tarification={tarification}
+              handleNextTarification={handleNextTarification}
+              handlePreviousTarification={handlePreviousTarification}
+            />
+            <EditTarificationModal
+              key={key}
+              EditTarificationModal={EditTarificationModalState}
+              ShowEditTrificationModal={ShowEditTrificationModal}
+              title={data.title}
+              description={data.description}
+              duration={3}
+              price={data.price}
+              promo={data.promo}
+            />
+          </>
         ))}
       </div>
     </div>

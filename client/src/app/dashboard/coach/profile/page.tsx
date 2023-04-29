@@ -8,7 +8,7 @@ import CoachProfileHeader from "../../../../components/userData/CoachProfileHead
 import ReviewTable from "../../../../components/review/ReviewGrid";
 
 function Profile() {
-  const [showEdit, setShowEdit] = useState<boolean>(true);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
 
   const [showReview, setShowReviews] = useState<boolean>(false);
 

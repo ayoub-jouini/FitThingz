@@ -62,7 +62,7 @@ const CahngePasswordModal: React.FC<Props> = (props) => {
                     width="w-full my-3"
                     label="New Password"
                     placeholder="8 symbls at least"
-                    value={oldPassword}
+                    value={newPassword}
                     handleChange={handleNewPassword}
                   />
                   <Input
@@ -71,7 +71,7 @@ const CahngePasswordModal: React.FC<Props> = (props) => {
                     width="w-full my-3"
                     label="Confirm New Password"
                     placeholder="8 symbls at least"
-                    value={oldPassword}
+                    value={confirmNewPassword}
                     handleChange={handleNewPassword}
                   />
                   <div className="my-5">
