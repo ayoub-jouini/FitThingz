@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Input from "../global/input/Input";
 import Button from "../global/button/Button";
+import CahngePasswordModal from "../modals/ChangePasswordMadal";
 
 interface Props {
   firstName: string;
@@ -20,6 +21,13 @@ const EditCoachData: React.FC<Props> = (props) => {
   const [phone, setPhone] = useState<string>(props.phone);
   const [adress, setAdress] = useState<string>(props.adress);
 
+  const [showChangePasswordModal, setShowPasswordModel] =
+    useState<boolean>(false);
+
+  const handleChangePasswordModal = () => {
+    setShowPasswordModel(!showChangePasswordModal);
+  };
+
   const handleFirstName = (event: any) => {
     setFirstName(event.target.value);
   };
@@ -36,8 +44,6 @@ const EditCoachData: React.FC<Props> = (props) => {
   const handleAdress = (event: any) => {
     setAdress(event.target.value);
   };
-
-  const handleChangePasswordModal = () => {};
 
   const handleSubmit = (event: any) => {};
 
@@ -104,6 +110,10 @@ const EditCoachData: React.FC<Props> = (props) => {
         placeholder="Adress"
         value={adress}
         handleChange={handleAdress}
+      />
+      <CahngePasswordModal
+        showChangePasswordModal={showChangePasswordModal}
+        HandleShowPasswordModal={handleChangePasswordModal}
       />
     </form>
   );

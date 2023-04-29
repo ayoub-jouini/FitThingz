@@ -1,7 +1,8 @@
 "use client";
 
-import CoachProfileData from "../../../../components/userData/CoachProfileData";
 import { useState } from "react";
+
+import CoachProfileData from "../../../../components/userData/CoachProfileData";
 import CoachProfileNavigation from "../../../../components/navigation/CoachProfileNavigation";
 import CoachProfileHeader from "../../../../components/userData/CoachProfileHeader";
 import ReviewTable from "../../../../components/review/ReviewGrid";
