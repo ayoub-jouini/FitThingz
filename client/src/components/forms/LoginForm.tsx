@@ -15,13 +15,15 @@ const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const router = useRouter();
-  useEffect(() => {
-    if (auth.type === "coach") {
-      router.push("/dashboard/coach");
-    } else if (auth.type === "sportif") {
-      router.push("/dashboard/athlete");
-    }
-  }, [auth]);
+
+  if (auth.type === "coach") {
+    router.push("/dashboard/coach");
+  } else if (auth.type === "sportif") {
+    router.push("/dashboard/athlete");
+  }
+  // useEffect(() => {
+
+  // }, [auth]);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

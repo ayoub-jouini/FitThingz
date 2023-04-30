@@ -68,22 +68,22 @@ const CoachSideBarMenu: React.FC<Props> = (props) => {
         </p>
       </Link>
       <Link
-        href="/dashboard/coach/exercices"
+        href="/dashboard/coach/exercises"
         className={`flex items-center h-11 pl-10 ${
-          page === "exercices" && "bg-primary -ml-5 rounded-l-[19px]"
+          page === "exercises" && "bg-primary -ml-5 rounded-l-[19px]"
         }`}
       >
-        {page === "exercices" ? (
+        {page === "exercises" ? (
           <img alt="" src="/icons/exercicesiconwhite.svg" className="mr-3" />
         ) : (
           <img alt="" src="/icons/exercicesicon.svg" className="mr-3" />
         )}
         <p
           className={`text-sm font-semibold ${
-            page === "exercices" ? "text-tertiary" : "text-textPrimary"
+            page === "exercises" ? "text-tertiary" : "text-textPrimary"
           }`}
         >
-          Exercices
+          Exercises
         </p>
       </Link>
       <Link

@@ -69,7 +69,7 @@ function Exercices() {
       <div className="grid grid-cols-4 gap-5">
         {exercicesData.map((exercice, key) => (
           <Link
-            href={`/dashboard/coach/exercices/${exercice.bodyPart}`}
+            href={`/dashboard/coach/exercises/${exercice.bodyPart}`}
             key={key}
             className="w-60 h-44 bg-cover rounded-[55px] "
             style={{ backgroundImage: `url(${exercice.image})` }}

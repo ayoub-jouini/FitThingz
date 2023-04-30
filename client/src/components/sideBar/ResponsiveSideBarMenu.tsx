@@ -66,22 +66,22 @@ const ResponsiveSideBarMenu = () => {
         </p>
       </Link>
       <Link
-        href="/dashboard/coach/exercices"
+        href="/dashboard/coach/exercises"
         className={`my-2 flex items-center h-11  ${
-          page === "exercices" && "bg-tertiary rounded-l-[19px] pl-10"
+          page === "exercises" && "bg-tertiary rounded-l-[19px] pl-10"
         }`}
       >
-        {page === "exercices" ? (
+        {page === "exercises" ? (
           <img alt="" src="/icons/exercicesicon.svg" className="mr-3" />
         ) : (
           <img alt="" src="/icons/exercicesiconwhite.svg" className="mr-3" />
         )}
         <p
           className={`text-sm font-semibold ${
-            page === "exercices" ? "text-textPrimary" : "text-tertiary"
+            page === "exercises" ? "text-textPrimary" : "text-tertiary"
           }`}
         >
-          Exercices
+          Exercises
         </p>
       </Link>
       <Link

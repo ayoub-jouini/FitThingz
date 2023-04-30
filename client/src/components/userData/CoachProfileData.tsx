@@ -58,7 +58,7 @@ const CoachProfileData: React.FC<Props> = (props) => {
   const [tarification, setTarification] = useState<number>(0);
 
   const [EditTarificationModalState, setEditTarificationModalState] =
-    useState<boolean>(true);
+    useState<boolean>(false);
 
   const handleNextTarification = () => {
     if (tarification + 1 === tarificationData.length) {

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import Button from "../global/button/Button";
+import CreateExerciceModal from "../../components/modals/CreateExerciceModal";
+import { useState } from "react";
 
 interface Props {
   bodypart: string;
@@ -10,6 +12,13 @@ interface Props {
 
 const ExercicesNavigation: React.FC<Props> = (props) => {
   const { bodypart } = props;
+
+  const [showCreateExerciseModal, setshowCreateExerciseModal] =
+    useState<boolean>(false);
+
+  const handleCreateExerciseModal = () => {
+    setshowCreateExerciseModal(!CreateExerciceModal);
+  };
 
   const page = useSelectedLayoutSegment();
 
@@ -19,20 +28,20 @@ const ExercicesNavigation: React.FC<Props> = (props) => {
     <div className="flex justify-between items-center">
       <div className="w-5/12 border-2 border-grisPrimary h-14 rounded-[45px] flex my-10">
         <Link
-          href={`/dashboard/coach/exercices/${bodypart}`}
+          href={`/dashboard/coach/exercises/${bodypart}`}
           className={`h-14 rounded-[45px] flex items-center justify-center w-1/2 ${
             !page && "bg-primary text-tertiary"
           }`}
         >
-          Exercise library{" "}
+          Exercise library
         </Link>
         <Link
-          href={`/dashboard/coach/exercices/${bodypart}/myexercices`}
+          href={`/dashboard/coach/exercises/${bodypart}/myexercises`}
           className={`h-14 rounded-[45px] flex items-center justify-center w-1/2 ${
-            page === "myexercices" && "bg-primary text-tertiary"
+            page === "myexercises" && "bg-primary text-tertiary"
           }`}
         >
-          My Exercices
+          My Exercises
         </Link>
       </div>
       <div className="flex ">
@@ -47,6 +56,7 @@ const ExercicesNavigation: React.FC<Props> = (props) => {
           size="l"
         />
       </div>
+      <CreateExerciceModal />
     </div>
   );
 };

@@ -13,12 +13,14 @@ export default function DashbordLayout({
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (!auth.accessToken) {
-      router.push("/login");
-    }
-    console.log(auth);
-  }, [auth]);
+  if (!auth.accessToken) {
+    router.push("/login");
+  }
+
+  // useEffect(() => {
+
+  //   console.log(auth);
+  // }, [auth]);
 
   return <div>{children}</div>;
 }
