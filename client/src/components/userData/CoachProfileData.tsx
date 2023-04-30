@@ -77,7 +77,10 @@ const CoachProfileData: React.FC<Props> = (props) => {
   };
 
   const ShowEditTrificationModal = () => {
-    setEditTarificationModalState(!EditTarificationModal);
+    setEditTarificationModalState(true);
+  };
+  const hideEditTrificationModal = () => {
+    setEditTarificationModalState(false);
   };
 
   return (
@@ -115,11 +118,15 @@ const CoachProfileData: React.FC<Props> = (props) => {
               tarification={tarification}
               handleNextTarification={handleNextTarification}
               handlePreviousTarification={handlePreviousTarification}
+              showEdit={showEdit}
+              ShowEditTrificationModal={ShowEditTrificationModal}
             />
             <EditTarificationModal
               key={key}
               EditTarificationModal={EditTarificationModalState}
-              ShowEditTrificationModal={ShowEditTrificationModal}
+              ShowEditTrificationModal={hideEditTrificationModal}
+              tarification={tarification}
+              id={key}
               title={data.title}
               description={data.description}
               duration={3}

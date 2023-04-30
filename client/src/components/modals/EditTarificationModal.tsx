@@ -8,15 +8,18 @@ import TextArea from "../global/textArea/TextArea";
 interface Props {
   EditTarificationModal: boolean;
   ShowEditTrificationModal: () => void;
+  id: number;
   title: string;
   description: string;
   promo: string;
   duration: number;
   price: number;
+  tarification: number;
 }
 
 const EditTarificationModal: React.FC<Props> = (props) => {
-  const { ShowEditTrificationModal, EditTarificationModal } = props;
+  const { ShowEditTrificationModal, EditTarificationModal, tarification, id } =
+    props;
 
   const [title, setTitle] = useState<string>(props.title);
   const [description, setDescription] = useState<string>(props.description);
@@ -62,7 +65,7 @@ const EditTarificationModal: React.FC<Props> = (props) => {
 
   return (
     <>
-      {EditTarificationModal ? (
+      {EditTarificationModal && tarification === id ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative h-5/6 w-4/6 my-6 mx-auto max-w-3xl">
