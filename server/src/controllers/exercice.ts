@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import { unlink } from "fs";
+import { validationResult } from "express-validator";
 
 import HttpError from "../utils/HttpError";
 import { AuthReq } from "../middlewares/authorization";
 
 import Exercice, { IExercice } from "../models/Exercice";
-import { validationResult } from "express-validator";
+import cloudinary from "../configs/cloudinaySetup";
 
 export const getAllExercices = async (
   req: Request,
@@ -329,19 +331,41 @@ export const createExercice = async (
 ) => {
   const exercice = req.body;
 
+  const video = req.file;
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new HttpError("Invalid inputs passed", 401);
     return next(error);
   }
 
+  console.log(video);
+
   try {
+    let uploadVideo: any = "";
+    if (video) {
+      uploadVideo = await cloudinary.uploader.upload(
+        video.path,
+        function (error: any, result: any) {
+          if (error) {
+            console.log(error);
+            return res.status(500).send(error);
+          }
+        }
+      );
+
+      unlink(video.path, (err) => {
+        console.log(err);
+      });
+    }
+
     const createdExercice = new Exercice({
       createur: req.userData._id,
       nom: exercice.nom,
       bodyPart: exercice.bodyPart,
       target: exercice.target,
       equipment: exercice.equipment,
+      video: uploadVideo.public_id,
       tags: exercice.tags,
     });
     await createdExercice.save();

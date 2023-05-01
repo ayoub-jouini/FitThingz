@@ -2,6 +2,8 @@ import { Router } from "express";
 import * as userControllers from "../controllers/user";
 
 import fileUpload from "../middlewares/fileUpload";
+import authorization from "../middlewares/authorization";
+import verifyEmailConfirmation from "../middlewares/verifyEmailConfirmation";
 
 const router = Router();
 
@@ -10,6 +12,11 @@ router.get("/", userControllers.getAllUsers);
 router.get("/id/:id", userControllers.getUserById);
 
 // router.get("/name/:name", userControllers.getUsersByName);
+
+router.use(
+  authorization
+  // , verifyEmailConfirmation
+);
 
 router.patch("/id/:id", userControllers.updateUser);
 

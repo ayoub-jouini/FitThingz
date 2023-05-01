@@ -28,14 +28,14 @@ async function Exercices() {
   return (
     <div className="mx-5">
       <HandleCreateExerciseModal />
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-4 ju gap-5">
         {bodyParts &&
           bodyParts.data.map((bodyPart: string, key: number) => (
             <Link
               href={`/dashboard/coach/exercises/${bodyPart}`}
               key={key}
-              className="w-60 h-44 bg-cover rounded-[55px] "
-              style={{ backgroundImage: `url(/images/${bodyPart})` }}
+              className="w-64 h-44 bg-cover rounded-[55px] "
+              style={{ backgroundImage: `url("/images/${bodyPart}.jpg")` }}
             >
               <div className="bg-black/40 rounded-[55px] w-full h-full text-tertiary flex justify-center items-center font-bold text-xl">
                 {bodyPart}

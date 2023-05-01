@@ -3,6 +3,9 @@ import { body } from "express-validator";
 
 import * as regimeControllers from "../controllers/regime";
 
+import authorization from "../middlewares/authorization";
+import verifyEmailConfirmation from "../middlewares/verifyEmailConfirmation";
+
 const router = Router();
 
 router.get("/", regimeControllers.getAllRegimes);
@@ -16,6 +19,11 @@ router.get("/creator/:creator", regimeControllers.getRegimesByCreator);
 router.get("/type/:type", regimeControllers.getRegimesByType);
 
 router.get("/tags", regimeControllers.getRegimesByTags);
+
+router.use(
+  authorization
+  // , verifyEmailConfirmation
+);
 
 router.post("/", regimeControllers.createRegime);
 

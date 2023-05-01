@@ -17,12 +17,10 @@ const ExercicesNavigation: React.FC<Props> = (props) => {
     useState<boolean>(false);
 
   const handleCreateExerciseModal = () => {
-    setshowCreateExerciseModal(!CreateExerciceModal);
+    setshowCreateExerciseModal(!showCreateExerciseModal);
   };
 
   const page = useSelectedLayoutSegment();
-
-  const handleCreateExercice = () => {};
 
   return (
     <div className="flex justify-between items-center">
@@ -52,11 +50,14 @@ const ExercicesNavigation: React.FC<Props> = (props) => {
         <Button
           text="Create Exercice"
           type="button"
-          handleButton={handleCreateExercice}
+          handleButton={handleCreateExerciseModal}
           size="l"
         />
       </div>
-      {/* <CreateExerciceModal /> */}
+      <CreateExerciceModal
+        showCreateExerciseModal={showCreateExerciseModal}
+        handleCreateExerciseModal={handleCreateExerciseModal}
+      />
     </div>
   );
 };

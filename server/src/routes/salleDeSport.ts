@@ -3,6 +3,9 @@ import { body } from "express-validator";
 
 import * as salleControllers from "../controllers/salleDeSport";
 
+import authorization from "../middlewares/authorization";
+import verifyEmailConfirmation from "../middlewares/verifyEmailConfirmation";
+
 const router = Router();
 
 router.get("/", salleControllers.getAllSalles);
@@ -10,6 +13,11 @@ router.get("/", salleControllers.getAllSalles);
 router.get("/id/:id", salleControllers.getSalleById);
 
 // router.get('/name/:name', salleControllers.getSalleByName);
+
+router.use(
+  authorization
+  // , verifyEmailConfirmation
+);
 
 router.post("/", salleControllers.createSalle);
 

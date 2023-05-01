@@ -3,6 +3,9 @@ import { body } from "express-validator";
 
 import * as alimentControllers from "../controllers/aliment";
 
+import authorization from "../middlewares/authorization";
+import verifyEmailConfirmation from "../middlewares/verifyEmailConfirmation";
+
 const router = Router();
 
 router.get("/", alimentControllers.getAllAliment);
@@ -22,6 +25,11 @@ router.get("/carbs/:carbs", alimentControllers.getAlimentByCarbs);
 router.get("/fats/:fats", alimentControllers.getAlimentsByFats);
 
 router.get("/proteins/:proteins", alimentControllers.getAlimentByProteins);
+
+router.use(
+  authorization
+  // , verifyEmailConfirmation
+);
 
 router.post(
   "/",

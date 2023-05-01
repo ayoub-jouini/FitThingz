@@ -2,6 +2,8 @@ import { Router } from "express";
 
 import * as coachControllers from "../controllers/coach";
 import fileUpload from "../middlewares/fileUpload";
+import authorization from "../middlewares/authorization";
+import verifyEmailConfirmation from "../middlewares/verifyEmailConfirmation";
 
 const router = Router();
 
@@ -10,6 +12,11 @@ router.get("/", coachControllers.getAllCoachs);
 router.get("/id/:id", coachControllers.getCoachById);
 
 // router.get('/name/:name', coachControllers.getCoachByName);
+
+router.use(
+  authorization
+  // , verifyEmailConfirmation
+);
 
 router.post("/", fileUpload.array("images", 2), coachControllers.createCoach);
 
