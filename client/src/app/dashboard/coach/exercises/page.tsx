@@ -1,84 +1,47 @@
-"use client";
-
 import Link from "next/link";
-import Button from "../../../../components/global/button/Button";
+import axios from "axios";
+import HandleCreateExerciseModal from "../../../../components/modals/handlingModals/HandleCreateExerciseModal";
 
-const exercicesData = [
-  {
-    bodyPart: "Abs",
-    image: "/images/Abs.png",
-  },
-  {
-    bodyPart: "Bicep",
-    image: "/images/Bicep.png",
-  },
-  {
-    bodyPart: "Chest",
-    image: "/images/Chest.png",
-  },
-  {
-    bodyPart: "Calf",
-    image: "/images/Calf.png",
-  },
-  {
-    bodyPart: "Glute",
-    image: "/images/Glute.png",
-  },
-  {
-    bodyPart: "Hamstring",
-    image: "/images/Hamstring.png",
-  },
-  {
-    bodyPart: "IT Band",
-    image: "/images/ITBand.png",
-  },
-  {
-    bodyPart: "Abductors",
-    image: "/images/Abductors.png",
-  },
-  {
-    bodyPart: "Lower Back",
-    image: "/images/LowerBack.png",
-  },
-  {
-    bodyPart: "Lats",
-    image: "/images/Lats.png",
-  },
-  {
-    bodyPart: "Lower Back",
-    image: "/images/LowerBack.png",
-  },
-  {
-    bodyPart: "Traps",
-    image: "/images/Traps.png",
-  },
-];
+const getData = async () => {
+  const options = {
+    method: "GET",
+    url: `https://${process.env.X_RAPIDAPI_HOST}/exercises/bodyPartList`,
+    headers: {
+      "X-RapidAPI-Key": process.env.X_RAPIDAPI_KEY,
+      "X-RapidAPI-Host": process.env.X_RAPIDAPI_HOST,
+    },
+  };
 
-function Exercices() {
-  const handleCreateExercise = () => {};
+  let response;
+  try {
+    response = await axios.request(options);
+  } catch (error) {
+    console.error(error);
+  }
+
+  return response;
+};
+
+async function Exercices() {
+  const bodyParts = await getData();
 
   return (
     <div className="mx-5">
-      <div className="flex justify-end my-7">
-        <Button
-          text="Create Exercice"
-          type="button"
-          handleButton={handleCreateExercise}
-        />
-      </div>
+      <HandleCreateExerciseModal />
       <div className="grid grid-cols-4 gap-5">
-        {exercicesData.map((exercice, key) => (
-          <Link
-            href={`/dashboard/coach/exercises/${exercice.bodyPart}`}
-            key={key}
-            className="w-60 h-44 bg-cover rounded-[55px] "
-            style={{ backgroundImage: `url(${exercice.image})` }}
-          >
-            <div className="bg-black/40 rounded-[55px] w-full h-full text-tertiary flex justify-center items-center font-bold text-xl">
-              {exercice.bodyPart}
-            </div>
-          </Link>
-        ))}
+        {bodyParts &&
+          bodyParts.data.map((bodyPart: string, key: number) => (
+            <Link
+              href={`/dashboard/coach/exercises/${bodyPart}`}
+              key={key}
+              className="w-60 h-44 bg-cover rounded-[55px] "
+              style={{ backgroundImage: `url(/images/${bodyPart})` }}
+            >
+              <div className="bg-black/40 rounded-[55px] w-full h-full text-tertiary flex justify-center items-center font-bold text-xl">
+                {bodyPart}
+              </div>
+            </Link>
+          ))}
       </div>
     </div>
   );

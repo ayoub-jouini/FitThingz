@@ -56,7 +56,7 @@ const ExercicesNavigation: React.FC<Props> = (props) => {
           size="l"
         />
       </div>
-      <CreateExerciceModal />
+      {/* <CreateExerciceModal /> */}
     </div>
   );
 };
