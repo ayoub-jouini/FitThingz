@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
 
 import User, { IUser } from "./User";
-import { IExercice } from "./Exercice";
-import Exercice from "./Exercice";
+import Exercice, { IExercice } from "./Exercice";
 
 interface Jour {
   dayNumber: number;
@@ -26,10 +25,19 @@ const programmeSchema = new Schema<IProgramme>({
   description: { type: String, required: true },
   jours: [
     {
-      type: new Schema<Jour>({
+      type: new Schema({
         dayNumber: { type: Number, required: true },
         exercices: [
-          { type: Schema.Types.ObjectId, ref: Exercice, required: true },
+          {
+            type: new Schema({
+              number: { type: Number, require: true, default: 1 },
+              exercice: {
+                type: Schema.Types.ObjectId,
+                ref: Exercice,
+                require: true,
+              },
+            }),
+          },
         ],
       }),
     },

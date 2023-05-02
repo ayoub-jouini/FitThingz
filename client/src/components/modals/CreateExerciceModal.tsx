@@ -65,6 +65,7 @@ const EditTarificationModal: React.FC<Props> = (props) => {
     } catch (err) {
       console.log(formData);
     }
+    handleCreateExerciseModal();
   };
   return (
     <>
