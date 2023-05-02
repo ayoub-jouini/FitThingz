@@ -25,6 +25,7 @@ const ExercicesTable: React.FC<Props> = (props) => {
         <ExercicesTableRow
           key={key}
           id={d.id}
+          page={page}
           name={d.name}
           bodyPart={d.bodyPart}
           target={d.target}

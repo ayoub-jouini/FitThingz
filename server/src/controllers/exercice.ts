@@ -39,7 +39,7 @@ export const getAllExercices = async (
     const singleexercice: IExercice = {
       _id: exercices[i]._id,
       createur: exercices[i].createur,
-      nom: exercices[i].nom,
+      name: exercices[i].name,
       bodyPart: exercices[i].bodyPart,
       target: exercices[i].target,
       equipment: exercices[i].equipment,
@@ -117,7 +117,7 @@ export const getExerciceByCreator = async (
     const singleexercice: IExercice = {
       _id: exercices[i]._id,
       createur: exercices[i].createur,
-      nom: exercices[i].nom,
+      name: exercices[i].name,
       bodyPart: exercices[i].bodyPart,
       target: exercices[i].target,
       equipment: exercices[i].equipment,
@@ -165,7 +165,7 @@ export const getExercicesByBodyPart = async (
     const singleexercice: IExercice = {
       _id: exercices[i]._id,
       createur: exercices[i].createur,
-      nom: exercices[i].nom,
+      name: exercices[i].name,
       bodyPart: exercices[i].bodyPart,
       target: exercices[i].target,
       equipment: exercices[i].equipment,
@@ -213,7 +213,7 @@ export const getExercicesByTarget = async (
     const singleexercice: IExercice = {
       _id: exercices[i]._id,
       createur: exercices[i].createur,
-      nom: exercices[i].nom,
+      name: exercices[i].name,
       bodyPart: exercices[i].bodyPart,
       target: exercices[i].target,
       equipment: exercices[i].equipment,
@@ -261,7 +261,7 @@ export const getExercicesByEquipment = async (
     const singleexercice: IExercice = {
       _id: exercices[i]._id,
       createur: exercices[i].createur,
-      nom: exercices[i].nom,
+      name: exercices[i].name,
       bodyPart: exercices[i].bodyPart,
       target: exercices[i].target,
       equipment: exercices[i].equipment,
@@ -310,7 +310,55 @@ export const getExercicesByTags = async (
     const singleexercice: IExercice = {
       _id: exercices[i]._id,
       createur: exercices[i].createur,
-      nom: exercices[i].nom,
+      name: exercices[i].name,
+      bodyPart: exercices[i].bodyPart,
+      target: exercices[i].target,
+      equipment: exercices[i].equipment,
+      image: exercices[i].image,
+      gifUrl: exercices[i].gifUrl,
+      tags: exercices[i].tags,
+    };
+    exerciceArray.push(singleexercice);
+  }
+
+  res.json({ exercices: exerciceArray });
+};
+
+export const getExercisesByBodyPartAndCreator = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const bodyPart: string = req.params.bodypart;
+  const id: string = req.params.id;
+
+  const page: number = parseInt(req.query.page as string) || 1;
+  const limit: number = parseInt(req.query.limit as string) || 10;
+
+  let exercices: IExercice[];
+  try {
+    exercices = await Exercice.find({ bodyPart, createur: id })
+      .skip((page - 1) * limit)
+      .limit(limit);
+    if (!exercices) {
+      const error = new HttpError("there is no exercices", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find exercices." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  let exerciceArray: IExercice[] = [];
+  for (let i = 0; i < exercices.length; i++) {
+    const singleexercice: IExercice = {
+      _id: exercices[i]._id,
+      createur: exercices[i].createur,
+      name: exercices[i].name,
       bodyPart: exercices[i].bodyPart,
       target: exercices[i].target,
       equipment: exercices[i].equipment,
@@ -361,7 +409,7 @@ export const createExercice = async (
 
     const createdExercice = new Exercice({
       createur: req.userData._id,
-      nom: exercice.nom,
+      name: exercice.name,
       bodyPart: exercice.bodyPart,
       target: exercice.target,
       equipment: exercice.equipment,
@@ -406,7 +454,7 @@ export const updateExercice = async (
       return next(error);
     }
 
-    existingExercice.nom = exercice.nom;
+    existingExercice.name = exercice.name;
     existingExercice.bodyPart = exercice.bodyPart;
     existingExercice.target = exercice.target;
     existingExercice.equipment = exercice.equipment;

@@ -5,7 +5,7 @@ import User from "./User";
 export interface IExercice {
   _id?: string;
   createur: Schema.Types.ObjectId;
-  nom: string;
+  name: string;
   bodyPart: string;
   target: string;
   equipment: string;
@@ -16,7 +16,7 @@ export interface IExercice {
 
 const exerciceSchema = new Schema<IExercice>({
   createur: { type: Schema.Types.ObjectId, ref: User, required: true },
-  nom: { type: String, required: true },
+  name: { type: String, required: true },
   bodyPart: { type: String, required: true },
   target: { type: String, required: true },
   equipment: { type: String, required: true },

@@ -21,6 +21,11 @@ router.get("/bodypart/:bodypart", exerciceControllers.getExercicesByBodyPart);
 
 router.get("/target/:taget", exerciceControllers.getExercicesByTarget);
 
+router.get(
+  "/bodypart/:bodypart/:id",
+  exerciceControllers.getExercisesByBodyPartAndCreator
+);
+
 router.get("/tags", exerciceControllers.getExercicesByTags);
 
 router.use(
