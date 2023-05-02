@@ -1,6 +1,10 @@
+"use client";
+
 import { useState } from "react";
-import SearchBar from "../global/search/SeachBar";
 import Link from "next/link";
+
+import SearchBar from "../global/search/SeachBar";
+import { useSelector } from "react-redux";
 
 interface Props {
   value: string;
@@ -20,6 +24,8 @@ const CoachNavBar: React.FC<Props> = (props) => {
     handleLogout,
     handleToggleMenu,
   } = props;
+
+  const auth: any = useSelector((state: any) => state.auth);
 
   const [navMenuToggle, setNavMenuToggle] = useState<boolean>(false);
   return (
@@ -48,9 +54,9 @@ const CoachNavBar: React.FC<Props> = (props) => {
           >
             <div
               className="bg-cover rounded-full h-14 w-14"
-              style={{ backgroundImage: "url(/images/Group11234.png)" }}
+              style={{ backgroundImage: `url(${auth.avatar})` }}
             />
-            <p className="">Foulen el fouleni</p>
+            <p className="">{`${auth.prenom} ${auth.nom}`}</p>
             <img
               alt=""
               src="/icons/Vector1.svg"

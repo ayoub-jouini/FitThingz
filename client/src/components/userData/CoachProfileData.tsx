@@ -36,24 +36,14 @@ const tarificationData = [
   },
 ];
 
-const CoachData = {
-  fistName: "Foulen",
-  lastName: "elfouleni",
-  email: "Foulenelfouleni@gmail.com",
-  phone: "28726420",
-  gender: "m",
-  dateofbirth: "01/09/1995",
-  diplome: "ijeza fel 3ouloum al e3lemeya",
-  address: "megrine",
-};
-
 interface Props {
   showEdit: boolean;
   showReview: boolean;
+  coachData: any;
 }
 
 const CoachProfileData: React.FC<Props> = (props) => {
-  const { showEdit, showReview } = props;
+  const { showEdit, showReview, coachData } = props;
 
   const [tarification, setTarification] = useState<number>(0);
 
@@ -86,22 +76,21 @@ const CoachProfileData: React.FC<Props> = (props) => {
   return (
     <div className={`grid-cols-5 gap-5 ${!showReview ? "grid" : "hidden"}`}>
       <CoachProfilePersonalInfo
-        firstName={CoachData.fistName}
-        lastName={CoachData.lastName}
-        email={CoachData.email}
-        phone={CoachData.phone}
-        gender={CoachData.gender}
-        diplome={CoachData.diplome}
-        adress={CoachData.address}
-        birthDay={CoachData.dateofbirth}
+        firstName={coachData.prenom}
+        lastName={coachData.nom}
+        email={coachData.email}
+        phone={coachData.phone}
+        gender={coachData.sexe}
+        adress={coachData.lieu}
+        birthDay={coachData.date_naiss}
         showEdit={showEdit}
       />
       <EditCoachData
-        firstName={CoachData.fistName}
-        lastName={CoachData.lastName}
-        email={CoachData.email}
-        phone={CoachData.phone}
-        adress={CoachData.address}
+        firstName={coachData.prenom}
+        lastName={coachData.nom}
+        email={coachData.email}
+        phone={coachData.phone}
+        adress={coachData.lieu}
         showEdit={showEdit}
       />
       <div className="px-10 py-7 border-2 border-grisPrimary rounded-[45px] col-span-2 ">

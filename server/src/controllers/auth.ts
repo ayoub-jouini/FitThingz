@@ -96,6 +96,9 @@ export const login = async (
 
   res.json({
     id: user._id,
+    nom: user.nom,
+    prenom: user.prenom,
+    avatar: user.avatar,
     type: user.type,
     accessToken,
     refreshToken,

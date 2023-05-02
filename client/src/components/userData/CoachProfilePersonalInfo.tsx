@@ -6,7 +6,6 @@ interface Props {
   adress: string;
   gender: string;
   birthDay: string;
-  diplome: string;
   showEdit: boolean;
 }
 
@@ -19,7 +18,6 @@ const CoachProfilePersonalInfo: React.FC<Props> = (props) => {
     adress,
     gender,
     birthDay,
-    diplome,
     showEdit,
   } = props;
 
@@ -62,10 +60,6 @@ const CoachProfilePersonalInfo: React.FC<Props> = (props) => {
       <div className="flex self-start">
         <p className="text-base text-textPrimary">Email :</p>
         <p className="text-base text-grixSecondary mx-3">{email}</p>
-      </div>
-      <div className="flex self-start my-4">
-        <p className="text-base text-textPrimary">Diploma :</p>
-        <p className="text-base text-grixSecondary mx-3">{diplome}</p>
       </div>
     </div>
   );

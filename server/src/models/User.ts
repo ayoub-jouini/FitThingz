@@ -25,7 +25,11 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   phone: { type: Number, required: true, unique: true },
-  avatar: { type: String },
+  avatar: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/dxh0raesu/image/upload/v1683046554/Group11234_mwbvq8.png",
+  },
   lieu: { type: String, required: true },
   type: { type: String, required: true },
   emailConfirmed: { type: Boolean, default: false },

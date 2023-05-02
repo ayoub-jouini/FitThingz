@@ -21,6 +21,9 @@ export const checkAuth = () => async (dispatch: any) => {
   if (typeof window !== "undefined") {
     let id: string | null = localStorage.getItem("id");
     let type: string | null = localStorage.getItem("type");
+    let nom: string | null = localStorage.getItem("nom");
+    let prenom: string | null = localStorage.getItem("prenom");
+    let avatar: string | null = localStorage.getItem("avatar");
     let accessToken: string | null = localStorage.getItem("accessToken");
     let refreshToken: string | null = localStorage.getItem("refreshToken");
     let accessTokenExpiresIn: string | Date | null = localStorage.getItem(
@@ -31,6 +34,9 @@ export const checkAuth = () => async (dispatch: any) => {
     );
     console.log(RefreshTokenExpiresIn);
     if (
+      !nom ||
+      !prenom ||
+      !avatar ||
       !refreshToken ||
       !type ||
       !accessToken ||
@@ -61,6 +67,9 @@ export const checkAuth = () => async (dispatch: any) => {
       authActions.setCredentials({
         id,
         type,
+        nom,
+        prenom,
+        avatar,
         accessToken,
         refreshToken,
         accessTokenExpiresIn,

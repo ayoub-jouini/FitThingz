@@ -16,6 +16,9 @@ export const login =
 
       localStorage.setItem("id", response.data.id);
       localStorage.setItem("type", response.data.type);
+      localStorage.setItem("nom", response.data.nom);
+      localStorage.setItem("prenom", response.data.prenom);
+      localStorage.setItem("avatar", response.data.avatar);
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem(
@@ -30,6 +33,9 @@ export const login =
         authActions.setCredentials({
           id: response.data.id,
           type: response.data.type,
+          nom: response.data.nom,
+          prenom: response.data.prenom,
+          avatar: response.data.avatar,
           accessToken: response.data.accessToken,
           refreshToken: response.data.refreshToken,
           accessTokenExpiresIn: response.data.accessTokenExpiresIn,
@@ -86,6 +92,9 @@ export const registre = (data: IRegistre) => async (dispatch: any) => {
 
     localStorage.setItem("id", response.data.id);
     localStorage.setItem("type", response.data.type);
+    localStorage.setItem("nom", response.data.nom);
+    localStorage.setItem("prenom", response.data.prenom);
+    localStorage.setItem("avatar", response.data.avatar);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     localStorage.setItem(
@@ -100,6 +109,9 @@ export const registre = (data: IRegistre) => async (dispatch: any) => {
       authActions.setCredentials({
         id: response.data.id,
         type: response.data.type,
+        nom: response.data.nom,
+        prenom: response.data.prenom,
+        avatar: response.data.avatar,
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
         accessTokenExpiresIn: response.data.accessTokenExpiresIn,
@@ -118,6 +130,9 @@ export const logout = () => async (dispatch: any) => {
 
     localStorage.removeItem("id");
     localStorage.removeItem("type");
+    localStorage.removeItem("nom");
+    localStorage.removeItem("prenom");
+    localStorage.removeItem("avatar");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessTokenExpiresIn");

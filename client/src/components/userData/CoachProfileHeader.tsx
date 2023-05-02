@@ -1,6 +1,9 @@
-interface Props {}
+interface Props {
+  coachData: any;
+}
 
 const CoachProfileHeader: React.FC<Props> = (props) => {
+  const { coachData } = props;
   return (
     <div className="h-72 border-2 border-grisPrimary rounded-[45px] grid grid-cols-3 py-5 px-20 gap-20">
       <div className="border-r-2 border-grisPrimary flex justify-between items-center col-span-2">
@@ -9,7 +12,7 @@ const CoachProfileHeader: React.FC<Props> = (props) => {
           style={{ backgroundImage: "url(/images/Group11234.png)" }}
         />
         <div className="w-9/12">
-          <p className="text-2xl text-textPrimary">Foulen el Fouleni</p>
+          <p className="text-2xl text-textPrimary">{`${coachData.prenom} ${coachData.nom}`}</p>
           <div className="flex ">
             <div className="flex flex-col items-center ">
               <p className="text-lg text-textPrimary">4</p>
