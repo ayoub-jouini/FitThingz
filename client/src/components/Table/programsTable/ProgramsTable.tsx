@@ -1,32 +1,34 @@
+"use client";
+
+import axios from "axios";
 import ProgramsTableRow from "./ProgramsTableRow";
+import { useEffect, useState } from "react";
 
-interface Props {}
-
-const data = [
-  {
-    id: 1,
-    name: "program 1",
-    type: "lose weight",
-    duree: "14 days",
-    tags: ["tag1", "tag2", "tag3"],
-  },
-  {
-    id: 1,
-    name: "program 1",
-    type: "lose weight",
-    duree: "14 days",
-    tags: ["tag1", "tag2", "tag3"],
-  },
-  {
-    id: 1,
-    name: "program 1",
-    type: "lose weight",
-    duree: "14 days",
-    tags: ["tag1", "tag2", "tag3"],
-  },
-];
+interface Props {
+  creator: string | null;
+}
 
 const ProgramsTable: React.FC<Props> = (props) => {
+  const { creator } = props;
+
+  const [programs, setPrograms] = useState<any>();
+
+  useEffect(() => {
+    const getData = async () => {
+      const options = {
+        method: "GET",
+        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/creator/${creator}`,
+      };
+
+      try {
+        const response = await axios.request(options);
+        setPrograms(response.data.programmes);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getData();
+  }, []);
   return (
     <div className=" ">
       <div className="w-full grid grid-cols-5 px-10 h-24 content-center justify-items-center">
@@ -36,16 +38,17 @@ const ProgramsTable: React.FC<Props> = (props) => {
         <div className="text-textPrimary">Tags</div>
         <div className=""></div>
       </div>
-      {data.map((d, key) => (
-        <ProgramsTableRow
-          key={key}
-          id={d.id}
-          name={d.name}
-          type={d.type}
-          duree={d.duree}
-          tags={d.tags}
-        />
-      ))}
+      {programs &&
+        programs.map((program: any, key: any) => (
+          <ProgramsTableRow
+            key={key}
+            id={program.id}
+            name={program.nom}
+            type={program.type}
+            duree={program.duree}
+            tags={program.tags}
+          />
+        ))}
     </div>
   );
 };

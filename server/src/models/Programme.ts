@@ -12,6 +12,7 @@ export interface IProgramme {
   _id?: string;
   createur: Schema.Types.ObjectId;
   nom: string;
+  type: string;
   description: string;
   jours: Jour[];
   duree: number;
@@ -22,6 +23,7 @@ export interface IProgramme {
 const programmeSchema = new Schema<IProgramme>({
   createur: { type: Schema.Types.ObjectId, ref: User, required: true },
   nom: { type: String, required: true },
+  type: { type: String, required: true },
   description: { type: String, required: true },
   jours: [
     {

@@ -39,6 +39,7 @@ export const getAllProgrammes = async (
       _id: programmes[i]._id,
       createur: programmes[i].createur,
       nom: programmes[i].nom,
+      type: programmes[i].type,
       description: programmes[i].description,
       jours: programmes[i].jours,
       duree: programmes[i].duree,
@@ -116,6 +117,7 @@ export const getProgrammesByCreator = async (
       _id: programmes[i]._id,
       createur: programmes[i].createur,
       nom: programmes[i].nom,
+      type: programmes[i].type,
       description: programmes[i].description,
       jours: programmes[i].jours,
       duree: programmes[i].duree,
@@ -160,6 +162,7 @@ export const getProgrammesByExercices = async (
       _id: programmes[i]._id,
       createur: programmes[i].createur,
       nom: programmes[i].nom,
+      type: programmes[i].type,
       description: programmes[i].description,
       jours: programmes[i].jours,
       duree: programmes[i].duree,
@@ -206,6 +209,7 @@ export const getProgrammesByTags = async (
       _id: programmes[i]._id,
       createur: programmes[i].createur,
       nom: programmes[i].nom,
+      type: programmes[i].type,
       description: programmes[i].description,
       jours: programmes[i].jours,
       duree: programmes[i].duree,
@@ -236,6 +240,7 @@ export const createProgramme = async (
     createdProgramme = new Programme({
       createur: req.userData._id,
       nom: programme.nom,
+      type: programme.type,
       description: programme.description,
       duree: programme.duree,
       image: programme.image,
@@ -322,6 +327,7 @@ export const updateProgramme = async (
     }
 
     existingProgramme.nom = programme.nom;
+    existingProgramme.type = programme.type;
     existingProgramme.description = programme.description;
     existingProgramme.image = programme.image;
     existingProgramme.tags = programme.tags;

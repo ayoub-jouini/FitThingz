@@ -9,12 +9,12 @@ import TextArea from "../global/textArea/TextArea";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  showCreateExerciseModal: boolean;
-  handleCreateExerciseModal: () => void;
+  showCreateProgramModal: boolean;
+  handleCreateProgramModal: () => void;
 }
 
 const CreateProgramModal: React.FC<Props> = (props) => {
-  const { showCreateExerciseModal, handleCreateExerciseModal } = props;
+  const { showCreateProgramModal, handleCreateProgramModal } = props;
 
   const auth: any = useSelector((state: any) => state.auth);
 
@@ -63,7 +63,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
           },
         }
       );
-      handleCreateExerciseModal();
+      handleCreateProgramModal();
       router.push(
         `/dashboard/coach/programs/${response.data.id}/editexercises/`
       );
@@ -73,7 +73,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
   };
   return (
     <>
-      {showCreateExerciseModal && (
+      {showCreateProgramModal && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative h-5/6 w-4/6 my-6 mx-auto max-w-3xl">

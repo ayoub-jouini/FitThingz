@@ -1,47 +1,42 @@
 "use client";
 
-import Link from "next/link";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { useState } from "react";
+import Button from "../global/button/Button";
+import CreateProgramModal from "../modals/CreateProgramModal";
 
 interface Props {}
 
 const ProgramsNavigation: React.FC<Props> = (props) => {
-  const page = useSelectedLayoutSegment();
+  const [showCreateProgramModal, setShowCreateProgramModal] =
+    useState<boolean>(false);
+
+  const handleCreateProgramModal = () => {
+    setShowCreateProgramModal(!showCreateProgramModal);
+  };
 
   return (
-    <div className="w-full border-2 border-grisPrimary h-14 rounded-[45px] flex my-10">
-      <Link
-        href={`/dashboard/coach/athletes/`}
-        className={`h-14 rounded-[45px] flex items-center justify-center w-1/2 ${
-          !page && "bg-primary text-tertiary"
-        }`}
-      >
-        Informations
-      </Link>
-      <Link
-        href={`/dashboard/coach/athletes/`}
-        className={`h-14 rounded-[45px] flex items-center justify-center w-1/2 ${
-          page === "programs" && "bg-primary text-tertiary"
-        }`}
-      >
+    <div className="w-full  h-14 flex justify-between my-10 items-center">
+      <div className="h-14 rounded-[45px] w-52 flex items-center justify-center bg-primary text-tertiary">
         Programs
-      </Link>
-      <Link
-        href={`/dashboard/coach/athletes/`}
-        className={`h-14 rounded-[45px] flex items-center justify-center w-1/2 ${
-          page === "programs" && "bg-primary text-tertiary"
-        }`}
-      >
-        Programs
-      </Link>
-      <Link
-        href={`/dashboard/coach/athletes/`}
-        className={`h-14 rounded-[45px] flex items-center justify-center w-1/2 ${
-          page === "programs" && "bg-primary text-tertiary"
-        }`}
-      >
-        Programs
-      </Link>
+      </div>
+      <div className="flex">
+        <div
+          className={`rounded-xl mx-5 text-primary font-medium bg-tertiary border-primary border-2  cursor-pointer h-12 w-48 text-base justify-center items-center flex`}
+        >
+          <img alt="" src="/icons/editicon.svg" className="mx-2" />
+          <p className="mx-2">Edit</p>
+        </div>
+        <Button
+          handleButton={handleCreateProgramModal}
+          text="Create Program"
+          type="button"
+          size="l"
+        />
+      </div>
+      <CreateProgramModal
+        showCreateProgramModal={showCreateProgramModal}
+        handleCreateProgramModal={handleCreateProgramModal}
+      />
     </div>
   );
 };

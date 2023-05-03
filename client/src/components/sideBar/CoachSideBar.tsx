@@ -59,8 +59,8 @@ const CoachSideBar: React.FC<Props> = (props) => {
         </div>
       </div>
       <CreateProgramModal
-        showCreateExerciseModal={showCreateProgramModal}
-        handleCreateExerciseModal={handleCreateProgramModal}
+        showCreateProgramModal={showCreateProgramModal}
+        handleCreateProgramModal={handleCreateProgramModal}
       />
 
       {

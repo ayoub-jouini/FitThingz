@@ -18,7 +18,7 @@ const ProgramsTableRow: React.FC<Props> = (props) => {
     >
       <div className="text-textPrimary">{name}</div>
       <div className="text-textPrimary">{type}</div>
-      <div className="text-textPrimary">{duree}</div>
+      <div className="text-textPrimary">{duree} Days</div>
       <div className="text-textPrimary">
         {tags.map((tag, key) => (
           <div
