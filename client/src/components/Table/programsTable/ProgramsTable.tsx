@@ -42,7 +42,7 @@ const ProgramsTable: React.FC<Props> = (props) => {
         programs.map((program: any, key: any) => (
           <ProgramsTableRow
             key={key}
-            id={program.id}
+            id={program._id}
             name={program.nom}
             type={program.type}
             duree={program.duree}
