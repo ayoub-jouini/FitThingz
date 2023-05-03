@@ -43,8 +43,8 @@ const programmeSchema = new Schema<IProgramme>({
     },
   ],
   duree: { type: Number, required: true },
-  image: { type: String, required: true },
-  tags: [{ type: String, required: true }],
+  image: { type: String },
+  tags: [{ type: String }],
 });
 
 export default model<IProgramme>("Programme", programmeSchema);

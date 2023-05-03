@@ -231,8 +231,9 @@ export const createProgramme = async (
     return next(error);
   }
 
+  let createdProgramme;
   try {
-    const createdProgramme = new Programme({
+    createdProgramme = new Programme({
       createur: req.userData._id,
       nom: programme.nom,
       description: programme.description,
@@ -249,7 +250,7 @@ export const createProgramme = async (
     return next(error);
   }
 
-  res.json({ message: "created!" });
+  res.json({ id: createdProgramme.id });
 };
 
 export const updateExercices = async (

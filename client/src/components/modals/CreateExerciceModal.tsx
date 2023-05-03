@@ -11,7 +11,7 @@ interface Props {
   handleCreateExerciseModal: () => void;
 }
 
-const EditTarificationModal: React.FC<Props> = (props) => {
+const CreateExerciseModal: React.FC<Props> = (props) => {
   const { showCreateExerciseModal, handleCreateExerciseModal } = props;
 
   const auth: any = useSelector((state: any) => state.auth);
@@ -179,4 +179,4 @@ const EditTarificationModal: React.FC<Props> = (props) => {
   );
 };
 
-export default EditTarificationModal;
+export default CreateExerciseModal;

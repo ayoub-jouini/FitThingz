@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import CoachSideBarMenu from "./CoachSideBarMenu";
 import ResponsiveSideBarMenu from "./ResponsiveSideBarMenu";
+import CreateProgramModal from "../modals/CreateProgramModal";
 
 interface Props {
   handleLogout: () => void;
@@ -18,6 +22,13 @@ const CoachSideBar: React.FC<Props> = (props) => {
     setDarkModeToggle,
   } = props;
 
+  const [showCreateProgramModal, setShowCreateProgramModal] =
+    useState<boolean>(false);
+
+  const handleCreateProgramModal = () => {
+    setShowCreateProgramModal(!showCreateProgramModal);
+  };
+
   return (
     <>
       <div className="shadow rounded-[48px] w-10/12 h-full hidden md:flex flex-col items-center justify-around">
@@ -28,7 +39,10 @@ const CoachSideBar: React.FC<Props> = (props) => {
           <CoachSideBarMenu />
         </div>
         <div className="w-full flex flex-col items-center justify-between h-60">
-          <div className="bg-primary rounded-[30px] w-10/12 h-40 p-6 flex flex-col justify-between items-start">
+          <div
+            onClick={handleCreateProgramModal}
+            className="bg-primary rounded-[30px] w-10/12 h-40 p-6 flex flex-col justify-between items-start cursor-pointer"
+          >
             <img alt="" src="/icons/documentwhite.svg" className="h-7" />
             <p className="font-semibold text-sm text-white">Create Program</p>
             <p className="font-semibold text-2xs text-white">
@@ -44,6 +58,10 @@ const CoachSideBar: React.FC<Props> = (props) => {
           </div>
         </div>
       </div>
+      <CreateProgramModal
+        showCreateExerciseModal={showCreateProgramModal}
+        handleCreateExerciseModal={handleCreateProgramModal}
+      />
 
       {
         //responsive navbar
