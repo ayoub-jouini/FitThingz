@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import MyExercisesItem from "./MyExercisesItem";
 
 interface Props {
   bodypart: string;
@@ -33,18 +34,13 @@ const ExercisesList: React.FC<Props> = (props) => {
     };
     getData();
   }, []);
+  console.log(exercises);
 
   return (
     <>
       {exercises &&
         exercises.map((exercise: any, key: any) => (
-          <div
-            key={key}
-            className="border-2 border-grisPrimary rounded-[54px] px-5 py-2 flex justify-between items-center my-2 "
-          >
-            <p className="">{exercise.name}</p>
-            <img alt="" src="/icons/menuicon.svg" />
-          </div>
+          <MyExercisesItem name={exercise.name} key={key} id={exercise._id} />
         ))}
     </>
   );

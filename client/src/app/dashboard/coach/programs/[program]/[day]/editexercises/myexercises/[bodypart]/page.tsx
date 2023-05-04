@@ -1,9 +1,9 @@
-import ExercisesList from "../../../../../../../../../components/Table/exercisesList/ExercisesList";
+import MyExercisesList from "../../../../../../../../../components/Table/exercisesList/MyExercisesList";
 
 export default async function BodyPart({ params }: { params: any }) {
   return (
-    <div className="w-full h-full overflow-y-scroll scrollbar-hide">
-      <ExercisesList bodypart={params.bodypart} />
+    <div className="w-full h-full  scrollbar-hide">
+      <MyExercisesList bodypart={params.bodypart} />
     </div>
   );
 }

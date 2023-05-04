@@ -1,5 +1,5 @@
 import axios from "axios";
-import ProgramHeader from "../../../../../../components/programHeader/ProgramHeader";
+import ProgramHeader from "../../../../../../components/program/ProgramHeader";
 
 const getData = async (id: string) => {
   const options = {

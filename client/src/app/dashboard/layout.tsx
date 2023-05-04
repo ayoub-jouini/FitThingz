@@ -13,9 +13,9 @@ export default function DashbordLayout({
 
   const router = useRouter();
 
-  // if (!auth.accessToken) {
-  //   router.push("/login");
-  // }
+  if (!auth.accessToken) {
+    router.push("/login");
+  }
 
   // useEffect(() => {
 
