@@ -75,10 +75,16 @@ const CreateExerciseModal: React.FC<Props> = (props) => {
             <div className="relative h-5/6 w-4/6 my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-2 py-5 px-20 border-primary rounded-[55px] shadow-lg relative flex flex-col justify-center items-center w-full bg-tertiary outline-none focus:outline-none">
-                <div className="my-3">
-                  <h2 className="text-primary font-semibold text-3xl ">
+                <div className="my-3 grid grid-cols-5 w-full">
+                  <h2 className="text-primary font-semibold text-3xl text-center col-start-2 col-end-5">
                     Create Exercise
                   </h2>
+                  <div
+                    className="col-start-5 col-end-6 justify-self-end text-xl text-primary font-semibold cursor-pointer"
+                    onClick={handleCreateExerciseModal}
+                  >
+                    X
+                  </div>
                 </div>
                 <form
                   onSubmit={handleSubmit}

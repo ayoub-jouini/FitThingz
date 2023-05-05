@@ -4,6 +4,7 @@ interface Props {
   days: number;
   selectedDay: number;
   program: string;
+  day: string;
 }
 
 const dayElements = (nb: number, program: string, selectedDay: number) => {
@@ -25,13 +26,25 @@ const dayElements = (nb: number, program: string, selectedDay: number) => {
 };
 
 const ProgramHeader: React.FC<Props> = (props) => {
-  const { days, selectedDay, program } = props;
+  const { days, selectedDay, program, day } = props;
 
   const elements = dayElements(days, program, selectedDay);
 
   return (
     <div className="">
-      <h1 className="text-primary text-2xl text-center my-10">Fit And Firm</h1>
+      <div className="grid grid-cols-3 items-center">
+        <div className=""></div>
+        <h1 className="text-primary text-2xl text-center my-10">
+          Fit And Firm
+        </h1>
+        <Link
+          href={`/dashboard/coach/programs/${program}/${day}/editexercises`}
+          className={`justify-self-end flex rounded-xl text-primary font-medium bg-tertiary border-primary border-2  cursor-pointer h-12 w-48 text-base justify-center items-center `}
+        >
+          <img alt="" src="/icons/editicon.svg" className="mx-2" />
+          <p className="mx-2">Edit</p>
+        </Link>
+      </div>
       <div className="border-2 border-grisPrimary p-10 rounded-[45px]">
         <p className="text-l text-grixSecondary">
           Our lose weight program is designed to help you shed those extra

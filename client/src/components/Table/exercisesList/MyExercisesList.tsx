@@ -40,7 +40,13 @@ const ExercisesList: React.FC<Props> = (props) => {
     <>
       {exercises &&
         exercises.map((exercise: any, key: any) => (
-          <MyExercisesItem name={exercise.name} key={key} id={exercise._id} />
+          <MyExercisesItem
+            name={exercise.name}
+            key={key}
+            id={exercise._id}
+            number={10}
+            type="local"
+          />
         ))}
     </>
   );

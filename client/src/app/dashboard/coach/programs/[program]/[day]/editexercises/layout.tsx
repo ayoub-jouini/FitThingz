@@ -10,7 +10,7 @@ export default async function programLayout({
 }) {
   return (
     <div className="grid grid-cols-3 gap-5">
-      <DragAndDropProvider>
+      <DragAndDropProvider program={params.program} day={params.day}>
         <div className="flex flex-col">
           <EditProgramNavigation program={params.program} day={params.day} />
           <div className="border-2 border-grisPrimary rounded-[45px] mt-5 w-full h-[32.813rem] p-5">

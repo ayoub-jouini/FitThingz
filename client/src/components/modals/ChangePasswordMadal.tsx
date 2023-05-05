@@ -38,10 +38,16 @@ const CahngePasswordModal: React.FC<Props> = (props) => {
             <div className="relative h-5/6 w-4/6 my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-2 h-full border-primary rounded-[55px] shadow-lg relative flex flex-col justify-center items-center w-full bg-tertiary outline-none focus:outline-none">
-                <div className="my-3">
-                  <h2 className="text-primary font-semibold text-3xl ">
+                <div className="my-3 grid grid-cols-12 w-2/3">
+                  <h2 className="text-primary font-semibold text-3xl text-center col-start-2 col-end-12">
                     New Password
                   </h2>
+                  <div
+                    className="col-start-12 col-end-13 justify-self-end text-xl text-primary font-semibold cursor-pointer"
+                    onClick={HandleShowPasswordModal}
+                  >
+                    X
+                  </div>
                 </div>
                 <form
                   className="w-2/3 flex flex-col items-center"

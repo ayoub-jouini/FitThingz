@@ -19,6 +19,8 @@ router.get("/exercice", programmeControllers.getProgrammesByExercices);
 
 router.get("/tags/:tags", programmeControllers.getProgrammesByTags);
 
+router.get("/exercices/:id/:jour", programmeControllers.getExercisesByDay);
+
 router.use(
   authorization
   // , verifyEmailConfirmation

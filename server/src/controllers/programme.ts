@@ -222,6 +222,37 @@ export const getProgrammesByTags = async (
   res.json({ programme: programmesArray });
 };
 
+export const getExercisesByDay = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+  const day: string = req.params.jour;
+  let programme: IProgramme;
+  try {
+    programme = await Programme.findById(id).populate("createur");
+    if (!programme) {
+      const error = new HttpError("there is no programme", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find programmes." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  const jours = programme.jours;
+  let exercices: any = [];
+
+  exercices = jours.filter((jour) => jour.dayNumber.toString() === day);
+
+  res.json({ exercices: exercices[0].exercices });
+};
+
 export const createProgramme = async (
   req: AuthReq,
   res: Response,
@@ -235,6 +266,14 @@ export const createProgramme = async (
     return next(error);
   }
 
+  let jours = [];
+  for (let i = 0; i < programme.duree; i++) {
+    const jour = {
+      dayNumber: i + 1,
+    };
+    jours.push(jour);
+  }
+
   let createdProgramme;
   try {
     createdProgramme = new Programme({
@@ -242,6 +281,7 @@ export const createProgramme = async (
       nom: programme.nom,
       type: programme.type,
       description: programme.description,
+      jours: jours,
       duree: programme.duree,
       image: programme.image,
       tags: programme.tags,
@@ -277,13 +317,7 @@ export const updateExercices = async (
       const error = new HttpError("there is no programme", 404);
       return next(error);
     }
-    for (let exercice in exercices) {
-      const singleexercice: IExercice = await Exercice.findById(exercice);
-      if (!singleexercice) {
-        const error = new HttpError("exercice does not exist", 404);
-        return next(error);
-      }
-    }
+
     for (let i = 0; i < programme.jours.length; i++) {
       if (programme.jours[i].dayNumber === Number(jour)) {
         programme.jours[i].exercices = exercices;

@@ -6,12 +6,19 @@ import { CSS } from "@dnd-kit/utilities";
 interface Props {
   id: string;
   name: string;
+  type: string;
+  number: number;
 }
 
 const MyExercisesItem: React.FC<Props> = (props) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: props.name,
-    data: { name: props.name, id: props.id },
+    data: {
+      name: props.name,
+      id: props.id,
+      type: props.type,
+      nb: props.number,
+    },
   });
   return (
     <div

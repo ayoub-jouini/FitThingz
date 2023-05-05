@@ -21,12 +21,16 @@ const CreateProgramModal: React.FC<Props> = (props) => {
   const router = useRouter();
 
   const [name, setName] = useState<string>("");
+  const [type, setType] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [tags, setTags] = useState<string>("");
   const [duration, setDuration] = useState<number>(1);
 
   const changeName = (event: any) => {
     setName(event.target.value);
+  };
+  const changeType = (event: any) => {
+    setType(event.target.value);
   };
   const changeDescription = (event: any) => {
     setDescription(event.target.value);
@@ -53,6 +57,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
         `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/`,
         {
           nom: name,
+          type,
           description,
           tags,
           duree: duration,
@@ -79,10 +84,16 @@ const CreateProgramModal: React.FC<Props> = (props) => {
             <div className="relative h-5/6 w-4/6 my-6 mx-auto max-w-3xl">
               {/*content*/}
               <div className="border-2 py-5 px-20 border-primary rounded-[55px] shadow-lg relative flex flex-col justify-center items-center w-full bg-tertiary outline-none focus:outline-none">
-                <div className="my-3">
-                  <h2 className="text-primary font-semibold text-3xl ">
+                <div className="my-3 grid grid-cols-5 w-full">
+                  <h2 className="text-primary font-semibold text-3xl text-center col-start-2 col-end-5">
                     Create Program
                   </h2>
+                  <div
+                    className="col-start-5 col-end-6 justify-self-end text-xl text-primary font-semibold cursor-pointer"
+                    onClick={handleCreateProgramModal}
+                  >
+                    X
+                  </div>
                 </div>
                 <form
                   onSubmit={handleSubmit}
@@ -98,6 +109,15 @@ const CreateProgramModal: React.FC<Props> = (props) => {
                         placeholder="Name"
                         value={name}
                         handleChange={changeName}
+                      />
+                      <Input
+                        type="text"
+                        height="h-12 w-full"
+                        width="w-full my-3"
+                        label="Type"
+                        placeholder="Type"
+                        value={type}
+                        handleChange={changeType}
                       />
                       <TextArea
                         height="w-full"

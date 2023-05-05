@@ -32,6 +32,7 @@ export default async function programLayout({
     <div className="m-5">
       {programData && (
         <ProgramHeader
+          day={params.day}
           days={programData.data.programme.duree}
           selectedDay={params.day}
           program={params.program}

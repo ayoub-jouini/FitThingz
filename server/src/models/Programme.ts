@@ -5,7 +5,14 @@ import Exercice, { IExercice } from "./Exercice";
 
 interface Jour {
   dayNumber: number;
-  exercices: IExercice[];
+  exercices: [
+    {
+      exercise: IExercice;
+      number: number;
+      type: string;
+      name: string;
+    }
+  ];
 }
 
 export interface IProgramme {
@@ -36,8 +43,9 @@ const programmeSchema = new Schema<IProgramme>({
               exercice: {
                 type: Schema.Types.ObjectId,
                 ref: Exercice,
-                require: true,
               },
+              name: { type: String, required: true },
+              type: { type: String, required: true },
             }),
           },
         ],
