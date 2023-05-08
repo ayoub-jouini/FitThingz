@@ -4,7 +4,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
-  id: string;
+  _id: string;
   name: string;
   type: string;
   number: number;
@@ -12,12 +12,12 @@ interface Props {
 
 const MyExercisesItem: React.FC<Props> = (props) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: props.name,
+    id: props._id,
     data: {
       name: props.name,
-      id: props.id,
+      _id: props._id,
       type: props.type,
-      nb: props.number,
+      number: props.number,
     },
   });
   return (

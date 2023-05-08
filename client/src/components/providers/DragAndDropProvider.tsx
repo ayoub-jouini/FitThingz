@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface Items {
-  id: string;
+  _id: string;
   name: string;
   number: number;
   type: string;
@@ -34,6 +34,7 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
       try {
         response = await axios.request(options);
         setCartItems(response.data.exercices);
+        console.error(response.data.exercices);
       } catch (error) {
         console.error(error);
       }
@@ -43,7 +44,7 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
 
   const addItemsToCart = (e: DragEndEvent) => {
     const newItem: Items = {
-      id: e.active.data.current?.id,
+      _id: e.active.data.current?._id,
       name: e.active.data.current?.name,
       number: e.active.data.current?.number,
       type: e.active.data.current?.type,
@@ -54,8 +55,11 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
     setCartItems(temp);
   };
 
-  const removeItemFromCart = (id: string) => {
-    setCartItems(cartItems.filter((cartItem) => cartItem.id !== id));
+  const removeItemFromCart = (idx: number) => {
+    const newCartItems = cartItems;
+    newCartItems.splice(idx, 1);
+    setCartItems([...newCartItems]);
+    console.log(newCartItems);
   };
 
   return (
@@ -64,9 +68,9 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
       <ProgramDroppable
         program={program}
         day={day}
-        items={cartItems}
-        removeItemFromCart={removeItemFromCart}
+        cartItems={cartItems}
         setCartItems={setCartItems}
+        removeItemFromCart={removeItemFromCart}
       />
     </DndContext>
   );

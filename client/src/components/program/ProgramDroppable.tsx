@@ -7,7 +7,7 @@ import axios from "axios";
 import DroppableItem from "./DroppableItem";
 
 interface Items {
-  id: string;
+  _id: string;
   name: string;
   number: number;
   type: string;
@@ -16,35 +16,35 @@ interface Items {
 interface Props {
   program: string;
   day: string;
-  items: Items[];
-  removeItemFromCart: (id: string) => void;
+  cartItems: Items[];
   setCartItems: (item: any) => void;
+  removeItemFromCart: (idx: number) => void;
 }
 
 const ProgramDroppable: React.FC<Props> = (props) => {
+  const { program, day, cartItems, setCartItems, removeItemFromCart } = props;
+
   const auth: any = useSelector((state: any) => state.auth);
 
   const { setNodeRef } = useDroppable({
     id: "cart-droppable",
   });
 
-  const handleChangeNb = () => {};
-
   const handleSave = async (event: any) => {
     let exercises = [];
-    for (let i = 0; i < props.items.length; i++) {
+    for (let i = 0; i < cartItems.length; i++) {
       const exercise = {
-        number: props.items[i].number,
-        name: props.items[i].name,
-        type: props.items[i].type,
-        exercice: props.items[i].id,
+        number: cartItems[i].number,
+        name: cartItems[i].name,
+        type: cartItems[i].type,
+        _id: cartItems[i]._id,
       };
       exercises.push(exercise);
     }
 
     try {
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/exercices/${props.program}/${props.day}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/exercices/${program}/${day}`,
         {
           exercices: exercises,
         },
@@ -54,7 +54,6 @@ const ProgramDroppable: React.FC<Props> = (props) => {
           },
         }
       );
-      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -67,27 +66,28 @@ const ProgramDroppable: React.FC<Props> = (props) => {
     >
       <div
         className={`overflow-y-scroll  h-full w-full flex flex-col  items-center ${
-          props.items.length === 0 ? "justify-center" : "justify-start"
+          cartItems.length === 0 ? "justify-center" : "justify-start"
         }`}
       >
         <div className="w-5/6 flex justify-end">
           <Button handleButton={handleSave} text="Save" type="button" />
         </div>
-        {props.items.length === 0 && (
+        {cartItems.length === 0 && (
           <p className="text-textPrimary text-base">
             Drag here to create a Program
           </p>
         )}
 
-        {props.items.map((item, key) => (
+        {cartItems.map((item, key) => (
           <DroppableItem
             key={key}
-            id={item.id}
+            idx={key}
+            _id={item._id}
             name={item.name}
             number={item.number}
-            removeItemFromCart={props.removeItemFromCart}
-            setCartItems={props.setCartItems}
-            cartItems={props.items}
+            setCartItems={setCartItems}
+            cartItems={cartItems}
+            removeItemFromCart={removeItemFromCart}
           />
         ))}
       </div>

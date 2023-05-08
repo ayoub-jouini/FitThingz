@@ -37,7 +37,7 @@ const CoachNavBar: React.FC<Props> = (props) => {
             <input
               type="checkbox"
               value=""
-              onClick={() => setDarkModeToggle(!darkModeToggle)}
+              onChange={() => setDarkModeToggle(!darkModeToggle)}
               className="sr-only peer"
               checked={darkModeToggle}
             />

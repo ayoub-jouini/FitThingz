@@ -43,7 +43,7 @@ const ExercisesList: React.FC<Props> = (props) => {
           <MyExercisesItem
             name={exercise.name}
             key={key}
-            id={exercise._id}
+            _id={exercise._id}
             number={10}
             type="local"
           />
