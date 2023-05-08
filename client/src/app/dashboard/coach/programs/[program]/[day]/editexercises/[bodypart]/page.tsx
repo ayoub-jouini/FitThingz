@@ -1,3 +1,4 @@
+import MyExercisesItem from "../../../../../../../../components/Table/exercisesList/MyExercisesItem";
 import axios from "axios";
 
 const getData = async (page: string) => {
@@ -28,13 +29,13 @@ export default async function BodyPart({ params }: { params: any }) {
     <div className="w-full h-full overflow-y-scroll scrollbar-hide">
       {exercises &&
         exercises.data.map((exercise: any, key: any) => (
-          <div
+          <MyExercisesItem
+            name={exercise.name}
             key={key}
-            className="border-2 border-grisPrimary rounded-[54px] px-5 py-2 flex justify-between items-center my-2 "
-          >
-            <p className="">{exercise.name}</p>
-            <img alt="" src="/icons/menuicon.svg" />
-          </div>
+            _id={exercise.id.toString()}
+            number={10}
+            type="library"
+          />
         ))}
     </div>
   );

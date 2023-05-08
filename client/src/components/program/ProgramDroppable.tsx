@@ -7,7 +7,7 @@ import axios from "axios";
 import DroppableItem from "./DroppableItem";
 
 interface Items {
-  _id: string;
+  exerciseId: string;
   name: string;
   number: number;
   type: string;
@@ -37,7 +37,7 @@ const ProgramDroppable: React.FC<Props> = (props) => {
         number: cartItems[i].number,
         name: cartItems[i].name,
         type: cartItems[i].type,
-        _id: cartItems[i]._id,
+        exerciseId: cartItems[i].exerciseId,
       };
       exercises.push(exercise);
     }
@@ -82,7 +82,7 @@ const ProgramDroppable: React.FC<Props> = (props) => {
           <DroppableItem
             key={key}
             idx={key}
-            _id={item._id}
+            exerciseId={item.exerciseId}
             name={item.name}
             number={item.number}
             setCartItems={setCartItems}

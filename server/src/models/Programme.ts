@@ -46,6 +46,7 @@ const programmeSchema = new Schema<IProgramme>({
               },
               name: { type: String, required: true },
               type: { type: String, required: true },
+              exerciseId: { type: String, required: true },
             }),
           },
         ],

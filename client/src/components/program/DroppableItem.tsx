@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 interface Items {
-  _id: string;
+  exerciseId: string;
   name: string;
   number: number;
   type: string;
@@ -12,7 +12,7 @@ interface Items {
 interface Props {
   number: number;
   name: string;
-  _id: string;
+  exerciseId: string;
   setCartItems: (event: any) => void;
   cartItems: Items[];
   idx: number;
@@ -23,7 +23,7 @@ const DroppableItem: React.FC<Props> = (props) => {
   const {
     number,
     name,
-    _id,
+    exerciseId,
     setCartItems,
     cartItems,
     idx,

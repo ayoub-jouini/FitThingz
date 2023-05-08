@@ -15,7 +15,7 @@ const MyExercisesItem: React.FC<Props> = (props) => {
     id: props._id,
     data: {
       name: props.name,
-      _id: props._id,
+      exerciseId: props._id,
       type: props.type,
       number: props.number,
     },

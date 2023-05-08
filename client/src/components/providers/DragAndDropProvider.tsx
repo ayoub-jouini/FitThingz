@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface Items {
-  _id: string;
+  exerciseId: string;
   name: string;
   number: number;
   type: string;
@@ -44,7 +44,7 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
 
   const addItemsToCart = (e: DragEndEvent) => {
     const newItem: Items = {
-      _id: e.active.data.current?._id,
+      exerciseId: e.active.data.current?.exerciseId,
       name: e.active.data.current?.name,
       number: e.active.data.current?.number,
       type: e.active.data.current?.type,
@@ -59,7 +59,6 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
     const newCartItems = cartItems;
     newCartItems.splice(idx, 1);
     setCartItems([...newCartItems]);
-    console.log(newCartItems);
   };
 
   return (
