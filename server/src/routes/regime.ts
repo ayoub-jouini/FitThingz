@@ -22,7 +22,7 @@ router.get("/tags", regimeControllers.getRegimesByTags);
 
 router.use(
   authorization
-  // , verifyEmailConfirmation
+  // verifyEmailConfirmation
 );
 
 router.post("/", regimeControllers.createRegime);

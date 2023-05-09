@@ -18,7 +18,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const DragAndDropProvider: React.FC<Props> = (props) => {
+const ProgramDragAndDropProvider: React.FC<Props> = (props) => {
   const { program, day, children } = props;
   const [cartItems, setCartItems] = useState<Items[]>([]);
 
@@ -75,4 +75,4 @@ const DragAndDropProvider: React.FC<Props> = (props) => {
   );
 };
 
-export default DragAndDropProvider;
+export default ProgramDragAndDropProvider;

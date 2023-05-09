@@ -5,6 +5,7 @@ import HttpError from "../utils/HttpError";
 import { AuthReq } from "../middlewares/authorization";
 
 import Aliment, { IAliment } from "../models/Aliment";
+import cloudinary from "../configs/cloudinaySetup";
 
 export const getAllAliment = async (
   req: Request,
@@ -39,12 +40,14 @@ export const getAllAliment = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -118,12 +121,14 @@ export const getAlimentsByCreator = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -166,12 +171,14 @@ export const getAlimentsByDosage = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -214,12 +221,14 @@ export const getAlimentsByCalories = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -262,12 +271,14 @@ export const getAlimentByCarbs = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -310,12 +321,14 @@ export const getAlimentsByFats = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -358,12 +371,64 @@ export const getAlimentByProteins = async (
       _id: aliment[i]._id,
       createur: aliment[i].createur,
       titre: aliment[i].titre,
+      category: aliment[i].titre,
       description: aliment[i].description,
       dosage: aliment[i].dosage,
       calories: aliment[i].calories,
       carbs: aliment[i].carbs,
       fats: aliment[i].fats,
       proteins: aliment[i].proteins,
+      image: aliment[i].image,
+    };
+    alimentArray.push(singlealiment);
+  }
+
+  res.json({ aliment: alimentArray });
+};
+
+export const getAlimentByCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const category: string = req.params.category;
+
+  const page: number = parseInt(req.query.page as string) || 1;
+  const limit: number = parseInt(req.query.limit as string) || 10;
+
+  let aliment: IAliment[];
+  try {
+    aliment = await Aliment.find({ category })
+      .populate("createur")
+      .skip((page - 1) * limit)
+      .limit(limit);
+    if (!aliment) {
+      const error = new HttpError("there is no aliment", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find aliment." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  let alimentArray: IAliment[] = [];
+  for (let i = 0; i < aliment.length; i++) {
+    const singlealiment: IAliment = {
+      _id: aliment[i]._id,
+      createur: aliment[i].createur,
+      titre: aliment[i].titre,
+      category: aliment[i].titre,
+      description: aliment[i].description,
+      dosage: aliment[i].dosage,
+      calories: aliment[i].calories,
+      carbs: aliment[i].carbs,
+      fats: aliment[i].fats,
+      proteins: aliment[i].proteins,
+      image: aliment[i].image,
     };
     alimentArray.push(singlealiment);
   }
@@ -378,6 +443,9 @@ export const createAliment = async (
 ) => {
   const aliment = req.body;
 
+  //@ts-ignore
+  const ImageFile = req.file.path;
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new HttpError("Invalid inputs passed", 401);
@@ -385,15 +453,27 @@ export const createAliment = async (
   }
 
   try {
+    const uploadImage = await cloudinary.uploader.upload(
+      ImageFile,
+      function (error: any, result: any) {
+        if (error) {
+          console.log(error);
+          return res.status(500).send(error);
+        }
+      }
+    );
+
     const createdAliment = new Aliment({
       createur: req.userData._id,
       titre: aliment.titre,
+      category: aliment.category,
       description: aliment.description,
       dosage: aliment.dosage,
       calories: aliment.calories,
       carbs: aliment.carbs,
       fats: aliment.fats,
       proteins: aliment.proteins,
+      image: uploadImage.url,
     });
     await createdAliment.save();
   } catch (err) {
@@ -434,6 +514,7 @@ export const updateAliment = async (
     }
 
     existingAliment.titre = aliment.titre;
+    existingAliment.category = aliment.category;
     existingAliment.description = aliment.description;
     existingAliment.dosage = aliment.dosage;
     existingAliment.calories = aliment.calories;

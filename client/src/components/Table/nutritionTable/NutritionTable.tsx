@@ -1,14 +1,14 @@
 "use client";
 
 import axios from "axios";
-import ProgramsTableRow from "./ProgramsTableRow";
+import NutritionTableRow from "./NutritionTableRow";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 interface Props {}
 
-const ProgramsTable: React.FC<Props> = (props) => {
-  let auth: any = useSelector((state: any) => state.auth);
+const NutritionTable: React.FC<Props> = (props) => {
+  const auth: any = useSelector((state: any) => state.auth);
 
   const [programs, setPrograms] = useState<any>();
 
@@ -16,12 +16,12 @@ const ProgramsTable: React.FC<Props> = (props) => {
     const getData = async () => {
       const options = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/creator/${auth.id}`,
+        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/regime/creator/${auth.id}`,
       };
 
       try {
         const response = await axios.request(options);
-        setPrograms(response.data.programmes);
+        setPrograms(response.data.regimes);
       } catch (error) {
         console.error(error);
       }
@@ -39,7 +39,7 @@ const ProgramsTable: React.FC<Props> = (props) => {
       </div>
       {programs &&
         programs.map((program: any, key: any) => (
-          <ProgramsTableRow
+          <NutritionTableRow
             key={key}
             id={program._id}
             name={program.nom}
@@ -52,4 +52,4 @@ const ProgramsTable: React.FC<Props> = (props) => {
   );
 };
 
-export default ProgramsTable;
+export default NutritionTable;

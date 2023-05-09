@@ -5,6 +5,7 @@ import * as alimentControllers from "../controllers/aliment";
 
 import authorization from "../middlewares/authorization";
 import verifyEmailConfirmation from "../middlewares/verifyEmailConfirmation";
+import fileUpload from "../middlewares/fileUpload";
 
 const router = Router();
 
@@ -26,6 +27,8 @@ router.get("/fats/:fats", alimentControllers.getAlimentsByFats);
 
 router.get("/proteins/:proteins", alimentControllers.getAlimentByProteins);
 
+router.get("/category/:category", alimentControllers.getAlimentByCategory);
+
 router.use(
   authorization
   // , verifyEmailConfirmation
@@ -33,13 +36,8 @@ router.use(
 
 router.post(
   "/",
-  body("titre").notEmpty(),
-  body("description").notEmpty(),
-  body("dosage").notEmpty().isNumeric(),
-  body("calories").notEmpty().isNumeric(),
-  body("carbs").notEmpty().isNumeric(),
-  body("fats").notEmpty().isNumeric(),
-  body("proteins").notEmpty().isNumeric(),
+  fileUpload.single("image"),
+
   alimentControllers.createAliment
 );
 

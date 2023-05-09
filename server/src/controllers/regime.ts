@@ -240,6 +240,14 @@ export const createRegime = async (
     return next(error);
   }
 
+  let jours = [];
+  for (let i = 0; i < regime.duree; i++) {
+    const jour = {
+      dayNumber: i + 1,
+    };
+    jours.push(jour);
+  }
+
   try {
     const createdregime = new Regime({
       createur: req.userData._id,
@@ -248,6 +256,7 @@ export const createRegime = async (
       type: regime.type,
       description: regime.description,
       duree: regime.duree,
+      jours: jours,
       tags: regime.tags,
     });
     await createdregime.save();

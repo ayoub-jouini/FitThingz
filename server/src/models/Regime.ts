@@ -23,7 +23,7 @@ export interface IRegime {
 const regimeSchema = new Schema<IRegime>({
   createur: { type: Schema.Types.ObjectId, ref: User, required: true },
   nom: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String },
   type: { type: String, required: true },
   description: { type: String, required: true },
   duree: { type: Number, required: true },
