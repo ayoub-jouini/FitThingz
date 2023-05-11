@@ -4,25 +4,18 @@ import { useDroppable } from "@dnd-kit/core";
 import Button from "../global/button/Button";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import ProgramDroppableItem from "./ProgramDroppableItem";
-
-interface Items {
-  exerciseId: string;
-  name: string;
-  number: number;
-  type: string;
-}
+import NutritionDroppableItem from "./NutritionDroppableItem";
 
 interface Props {
-  program: string;
+  regime: string;
   day: string;
-  cartItems: Items[];
+  cartItems: any;
   setCartItems: (item: any) => void;
   removeItemFromCart: (idx: number) => void;
 }
 
-const ProgramDroppable: React.FC<Props> = (props) => {
-  const { program, day, cartItems, setCartItems, removeItemFromCart } = props;
+const NutritionDroppable: React.FC<Props> = (props) => {
+  const { regime, day, cartItems, setCartItems, removeItemFromCart } = props;
 
   const auth: any = useSelector((state: any) => state.auth);
 
@@ -31,22 +24,24 @@ const ProgramDroppable: React.FC<Props> = (props) => {
   });
 
   const handleSave = async (event: any) => {
-    let exercises = [];
+    let regimeArray = [];
     for (let i = 0; i < cartItems.length; i++) {
-      const exercise = {
-        number: cartItems[i].number,
-        name: cartItems[i].name,
-        type: cartItems[i].type,
-        exerciseId: cartItems[i].exerciseId,
-      };
-      exercises.push(exercise);
+      let alimentArray = [];
+      for (let j = 0; j < cartItems[i].aliment.length; j++) {
+        alimentArray.push(cartItems[i].aliment[j].FoodId);
+      }
+      regimeArray.push({
+        titre: cartItems[i].titre,
+        aliment: alimentArray,
+      });
     }
 
+    console.log(regimeArray);
     try {
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/exercices/${program}/${day}`,
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/regime/repas/${regime}/${day}`,
         {
-          exercices: exercises,
+          repas: regimeArray,
         },
         {
           headers: {
@@ -78,16 +73,16 @@ const ProgramDroppable: React.FC<Props> = (props) => {
           </p>
         )}
 
-        {cartItems.map((item, key) => (
-          <ProgramDroppableItem
+        {cartItems.map((item: any, key: any) => (
+          <NutritionDroppableItem
             key={key}
             idx={key}
-            exerciseId={item.exerciseId}
-            name={item.name}
-            number={item.number}
+            repas={item.titre}
+            aliment={item.aliment}
+            repasId={item._id}
             setCartItems={setCartItems}
-            cartItems={cartItems}
             removeItemFromCart={removeItemFromCart}
+            cartItems={cartItems}
           />
         ))}
       </div>
@@ -95,4 +90,4 @@ const ProgramDroppable: React.FC<Props> = (props) => {
   );
 };
 
-export default ProgramDroppable;
+export default NutritionDroppable;

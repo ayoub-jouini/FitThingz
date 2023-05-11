@@ -36,6 +36,8 @@ export default async function programLayout({
           days={programData.data.programme.duree}
           selectedDay={params.day}
           program={params.program}
+          title={programData.data.programme.nom}
+          description={programData.data.programme.description}
         />
       )}
       {children}

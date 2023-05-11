@@ -20,6 +20,8 @@ router.get("/type/:type", regimeControllers.getRegimesByType);
 
 router.get("/tags", regimeControllers.getRegimesByTags);
 
+router.get("/repas/:id/:jour", regimeControllers.getRepasByDay);
+
 router.use(
   authorization
   // verifyEmailConfirmation

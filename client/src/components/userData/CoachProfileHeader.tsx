@@ -20,9 +20,7 @@ const CoachProfileHeader: React.FC<Props> = (props) => {
             </div>
             <div className="flex flex-col items-center px-20">
               <p className="text-lg text-textPrimary">6</p>
-              <p className="text-lg text-textPrimary font-semibold">
-                Programes
-              </p>
+              <p className="text-lg text-textPrimary font-semibold">Programs</p>
             </div>
             <div className="flex flex-col items-center ">
               <p className="text-lg text-textPrimary">5</p>

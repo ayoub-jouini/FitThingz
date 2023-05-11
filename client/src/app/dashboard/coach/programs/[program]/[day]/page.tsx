@@ -1,32 +1,31 @@
-export default function Day() {
+import ExerciseItem from "@/components/program/ExerciseItem";
+import axios from "axios";
+
+const getData = async (program: string, day: string) => {
+  const options = {
+    method: "GET",
+    url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/exercices/${program}/${day}`,
+  };
+
+  let response;
+  try {
+    response = await axios.request(options);
+  } catch (error) {
+    console.error(error);
+  }
+
+  return response;
+};
+
+export default async function Day({ params }: { params: any }) {
+  const exercises = await getData(params.program, params.day);
   return (
     <div className="my-5">
       <div className="border-2 border-grisPrimary rounded-[45px] p-14">
-        <div className="flex justify-between items-center my-5">
-          <div className="w-1/12 flex items-center">
-            <div className="border-2 border-grixSecondary rounded-full w-7 h-7" />
-          </div>
-
-          <div className="border-2 border-grisPrimary rounded-[45px] flex p-14 justify-between items-center w-11/12">
-            <div className="flex">
-              <div className="text-l border-2 border-primary rounded-[11px] px-2 text-textPrimary mx-5">
-                X2
-              </div>
-              <p className="text-l text-textPrimary">
-                One arm smith machin row
-              </p>
-            </div>
-            <p className="text-l text-primary">Watch video</p>
-            <div className="flex ">
-              <div className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2">
-                <img alt="" src="/icons/editicon.svg" />
-              </div>
-              <div className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2">
-                <img alt="" src="/icons/trashcanicon.svg" />
-              </div>
-            </div>
-          </div>
-        </div>
+        {exercises &&
+          exercises.data.exercices.map((exercise: any, key: any) => (
+            <ExerciseItem number={exercise.number} title={exercise.name} />
+          ))}
       </div>
     </div>
   );

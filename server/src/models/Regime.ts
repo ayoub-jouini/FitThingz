@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 import Repas, { IRepas } from "./Repas";
 import User from "./User";
+import Aliment from "./Aliment";
 
 interface Jour {
   dayNumber: number;
@@ -32,7 +33,16 @@ const regimeSchema = new Schema<IRegime>({
     {
       type: new Schema<Jour>({
         dayNumber: { type: Number, required: true },
-        repas: [{ type: Schema.Types.ObjectId, ref: Repas, required: true }],
+        repas: [
+          {
+            type: new Schema({
+              titre: { type: String, required: true },
+              aliment: [
+                { type: Schema.Types.ObjectId, ref: Aliment, required: true },
+              ],
+            }),
+          },
+        ],
       }),
     },
   ],

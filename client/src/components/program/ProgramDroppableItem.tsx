@@ -19,7 +19,7 @@ interface Props {
   removeItemFromCart: (idx: number) => void;
 }
 
-const DroppableItem: React.FC<Props> = (props) => {
+const ProgramDroppableItem: React.FC<Props> = (props) => {
   const {
     number,
     name,
@@ -62,4 +62,4 @@ const DroppableItem: React.FC<Props> = (props) => {
   );
 };
 
-export default DroppableItem;
+export default ProgramDroppableItem;

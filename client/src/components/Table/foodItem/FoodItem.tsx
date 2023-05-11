@@ -15,7 +15,6 @@ const MyExercisesItem: React.FC<Props> = (props) => {
     data: {
       name: props.name,
       FoodId: props._id,
-      number: props.number,
     },
   });
   return (

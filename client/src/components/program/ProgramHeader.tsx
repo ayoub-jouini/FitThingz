@@ -5,6 +5,8 @@ interface Props {
   selectedDay: number;
   program: string;
   day: string;
+  title: string;
+  description: string;
 }
 
 const dayElements = (nb: number, program: string, selectedDay: number) => {
@@ -14,7 +16,7 @@ const dayElements = (nb: number, program: string, selectedDay: number) => {
       <Link
         href={`/dashboard/coach/programs/${program}/${i + 1}`}
         key={i}
-        className={` rounded-[45px] h-full min-w-[96px] text-center flex justify-center items-center ${
+        className={` rounded-[45px] h-full min-w-[6rem] text-center flex justify-center items-center ${
           selectedDay == i + 1 ? "border-primary border-2" : "border-0"
         }`}
       >
@@ -26,7 +28,7 @@ const dayElements = (nb: number, program: string, selectedDay: number) => {
 };
 
 const ProgramHeader: React.FC<Props> = (props) => {
-  const { days, selectedDay, program, day } = props;
+  const { days, selectedDay, program, day, title, description } = props;
 
   const elements = dayElements(days, program, selectedDay);
 
@@ -34,9 +36,7 @@ const ProgramHeader: React.FC<Props> = (props) => {
     <div className="">
       <div className="grid grid-cols-3 items-center">
         <div className=""></div>
-        <h1 className="text-primary text-2xl text-center my-10">
-          Fit And Firm
-        </h1>
+        <h1 className="text-primary text-2xl text-center my-10">{title}</h1>
         <Link
           href={`/dashboard/coach/programs/${program}/${day}/editexercises`}
           className={`justify-self-end flex rounded-xl text-primary font-medium bg-tertiary border-primary border-2  cursor-pointer h-12 w-48 text-base justify-center items-center `}
@@ -46,14 +46,7 @@ const ProgramHeader: React.FC<Props> = (props) => {
         </Link>
       </div>
       <div className="border-2 border-grisPrimary p-10 rounded-[45px]">
-        <p className="text-l text-grixSecondary">
-          Our lose weight program is designed to help you shed those extra
-          pounds and achieve your desired body weight. With a combination of
-          tailored exercise routines and personalized meal plans for 16 weeks.
-          will guide you through each step of the program, providing support and
-          motivation along the way. Start your journey towards a healthier and
-          happier you today!
-        </p>
+        <p className="text-l text-grixSecondary">{description}</p>
       </div>
       <div className="border-2 border-grisPrimary rounded-[45px] w-full h-16 my-10 flex justify-between items-center px-5">
         <img alt="" src="/icons/blackArrow.svg" />

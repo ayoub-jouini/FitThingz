@@ -246,9 +246,8 @@ export const getExercisesByDay = async (
   }
 
   const jours = programme.jours;
-  let exercices: any = [];
 
-  exercices = jours.filter((jour) => jour.dayNumber.toString() === day);
+  const exercices = jours.filter((jour) => jour.dayNumber.toString() === day);
 
   res.json({ exercices: exercices[0].exercices });
 };

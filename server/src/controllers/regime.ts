@@ -227,6 +227,38 @@ export const getRegimesByTags = async (
   res.json({ regimes: regimeArray });
 };
 
+export const getRepasByDay = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+
+  const day: string = req.params.jour;
+
+  let regime: IRegime;
+  try {
+    regime = await Regime.findById(id).populate("createur");
+    if (!regime) {
+      const error = new HttpError("there is no regime", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find regimes." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  const jours = regime.jours;
+
+  const repas = jours.filter((jour) => jour.dayNumber.toString() === day);
+
+  res.json({ repas: repas[0].repas });
+};
+
 export const createRegime = async (
   req: AuthReq,
   res: Response,
@@ -280,6 +312,7 @@ export const updateRepas = async (
   const jour: string = req.params.jour;
   const repas = req.body.repas;
   const errors = validationResult(req);
+  console.log(repas);
   if (!errors.isEmpty()) {
     const error = new HttpError("Invalid inputs passed", 401);
     return next(error);
@@ -303,7 +336,7 @@ export const updateRepas = async (
     );
     return next(error);
   }
-  res.json({ message: "added!" });
+  res.json({ message: "added!", repas });
 };
 
 export const updateRegime = async (
