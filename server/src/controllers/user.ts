@@ -38,6 +38,7 @@ export const getAllUsers = async (
       avatar: users[i].avatar,
       lieu: users[i].lieu,
       type: users[i].type,
+      datejoined: users[i].datejoined,
     };
     userArray.push(singleUser);
   }
@@ -79,6 +80,7 @@ export const getUserById = async (
       avatar: user.avatar,
       lieu: user.lieu,
       type: user.type,
+      datejoined: user.datejoined,
     },
   });
 };

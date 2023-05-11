@@ -9,6 +9,8 @@ const router = Router();
 
 router.get("/", coachControllers.getAllCoachs);
 
+router.get("/request", coachControllers.getAllRequests);
+
 router.get("/id/:id", coachControllers.getCoachById);
 
 // router.get('/name/:name', coachControllers.getCoachByName);

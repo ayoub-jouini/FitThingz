@@ -92,6 +92,56 @@ export const getCoachById = async (
   res.json({ coach });
 };
 
+export const getAllRequests = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const page: number = parseInt(req.query.page as string) || 1;
+  const limit: number = parseInt(req.query.limit as string) || 10;
+
+  let coach: ICoach[];
+  try {
+    coach = await Coach.find({ verif: false })
+      .populate("user")
+      .skip((page - 1) * limit)
+      .limit(limit);
+    if (!coach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find coach." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  let coachArray: ICoach[] = [];
+  for (let i = 0; i < coach.length; i++) {
+    const singlecoach: ICoach = {
+      _id: coach[i]._id,
+      user: coach[i].user,
+      identite: coach[i].identite,
+      experience: coach[i].experience,
+      conn_aca: coach[i].conn_aca,
+      tarification: coach[i].tarification,
+      exercice: coach[i].exercice,
+      programme: coach[i].programme,
+      regime: coach[i].regime,
+      sportif: coach[i].sportif,
+      commentaire: coach[i].commentaire,
+      disponibilite: coach[i].disponibilite,
+      verif: coach[i].verif,
+    };
+    coachArray.push(singlecoach);
+  }
+
+  res.json({ coach: coachArray });
+};
+
 // export const getCoachByName = async (
 //   req: Request,
 //   res: Response,
@@ -177,27 +227,18 @@ export const validateCoach = async (
 ) => {
   const id = req.params.id;
 
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new HttpError("Invalid inputs passed", 401);
-    return next(error);
-  }
-
   if (req.userData.type !== "admin") {
     const error = new HttpError("you can't update this coach", 404);
     return next(error);
   }
 
   try {
-    const existingcoach = await Coach.findById(id);
+    const existingcoach = await Coach.findByIdAndUpdate(id, { verif: true });
+    console.log("here");
     if (!existingcoach) {
       const error = new HttpError("coach does not exist", 404);
       return next(error);
     }
-
-    existingcoach.verif = true;
-
-    await existingcoach.save();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save coach." + err,

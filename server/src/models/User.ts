@@ -15,6 +15,7 @@ export interface IUser {
   type: string;
   emailConfirmed?: boolean;
   statut?: string;
+  datejoined: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -34,6 +35,11 @@ const userSchema = new Schema<IUser>({
   type: { type: String, required: true },
   emailConfirmed: { type: Boolean, default: false },
   statut: { type: String, required: true, default: "active" },
+  datejoined: {
+    type: String,
+    required: true,
+    default: new Date().toISOString(),
+  },
 });
 
 userSchema.pre("save", function (next) {

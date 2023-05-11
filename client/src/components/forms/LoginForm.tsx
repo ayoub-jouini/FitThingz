@@ -20,6 +20,8 @@ const LoginForm: React.FC = () => {
     router.push("/dashboard/coach");
   } else if (auth.type === "sportif") {
     router.push("/dashboard/athlete");
+  } else if (auth.type === "admin") {
+    router.push("/dashboard/admin");
   }
   // useEffect(() => {
 
