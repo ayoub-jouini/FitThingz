@@ -13,6 +13,8 @@ router.get("/request", coachControllers.getAllRequests);
 
 router.get("/id/:id", coachControllers.getCoachById);
 
+router.get("/user/:id", coachControllers.getCoachByUser);
+
 // router.get('/name/:name', coachControllers.getCoachByName);
 
 router.use(
@@ -20,13 +22,19 @@ router.use(
   // , verifyEmailConfirmation
 );
 
-router.get("/sportifs/", coachControllers.getCoachsClientsRequests);
+router.get("/sportifs", coachControllers.getCoachsClientsRequests);
 
 router.post("/", fileUpload.array("images", 2), coachControllers.createCoach);
 
 router.patch("/validate/:id", coachControllers.validateCoach);
 
 router.patch("/tarification/:id", coachControllers.addTarification);
+
+router.patch("/sportif/request/:id", coachControllers.sendRequest);
+
+router.patch("/sportif/accept/:id", coachControllers.acceptRequest);
+
+router.patch("/sportif/delete/:id", coachControllers.deleteRequest);
 
 router.patch(
   "/commentaire/:idCoach/:idCommentaire",

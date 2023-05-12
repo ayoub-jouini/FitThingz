@@ -92,6 +92,37 @@ export const getCoachById = async (
   res.json({ coach });
 };
 
+export const getCoachByUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+
+  let coach: ICoach[];
+  try {
+    coach = await Coach.find({ user: id })
+      .populate("user")
+      .populate("sportif")
+      .populate("regime")
+      .populate("programme")
+      .populate("exercice");
+    if (!coach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find coachs." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({ coach: coach[0] });
+};
+
 export const getAllRequests = async (
   req: Request,
   res: Response,
@@ -147,11 +178,8 @@ export const getCoachsClientsRequests = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id: string = req.params.id;
-
-  let coach: ICoach;
+  let coach: ICoach[];
   try {
-    //@ts-ignore
     coach = await Coach.find({ user: req.userData._id }).populate(
       "spotifDemande"
     );
@@ -168,7 +196,7 @@ export const getCoachsClientsRequests = async (
     return next(error);
   }
 
-  res.json({ sportifs: coach.spotifDemande || [] });
+  res.json({ sportifs: coach[0].spotifDemande });
 };
 
 // export const getCoachByName = async (
@@ -387,6 +415,109 @@ export const deleteTarification = async (
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save coach." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
+
+export const sendRequest = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+
+  try {
+    const existingcoach = await Coach.findById(id);
+    if (!existingcoach) {
+      const error = new HttpError("coach does not exist", 404);
+      return next(error);
+    }
+
+    existingcoach.spotifDemande.push(req.userData._id);
+
+    await existingcoach.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not save Commentaire." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
+
+export const acceptRequest = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+
+  try {
+    const existingcoach = await Coach.find({ user: req.userData._id });
+
+    if (!existingcoach) {
+      const error = new HttpError("coach does not exist", 404);
+      return next(error);
+    }
+
+    existingcoach[0].sportif.push(req.userData._id);
+
+    const existingSportif: any = await Sportif.find({ user: id });
+
+    const newCoach = existingcoach[0].spotifDemande.filter((sportif) => {
+      sportif !== existingSportif[0].user._id;
+    });
+
+    existingcoach[0].spotifDemande = newCoach;
+
+    existingSportif[0].coach = existingcoach[0]._id;
+
+    await existingcoach[0].save();
+    await existingSportif[0].save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not save Commentaire." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
+
+export const deleteRequest = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+
+  try {
+    const existingcoach = await Coach.find({ user: req.userData._id });
+
+    if (!existingcoach) {
+      const error = new HttpError("coach does not exist", 404);
+      return next(error);
+    }
+
+    const existingSportif: any = await Sportif.find({ user: id });
+
+    const newCoach = existingcoach[0].spotifDemande.filter((sportif) => {
+      sportif !== existingSportif[0].user._id;
+    });
+
+    existingcoach[0].spotifDemande = newCoach;
+
+    await existingcoach[0].save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not save Commentaire." + err,
       500
     );
     return next(error);

@@ -19,7 +19,7 @@ export interface ISportif {
   poids: number;
   histo_bles?: histoBles[];
   allergies?: string[];
-  coach?: ICoach;
+  coach?: Schema.Types.ObjectId;
   salle?: ISalleDeSport;
   regime?: IRegime;
   programme?: IProgramme;

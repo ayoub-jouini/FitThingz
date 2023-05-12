@@ -1,9 +1,9 @@
-import UsersTable from "../../../../../components/Table/usersTable/UsersTable";
+import ClientsRequestTable from "../../../../../components/Table/usersTable/ClientsRequestTable";
 
 function Athletes() {
   return (
     <div className="mx-5">
-      <UsersTable />
+      <ClientsRequestTable />
     </div>
   );
 }

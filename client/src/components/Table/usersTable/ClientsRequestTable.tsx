@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import UsresTableRow from "./UsersTableRow";
+import ClientRequestTableRow from "./ClientsRequestTableRow";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -35,31 +34,37 @@ const ClientsRequestTable: React.FC<Props> = (props) => {
   return (
     <div className="">
       <div className="shadow rounded-[45px] px-10 flex flex-col justify-center items-center h-24">
-        <p className="text-xl text-primary">{tableData.length}</p>
+        {tableData && (
+          <p className="text-xl text-primary">{tableData.length}</p>
+        )}
         <p className="text-sm text-textPrimary">Total Clients</p>
       </div>
       <div className=" ">
-        <div className="w-full grid grid-cols-6 px-10 h-24 content-center">
-          <div className=""></div>
-          <div className="text-textPrimary">Name</div>
-          <div className="text-textPrimary">Phone</div>
-          <div className="text-textPrimary">Adress</div>
-          <div className="text-textPrimary">Date joined</div>
-          <div className=""></div>
+        <div className="w-full  px-10 h-24 content-center flex justify-between items-center">
+          <div className="grid grid-cols-5 gap-5 w-11/12">
+            <div className=""></div>
+            <div className="text-textPrimary">Name</div>
+            <div className="text-textPrimary">Phone</div>
+            <div className="text-textPrimary">Adress</div>
+            <div className="text-textPrimary">Date joined</div>
+          </div>
+          <div className="w-1/12"></div>
         </div>
         <div className="shadow rounded-[45px] px-10">
-          {tableData.map((data: any, key: any) => (
-            <Link href={`/dashboard/coach/athletes/${data.id}`}>
-              <UsresTableRow
+          {tableData &&
+            tableData.map((data: any, key: any) => (
+              <ClientRequestTableRow
+                tableData={tableData}
+                setTableData={setTableData}
                 key={key}
                 avatar={data.avatar}
-                name={data.name}
+                name={`${data.prenom} ${data.nom}`}
                 phone={data.phone}
-                adress={data.adress}
-                date={data.date}
+                adress={data.email}
+                date={data.datejoined.substring(0, 9)}
+                id={data._id}
               />
-            </Link>
-          ))}
+            ))}
         </div>
       </div>
     </div>

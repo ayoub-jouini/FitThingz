@@ -1,6 +1,8 @@
 "use client";
 
+import { useSelector } from "react-redux";
 import Button from "../global/button/Button";
+import axios from "axios";
 
 interface Props {
   coachData: any;
@@ -9,9 +11,25 @@ interface Props {
 const AthleteCoachHeaderData: React.FC<Props> = (props) => {
   const { coachData } = props;
 
+  const auth: any = useSelector((state: any) => state.auth);
+
   const handleRate = () => {};
 
-  const handleRequest = () => {};
+  const handleRequest = async () => {
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/coach/sportif/request/${coachData._id}`,
+        {},
+        {
+          headers: {
+            authorization: "Bearer " + auth.accessToken,
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="h-72 border-2 border-grisPrimary rounded-[45px] grid grid-cols-3 py-5 px-20 gap-20">
