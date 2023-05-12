@@ -62,7 +62,7 @@ export const getSportifById = async (
   const id: string = req.params.id;
   let sportif: ISportif;
   try {
-    sportif = await Sportif.findById(id).populate("user");
+    sportif = await Sportif.findById(id).populate("user").populate("programme");
     if (!sportif) {
       const error = new HttpError("there is no sportif", 404);
       return next(error);

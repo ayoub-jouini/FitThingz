@@ -29,13 +29,34 @@ const coachSchema = new Schema<ICoach>({
   identite: { type: String, required: true },
   experience: { type: String, required: true },
   conn_aca: { type: String, required: true },
-  tarification: [{ type: Schema.Types.ObjectId, ref: Tarification }],
+  tarification: [
+    {
+      type: new Schema({
+        titre: { type: String, required: true },
+        description: { type: String, required: true },
+        duree: { type: Number, required: true },
+        prix: { type: Number, required: true },
+        promo: { type: Number, required: true },
+      }),
+    },
+  ],
   exercice: [{ type: Schema.Types.ObjectId, ref: Exercice }],
   programme: [{ type: Schema.Types.ObjectId, ref: Programme }],
   regime: [{ type: Schema.Types.ObjectId, ref: Regime }],
   sportif: [{ type: Schema.Types.ObjectId, ref: User }],
   spotifDemande: [{ type: Schema.Types.ObjectId, ref: User }],
-  commentaire: [{ type: Schema.Types.ObjectId, ref: Commentaire }],
+  commentaire: [
+    {
+      type: new Schema({
+        date_pub: {
+          type: Date,
+          required: true,
+          default: new Date().toISOString(),
+        },
+        commentaire: { type: String, required: true },
+      }),
+    },
+  ],
   verif: { type: Boolean, required: true, default: false },
 });
 
