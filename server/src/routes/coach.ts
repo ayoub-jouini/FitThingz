@@ -20,6 +20,8 @@ router.use(
   // , verifyEmailConfirmation
 );
 
+router.get("/sportifs/", coachControllers.getCoachsClientsRequests);
+
 router.post("/", fileUpload.array("images", 2), coachControllers.createCoach);
 
 router.patch("/validate/:id", coachControllers.validateCoach);

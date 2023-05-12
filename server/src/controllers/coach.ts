@@ -142,6 +142,35 @@ export const getAllRequests = async (
   res.json({ coach: coachArray });
 };
 
+export const getCoachsClientsRequests = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+
+  let coach: ICoach;
+  try {
+    //@ts-ignore
+    coach = await Coach.find({ user: req.userData._id }).populate(
+      "spotifDemande"
+    );
+    if (!coach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find coachs." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({ sportifs: coach.spotifDemande || [] });
+};
+
 // export const getCoachByName = async (
 //   req: Request,
 //   res: Response,

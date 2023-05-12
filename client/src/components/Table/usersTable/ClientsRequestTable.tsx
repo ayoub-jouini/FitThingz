@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import UsresTableRow from "./UsersTableRow";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 interface Props {}
 
-const UsersTable: React.FC<Props> = (props) => {
+const ClientsRequestTable: React.FC<Props> = (props) => {
   const auth: any = useSelector((state: any) => state.auth);
 
   const [tableData, setTableData] = useState<any>([]);
@@ -17,20 +17,21 @@ const UsersTable: React.FC<Props> = (props) => {
     const getData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACK_URL}/api/coach/${auth.id}/`,
+          `${process.env.NEXT_PUBLIC_BACK_URL}/api/coach/sportifs/`,
           {
             headers: {
               authorization: "Bearer " + auth.accessToken,
             },
           }
         );
-        setTableData(response.data.sportif);
+        setTableData(response.data.sportifs);
       } catch (error) {
         console.error(error);
       }
     };
     getData();
   }, []);
+
   return (
     <div className="">
       <div className="shadow rounded-[45px] px-10 flex flex-col justify-center items-center h-24">
@@ -47,23 +48,22 @@ const UsersTable: React.FC<Props> = (props) => {
           <div className=""></div>
         </div>
         <div className="shadow rounded-[45px] px-10">
-          {tableData &&
-            tableData.map((data: any, key: any) => (
-              <Link href={`/dashboard/coach/athletes/${data.id}`}>
-                <UsresTableRow
-                  key={key}
-                  avatar={data.avatar}
-                  name={data.name}
-                  phone={data.phone}
-                  adress={data.adress}
-                  date={data.date}
-                />
-              </Link>
-            ))}
+          {tableData.map((data: any, key: any) => (
+            <Link href={`/dashboard/coach/athletes/${data.id}`}>
+              <UsresTableRow
+                key={key}
+                avatar={data.avatar}
+                name={data.name}
+                phone={data.phone}
+                adress={data.adress}
+                date={data.date}
+              />
+            </Link>
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-export default UsersTable;
+export default ClientsRequestTable;
