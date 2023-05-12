@@ -13,7 +13,7 @@ const CoachesRequestsTable: React.FC<Props> = (props) => {
     <div className="">
       <div className="shadow rounded-[45px] px-10 flex flex-col justify-center items-center h-24">
         <p className="text-xl text-primary">{coaches.length}</p>
-        <p className="text-sm text-textPrimary">Total Clients</p>
+        <p className="text-sm text-textPrimary">Total Requests</p>
       </div>
       <div className=" ">
         <div className="w-full grid grid-cols-6 px-10 h-24 content-center">
@@ -34,6 +34,9 @@ const CoachesRequestsTable: React.FC<Props> = (props) => {
               phone={data.user.phone}
               adress={data.user.email}
               date={data.user.datejoined.substring(0, 9)}
+              cin={data.identite}
+              college={data.conn_aca}
+              diploma={data.experience}
             />
           ))}
         </div>

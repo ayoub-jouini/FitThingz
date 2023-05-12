@@ -3,20 +3,20 @@
 import CoachesTableRow from "./CoachesTableRow";
 
 interface Props {
-  coaches: any;
+  athletes: any;
 }
 
-const CoachesTable: React.FC<Props> = (props) => {
-  const { coaches } = props;
+const AthletesTable: React.FC<Props> = (props) => {
+  const { athletes } = props;
 
   return (
     <div className="">
       <div className="shadow rounded-[45px] px-10 flex flex-col justify-center items-center h-24">
-        <p className="text-xl text-primary">{coaches.length}</p>
-        <p className="text-sm text-textPrimary">Total Coaches</p>
+        <p className="text-xl text-primary">{athletes.length}</p>
+        <p className="text-sm text-textPrimary">Total Athletes</p>
       </div>
       <div className=" ">
-        <div className="w-full grid grid-cols-6 px-10 h-24 content-center">
+        <div className="w-full grid grid-cols-6 gap-5 px-10 h-24 content-center">
           <div className=""></div>
           <div className="text-textPrimary">Name</div>
           <div className="text-textPrimary">Phone</div>
@@ -25,7 +25,7 @@ const CoachesTable: React.FC<Props> = (props) => {
           <div className=""></div>
         </div>
         <div className="shadow rounded-[45px] px-10">
-          {coaches.map((data: any, key: any) => (
+          {athletes.map((data: any, key: any) => (
             <CoachesTableRow
               key={key}
               avatar={data.user.avatar}
@@ -41,4 +41,4 @@ const CoachesTable: React.FC<Props> = (props) => {
   );
 };
 
-export default CoachesTable;
+export default AthletesTable;

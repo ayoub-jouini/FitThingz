@@ -2,10 +2,16 @@
 
 import { useState } from "react";
 import Button from "../global/button/Button";
-import DropDown from "../global/dropdown/DropDown";
 import Input from "../global/input/Input";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 const AthleteForm: React.FC = () => {
+  const router = useRouter();
+
+  const auth: any = useSelector((state: any) => state.auth);
+
   const [height, setHeight] = useState<number>(160);
   const [weight, setWeight] = useState<number>(50);
   const [allergies, setAllergies] = useState<string>("");
@@ -16,6 +22,11 @@ const AthleteForm: React.FC = () => {
   const decreaseHeight = () => {
     setHeight(height - 1);
   };
+
+  const changeHeight = (event: any) => {
+    setHeight(event.target.value);
+  };
+
   const increaseWeight = () => {
     setWeight(weight + 1);
   };
@@ -23,12 +34,36 @@ const AthleteForm: React.FC = () => {
     setWeight(weight - 1);
   };
 
+  const changeWeight = (event: any) => {
+    setWeight(event.target.value);
+  };
+
   const handleAllergies = (event: any) => {
     setAllergies(event.target.value);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/sporif/`,
+        {
+          taille: height,
+          poids: weight,
+          allergies: allergies.split(" "),
+        },
+        {
+          headers: {
+            authorization: "Bearer " + auth.accessToken,
+          },
+        }
+      );
+      if (response.status === 200) {
+        router.push("/dashboard/athlete/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -48,9 +83,12 @@ const AthleteForm: React.FC = () => {
             >
               -
             </div>
-            <p className="text-lg font-semibold text-textPrimary mx-6">
-              {height}
-            </p>
+            <input
+              type="text"
+              className="text-lg font-semibold text-textPrimary mx-6 bg-tertiary w-10 text-center"
+              value={height}
+              onChange={changeHeight}
+            />
             <div
               className="cursor-pointer w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg"
               onClick={increaseHeight}
@@ -73,9 +111,12 @@ const AthleteForm: React.FC = () => {
             >
               -
             </div>
-            <p className="text-lg font-semibold text-textPrimary mx-6">
-              {weight}
-            </p>
+            <input
+              type="text"
+              className="text-lg font-semibold text-textPrimary mx-6 bg-tertiary w-10 text-center"
+              value={weight}
+              onChange={changeWeight}
+            />
             <div
               className="cursor-pointer w-10 h-9 flex justify-center items-center text-primary  rounded-full shadow shadow-slate-400 text-lg"
               onClick={increaseWeight}
