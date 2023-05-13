@@ -466,9 +466,14 @@ export const acceptRequest = async (
       return next(error);
     }
 
-    existingcoach[0].sportif.push(req.userData._id);
-
     const existingSportif: any = await Sportif.find({ user: id });
+
+    if (!existingSportif) {
+      const error = new HttpError("sportif does not exist", 404);
+      return next(error);
+    }
+
+    existingcoach[0].sportif.push(existingSportif._id);
 
     const newCoach = existingcoach[0].spotifDemande.filter((sportif) => {
       sportif !== existingSportif[0].user._id;

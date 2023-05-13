@@ -3,6 +3,8 @@
 import { useSelector } from "react-redux";
 import Button from "../global/button/Button";
 import axios from "axios";
+import RateAndReview from "../modals/RateAndReview";
+import { useState } from "react";
 
 interface Props {
   coachData: any;
@@ -13,7 +15,11 @@ const AthleteCoachHeaderData: React.FC<Props> = (props) => {
 
   const auth: any = useSelector((state: any) => state.auth);
 
-  const handleRate = () => {};
+  const [showRateModal, setShowRateModal] = useState<boolean>(false);
+
+  const handleRate = () => {
+    setShowRateModal(!showRateModal);
+  };
 
   const handleRequest = async () => {
     try {
@@ -73,6 +79,11 @@ const AthleteCoachHeaderData: React.FC<Props> = (props) => {
                 size="s"
                 text="Rate"
                 type="button"
+              />
+              <RateAndReview
+                showRateModal={showRateModal}
+                handleRateModal={handleRate}
+                id={coachData._id}
               />
             </div>
             <div className="mx-1">

@@ -129,6 +129,54 @@ export const createSportif = async (
   res.json({ message: "created!" });
 };
 
+export const updateProgram = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+
+  const program = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Invalid inputs passed", 401);
+    return next(error);
+  }
+
+  if (req.userData.type !== "coach") {
+    const error = new HttpError("action denied", 409);
+    return next(error);
+  }
+
+  try {
+    const existingSportif: any = await Sportif.findOne({ user: id }).populate(
+      "coach"
+    );
+    if (!existingSportif) {
+      const error = new HttpError("sportif does not exist", 401);
+      return next(error);
+    }
+
+    if (existingSportif.coach.user !== req.userData._id) {
+      const error = new HttpError("action denied", 409);
+      return next(error);
+    }
+
+    existingSportif.programme = program;
+
+    await existingSportif.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not save sportif." + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({ message: "updated!" });
+};
+
 export const updateSportif = async (
   req: AuthReq,
   res: Response,
