@@ -238,7 +238,9 @@ export const getRepasByDay = async (
 
   let regime: IRegime;
   try {
-    regime = await Regime.findById(id).populate("createur");
+    regime = await Regime.findById(id)
+      .populate("createur")
+      .populate("jours.repas.aliment");
     if (!regime) {
       const error = new HttpError("there is no regime", 404);
       return next(error);

@@ -13,7 +13,7 @@ const AthleteProgramsTableRow: React.FC<Props> = (props) => {
 
   return (
     <Link
-      href={`/dashboard/coach/programs/${id}/1`}
+      href={`/dashboard/athlete/programs/${id}/1`}
       className="rounded-[45px] px-10 grid grid-cols-4 content-center justify-items-center items-center h-32 border-2 border-grisPrimary my-5"
     >
       <div className="text-textPrimary">{name}</div>

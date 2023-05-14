@@ -11,6 +11,8 @@ router.get("/", sportifControllers.getAllSportifs);
 
 router.get("/id/:id", sportifControllers.getSportifById);
 
+router.get("/user/:id", sportifControllers.getSportifByUser);
+
 //router.get("/name/:name", sportifControllers.getSportifByName);
 
 router.use(

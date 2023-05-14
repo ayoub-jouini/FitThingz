@@ -21,8 +21,8 @@ export interface ISportif {
   allergies?: string[];
   coach?: Schema.Types.ObjectId;
   salle?: ISalleDeSport;
-  regime?: IRegime;
-  programme?: IProgramme;
+  regime?: Schema.Types.ObjectId;
+  programme?: Schema.Types.ObjectId;
 }
 
 const sportifSchema = new Schema<ISportif>({

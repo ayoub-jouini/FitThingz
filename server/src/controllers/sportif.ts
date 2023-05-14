@@ -6,6 +6,7 @@ import { AuthReq } from "../middlewares/authorization";
 
 import Sportif, { ISportif } from "../models/Sportif";
 import User from "../models/User";
+import Programme from "../models/Programme";
 
 export const getAllSportifs = async (
   req: Request,
@@ -79,6 +80,33 @@ export const getSportifById = async (
   res.json({ sportif });
 };
 
+export const getSportifByUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+  let sportif: ISportif;
+  try {
+    sportif = await Sportif.findOne({ user: id })
+      .populate("user")
+      .populate("programme");
+    if (!sportif) {
+      const error = new HttpError("there is no sportif", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find sportifs." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({ sportif });
+};
+
 // export const getSportifByName = async (
 //   req: Request,
 //   res: Response,
@@ -136,7 +164,7 @@ export const updateProgram = async (
 ) => {
   const id = req.params.id;
 
-  const program = req.body;
+  const program = req.body.program;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -158,12 +186,14 @@ export const updateProgram = async (
       return next(error);
     }
 
-    if (existingSportif.coach.user !== req.userData._id) {
+    if (existingSportif.coach.user.toString() !== req.userData._id) {
       const error = new HttpError("action denied", 409);
       return next(error);
     }
 
-    existingSportif.programme = program;
+    const existingProgram: any = await Programme.findById(program);
+
+    existingSportif.programme = existingProgram._id;
 
     await existingSportif.save();
   } catch (err) {

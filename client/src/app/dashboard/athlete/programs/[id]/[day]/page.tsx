@@ -1,10 +1,10 @@
 import ExerciseItem from "@/components/program/ExerciseItem";
 import axios from "axios";
 
-const getData = async (diet: string, day: string) => {
+const getData = async (program: string, day: string) => {
   const options = {
     method: "GET",
-    url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/regime/repas/${diet}/${day}`,
+    url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/exercices/${program}/${day}`,
   };
 
   let response;
@@ -18,13 +18,13 @@ const getData = async (diet: string, day: string) => {
 };
 
 export default async function Day({ params }: { params: any }) {
-  const nutrition = await getData(params.diet, params.day);
+  const exercises = await getData(params.id, params.day);
   return (
     <div className="my-5">
       <div className="border-2 border-grisPrimary rounded-[45px] p-14">
-        {nutrition &&
-          nutrition.data.repas.map((diet: any, key: any) => (
-            <ExerciseItem key={key} number={diet.number} title={diet.name} />
+        {exercises &&
+          exercises.data.exercices.map((exercise: any, key: any) => (
+            <ExerciseItem number={exercise.number} title={exercise.name} />
           ))}
       </div>
     </div>

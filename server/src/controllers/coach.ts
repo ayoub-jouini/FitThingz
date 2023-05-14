@@ -473,7 +473,7 @@ export const acceptRequest = async (
       return next(error);
     }
 
-    existingcoach[0].sportif.push(existingSportif._id);
+    existingcoach[0].sportif.push(existingSportif[0].user._id);
 
     const newCoach = existingcoach[0].spotifDemande.filter((sportif) => {
       sportif !== existingSportif[0].user._id;

@@ -16,7 +16,7 @@ const AthleteProgramsTable: React.FC<Props> = (props) => {
     const getData = async () => {
       const options = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/sporif/id/${auth.id}`,
+        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/sporif/user/${auth.id}`,
       };
 
       try {
@@ -36,17 +36,15 @@ const AthleteProgramsTable: React.FC<Props> = (props) => {
         <div className="text-textPrimary">Duree</div>
         <div className="text-textPrimary">Tags</div>
       </div>
-      {programs &&
-        programs.map((program: any, key: any) => (
-          <AthleteProgramsTableRow
-            key={key}
-            id={program._id}
-            name={program.nom}
-            type={program.type}
-            duree={program.duree}
-            tags={program.tags}
-          />
-        ))}
+      {programs && (
+        <AthleteProgramsTableRow
+          id={programs._id}
+          name={programs.nom}
+          type={programs.type}
+          duree={programs.duree}
+          tags={programs.tags}
+        />
+      )}
     </div>
   );
 };
