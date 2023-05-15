@@ -26,6 +26,8 @@ router.patch("/", sportifControllers.updateSportif);
 
 router.patch("/program/:id", sportifControllers.updateProgram);
 
+router.patch("/regime/:id", sportifControllers.updateRegime);
+
 router.delete("/:id", sportifControllers.deleteSportif);
 
 export default router;

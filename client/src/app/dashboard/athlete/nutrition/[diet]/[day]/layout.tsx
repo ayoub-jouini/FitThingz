@@ -1,5 +1,5 @@
 import axios from "axios";
-import DietHeader from "../../../../../../components/nutrition/DietHeader";
+import AthleteDietHeader from "../../../../../../components/nutrition/AthleteDietHeader";
 
 const getData = async (id: string) => {
   const options = {
@@ -31,7 +31,7 @@ export default async function DietLayout({
   return (
     <div className="m-5">
       {diet && (
-        <DietHeader
+        <AthleteDietHeader
           day={params.day}
           days={diet.data.regime.duree}
           selectedDay={params.day}

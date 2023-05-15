@@ -27,7 +27,7 @@ const dayElements = (nb: number, diet: string, selectedDay: number) => {
   return elements;
 };
 
-const DietHeader: React.FC<Props> = (props) => {
+const AthleteDietHeader: React.FC<Props> = (props) => {
   const { days, selectedDay, diet, day, title, description } = props;
 
   const elements = dayElements(days, diet, selectedDay);
@@ -36,14 +36,7 @@ const DietHeader: React.FC<Props> = (props) => {
     <div className="">
       <div className="grid grid-cols-3 items-center">
         <div className=""></div>
-        <h1 className="text-primary text-2xl text-center my-10">{title} </h1>
-        <Link
-          href={`/dashboard/coach/nutrition/${diet}/${day}/editdiet`}
-          className={`justify-self-end flex rounded-xl text-primary font-medium bg-tertiary border-primary border-2  cursor-pointer h-12 w-48 text-base justify-center items-center `}
-        >
-          <img alt="" src="/icons/editicon.svg" className="mx-2" />
-          <p className="mx-2">Edit</p>
-        </Link>
+        <h1 className="text-primary text-2xl text-center my-10">{title}</h1>
       </div>
       <div className="border-2 border-grisPrimary p-10 rounded-[45px]">
         <p className="text-l text-grixSecondary">{description}</p>
@@ -59,4 +52,4 @@ const DietHeader: React.FC<Props> = (props) => {
   );
 };
 
-export default DietHeader;
+export default AthleteDietHeader;

@@ -236,15 +236,17 @@ export const getRepasByDay = async (
 
   const day: string = req.params.jour;
 
-  let regime: IRegime;
+  let repas;
   try {
-    regime = await Regime.findById(id)
+    const regime = await Regime.findById(id)
       .populate("createur")
       .populate("jours.repas.aliment");
     if (!regime) {
       const error = new HttpError("there is no regime", 404);
       return next(error);
     }
+
+    repas = regime.jours.filter((jour) => jour.dayNumber.toString() === day);
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not find regimes." + err,
@@ -253,10 +255,6 @@ export const getRepasByDay = async (
 
     return next(error);
   }
-
-  const jours = regime.jours;
-
-  const repas = jours.filter((jour) => jour.dayNumber.toString() === day);
 
   res.json({ repas: repas[0].repas });
 };
