@@ -15,6 +15,8 @@ router.get("/id/:id", coachControllers.getCoachById);
 
 router.get("/user/:id", coachControllers.getCoachByUser);
 
+router.get("/statistics/:id", coachControllers.CoachStatistics);
+
 // router.get('/name/:name', coachControllers.getCoachByName);
 
 router.use(

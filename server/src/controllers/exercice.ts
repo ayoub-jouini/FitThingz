@@ -7,6 +7,7 @@ import { AuthReq } from "../middlewares/authorization";
 
 import Exercice, { IExercice } from "../models/Exercice";
 import cloudinary from "../configs/cloudinaySetup";
+import Coach from "../models/Coach";
 
 export const getAllExercices = async (
   req: Request,
@@ -390,6 +391,13 @@ export const createExercice = async (
   console.log(video);
 
   try {
+    const existingCoach = await Coach.findOne({ user: req.userData._id });
+
+    if (!existingCoach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+
     let uploadVideo: any = "";
     if (video) {
       uploadVideo = await cloudinary.uploader.upload(
@@ -417,6 +425,8 @@ export const createExercice = async (
       tags: exercice.tags,
     });
     await createdExercice.save();
+    existingCoach.exercice.push(createdExercice._id);
+    await existingCoach.save();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save exercice." + err,

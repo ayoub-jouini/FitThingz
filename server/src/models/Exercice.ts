@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 import User from "./User";
 
 export interface IExercice {
-  _id?: string;
+  _id?: Schema.Types.ObjectId;
   createur: Schema.Types.ObjectId;
   name: string;
   bodyPart: string;

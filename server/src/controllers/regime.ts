@@ -5,6 +5,7 @@ import HttpError from "../utils/HttpError";
 import { AuthReq } from "../middlewares/authorization";
 
 import Regime, { IRegime } from "../models/Regime";
+import Coach from "../models/Coach";
 
 export const getAllRegimes = async (
   req: Request,
@@ -281,6 +282,12 @@ export const createRegime = async (
   }
 
   try {
+    const existingCoach = await Coach.findOne({ user: req.userData._id });
+
+    if (!existingCoach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
     const createdregime = new Regime({
       createur: req.userData._id,
       nom: regime.nom,
@@ -292,6 +299,8 @@ export const createRegime = async (
       tags: regime.tags,
     });
     await createdregime.save();
+    existingCoach.regime.push(createdregime._id);
+    await existingCoach.save();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save regime." + err,

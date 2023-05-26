@@ -3,6 +3,11 @@ import { Request, Response, NextFunction } from "express";
 import User, { IUser } from "../models/User";
 
 import HttpError from "../utils/HttpError";
+import { AuthReq } from "../middlewares/authorization";
+import Coach from "../models/Coach";
+import Sportif from "../models/Sportif";
+import Programme from "../models/Programme";
+import Regime from "../models/Regime";
 
 export const getAllUsers = async (
   req: Request,
@@ -201,4 +206,41 @@ export const deleteUser = async (
   }
 
   res.status(201).json({ message: "user removed!" });
+};
+
+export const adminStatistics = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  let coaches = 0;
+  let sportifs = 0;
+  let programs = 0;
+  let regimes = 0;
+
+  try {
+    coaches = await Coach.count({});
+
+    sportifs = await Sportif.count({});
+
+    programs = await Programme.count({});
+
+    regimes = await Regime.count({});
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find statistics." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({
+    data: {
+      coaches: coaches,
+      programmes: sportifs,
+      regimes: programs,
+      sportifs: regimes,
+    },
+  });
 };

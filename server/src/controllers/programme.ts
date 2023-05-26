@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { ObjectId } from "mongodb";
 
 import HttpError from "../utils/HttpError";
 import { AuthReq } from "../middlewares/authorization";
 
 import Programme, { IProgramme } from "../models/Programme";
 import Exercice, { IExercice } from "../models/Exercice";
+import Coach from "../models/Coach";
 
 export const getAllProgrammes = async (
   req: Request,
@@ -229,13 +231,18 @@ export const getExercisesByDay = async (
 ) => {
   const id: string = req.params.id;
   const day: string = req.params.jour;
-  let programme: IProgramme;
+
+  let exercices;
   try {
-    programme = await Programme.findById(id).populate("createur");
+    const programme: IProgramme = await Programme.findById(id).populate(
+      "createur"
+    );
     if (!programme) {
       const error = new HttpError("there is no programme", 404);
       return next(error);
     }
+    const jours = programme.jours;
+    exercices = jours.filter((jour) => jour.dayNumber.toString() === day);
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not find programmes." + err,
@@ -244,10 +251,6 @@ export const getExercisesByDay = async (
 
     return next(error);
   }
-
-  const jours = programme.jours;
-
-  const exercices = jours.filter((jour) => jour.dayNumber.toString() === day);
 
   res.json({ exercices: exercices[0].exercices });
 };
@@ -275,6 +278,13 @@ export const createProgramme = async (
 
   let createdProgramme;
   try {
+    const existingCoach = await Coach.findOne({ user: req.userData._id });
+
+    if (!existingCoach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+
     createdProgramme = new Programme({
       createur: req.userData._id,
       nom: programme.nom,
@@ -286,6 +296,8 @@ export const createProgramme = async (
       tags: programme.tags,
     });
     await createdProgramme.save();
+    existingCoach.programme.push(createdProgramme._id);
+    await existingCoach.save();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save programme." + err,

@@ -16,7 +16,7 @@ interface Jour {
 }
 
 export interface IProgramme {
-  _id?: string;
+  _id?: Schema.Types.ObjectId;
   createur: Schema.Types.ObjectId;
   nom: string;
   type: string;

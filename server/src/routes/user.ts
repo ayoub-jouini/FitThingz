@@ -13,6 +13,8 @@ router.get("/id/:id", userControllers.getUserById);
 
 // router.get("/name/:name", userControllers.getUsersByName);
 
+router.get("/statistic", userControllers.adminStatistics);
+
 router.use(
   authorization
   // , verifyEmailConfirmation

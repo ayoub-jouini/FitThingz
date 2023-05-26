@@ -756,3 +756,36 @@ export const deleteCoach = async (
 
   res.status(201).json({ message: "coach removed!" });
 };
+
+export const CoachStatistics = async (
+  req: AuthReq,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.params.id;
+
+  let coach: ICoach;
+  try {
+    coach = await Coach.findOne({ user: id });
+    if (!coach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not find coachs." + err,
+      500
+    );
+
+    return next(error);
+  }
+
+  res.json({
+    data: {
+      exercices: coach.exercice.length,
+      programmes: coach.programme.length,
+      regimes: coach.regime.length,
+      sportifs: coach.sportif.length,
+    },
+  });
+};

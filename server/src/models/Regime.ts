@@ -10,7 +10,7 @@ interface Jour {
 }
 
 export interface IRegime {
-  _id?: string;
+  _id?: Schema.Types.ObjectId;
   createur: Schema.Types.ObjectId;
   nom: string;
   image: string;

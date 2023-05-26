@@ -49,6 +49,7 @@ export default function DashbordLayout({
           handleToggleMenu={handleToggleMenu}
           darkModeToggle={darkModeToggle}
           setDarkModeToggle={setDarkModeToggle}
+          type="coach"
         />
         {children}
       </div>

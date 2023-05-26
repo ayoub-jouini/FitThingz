@@ -13,6 +13,7 @@ interface Props {
   handleToggleMenu: () => void;
   setDarkModeToggle: (event: boolean) => void;
   darkModeToggle: boolean;
+  type: string;
 }
 
 const CoachNavBar: React.FC<Props> = (props) => {
@@ -23,6 +24,7 @@ const CoachNavBar: React.FC<Props> = (props) => {
     handleChange,
     handleLogout,
     handleToggleMenu,
+    type,
   } = props;
 
   const auth: any = useSelector((state: any) => state.auth);
@@ -70,14 +72,14 @@ const CoachNavBar: React.FC<Props> = (props) => {
           }`}
         >
           <Link
-            href="/dashboard/coach/profile/"
+            href={`/dashboard/${type}/profile/`}
             className="flex items-center py-3 cursor-pointer"
           >
             <img className="mx-2" alt="" src="/icons/profileicon.svg" />
             <p className="text-xs text-textPrimary">Profile</p>
           </Link>
           <Link
-            href="/dashboard/coach/settings/"
+            href={`/dashboard/${type}/settings/`}
             className="flex items-center py-3 cursor-pointer border-y-2 border-grisPrimary"
           >
             <img className="mx-2" alt="" src="/icons/settingsicon.svg" />
