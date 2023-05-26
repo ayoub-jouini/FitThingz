@@ -548,7 +548,7 @@ export const deleteAliment = async (
       return next(error);
     }
 
-    if (aliment.createur !== req.userData._id) {
+    if (aliment.createur != req.userData._id) {
       const error = new HttpError("you can't delete this aliment", 404);
       return next(error);
     }

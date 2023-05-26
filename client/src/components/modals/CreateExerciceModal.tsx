@@ -47,7 +47,7 @@ const CreateExerciseModal: React.FC<Props> = (props) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("nom", name);
+    formData.append("name", name);
     formData.append("bodyPart", bodyPart);
     formData.append("target", target);
     formData.append("equipment", equipment);

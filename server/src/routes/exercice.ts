@@ -36,7 +36,7 @@ router.use(
 router.post(
   "/",
   fileUpload.single("video"),
-  body("nom").notEmpty(),
+  body("name").notEmpty(),
   body("bodyPart").notEmpty(),
   body("target").notEmpty(),
   body("equipment").notEmpty(),

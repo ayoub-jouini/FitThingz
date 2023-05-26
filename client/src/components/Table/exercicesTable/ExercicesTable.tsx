@@ -24,7 +24,7 @@ const ExercicesTable: React.FC<Props> = (props) => {
       {exercises.map((d: any, key: number) => (
         <ExercicesTableRow
           key={key}
-          id={d.id}
+          id={d._id}
           page={page}
           name={d.name}
           bodyPart={d.bodyPart}

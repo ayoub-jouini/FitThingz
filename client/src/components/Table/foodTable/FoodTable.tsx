@@ -24,7 +24,7 @@ const FoodTable: React.FC<Props> = (props) => {
       {food.map((d: any, key: number) => (
         <FoodTableRow
           key={key}
-          id={d.id}
+          id={d._id}
           titre={d.titre}
           dosage={d.dosage}
           calories={d.calories}

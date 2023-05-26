@@ -380,7 +380,7 @@ export const createExercice = async (
 ) => {
   const exercice = req.body;
 
-  const video = req.file;
+  // const video = req.file;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -388,7 +388,7 @@ export const createExercice = async (
     return next(error);
   }
 
-  console.log(video);
+  // console.log(video);
 
   try {
     const existingCoach = await Coach.findOne({ user: req.userData._id });
@@ -398,22 +398,22 @@ export const createExercice = async (
       return next(error);
     }
 
-    let uploadVideo: any = "";
-    if (video) {
-      uploadVideo = await cloudinary.uploader.upload(
-        video.path,
-        function (error: any, result: any) {
-          if (error) {
-            console.log(error);
-            return res.status(500).send(error);
-          }
-        }
-      );
+    // let uploadVideo: any = "";
+    // if (video) {
+    //   uploadVideo = await cloudinary.uploader.upload(
+    //     video.path,
+    //     function (error: any, result: any) {
+    //       if (error) {
+    //         console.log(error);
+    //         return res.status(500).send(error);
+    //       }
+    //     }
+    //   );
 
-      unlink(video.path, (err) => {
-        console.log(err);
-      });
-    }
+    //   unlink(video.path, (err) => {
+    //     console.log(err);
+    //   });
+    // }
 
     const createdExercice = new Exercice({
       createur: req.userData._id,
@@ -421,7 +421,7 @@ export const createExercice = async (
       bodyPart: exercice.bodyPart,
       target: exercice.target,
       equipment: exercice.equipment,
-      video: uploadVideo.public_id,
+      video: "video",
       tags: exercice.tags,
     });
     await createdExercice.save();
@@ -496,14 +496,30 @@ export const deleteExercice = async (
       return next(error);
     }
 
-    if (exercice.createur !== req.userData._id) {
+    if (exercice.createur != req.userData._id) {
       const error = new HttpError("you can't delete this exercice", 404);
       return next(error);
     }
+
+    const existingCoach = await Coach.findOne({ user: req.userData._id });
+
+    if (!existingCoach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+
+    const newExercises = existingCoach.exercice.filter(
+      (ex) => ex != exercice._id
+    );
+
+    existingCoach.exercice = newExercises;
+
+    await existingCoach.save();
+
     await exercice.remove();
   } catch (err) {
     const error = new HttpError(
-      "something went wrong,could not remove exercice",
+      "something went wrong,could not remove exercice" + err,
       500
     );
     return next(error);

@@ -407,10 +407,25 @@ export const deleteProgramme = async (
       return next(error);
     }
 
-    if (programme.createur !== req.userData._id) {
+    if (programme.createur != req.userData._id) {
       const error = new HttpError("you can't delete this programme", 404);
       return next(error);
     }
+
+    const existingCoach = await Coach.findOne({ user: req.userData._id });
+
+    if (!existingCoach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+
+    const newPrograms = existingCoach.programme.filter(
+      (program) => program !== programme._id
+    );
+
+    existingCoach.programme = newPrograms;
+
+    await existingCoach.save();
 
     await programme.remove();
   } catch (err) {

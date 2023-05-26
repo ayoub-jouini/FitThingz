@@ -408,10 +408,26 @@ export const deleteRegime = async (
       return next(error);
     }
 
-    if (regime.createur !== req.userData._id) {
+    if (regime.createur != req.userData._id) {
       const error = new HttpError("you can't delete this regime", 404);
       return next(error);
     }
+
+    const existingCoach = await Coach.findOne({ user: req.userData._id });
+
+    if (!existingCoach) {
+      const error = new HttpError("there is no coach", 404);
+      return next(error);
+    }
+
+    const newRegime = existingCoach.regime.filter(
+      (diet) => diet !== regime._id
+    );
+
+    existingCoach.regime = newRegime;
+
+    await existingCoach.save();
+
     await regime.remove();
   } catch (err) {
     const error = new HttpError(
