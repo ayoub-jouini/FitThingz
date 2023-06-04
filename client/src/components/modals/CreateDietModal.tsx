@@ -69,9 +69,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
         }
       );
       handleCreateDietModal();
-      router.push(
-        `/dashboard/coach/nutrition/${response.data.id}/editexercises/`
-      );
+      router.push(`/dashboard/coach/nutrition/${response.data.id}/1/editdiet/`);
     } catch (err) {
       console.log(err);
     }

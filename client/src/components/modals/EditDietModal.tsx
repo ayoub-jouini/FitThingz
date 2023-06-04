@@ -9,22 +9,37 @@ import TextArea from "../global/textArea/TextArea";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  showCreateProgramModal: boolean;
-  handleCreateProgramModal: () => void;
+  showCreateDietModal: boolean;
+  handleCreateDietModal: () => void;
+  id: string;
+  pName: string;
+  pType: string;
+  pDescription: string;
+  pTags: string;
+  pDuration: number;
 }
 
-const CreateProgramModal: React.FC<Props> = (props) => {
-  const { showCreateProgramModal, handleCreateProgramModal } = props;
+const EditDietModal: React.FC<Props> = (props) => {
+  const {
+    showCreateDietModal,
+    handleCreateDietModal,
+    id,
+    pName,
+    pTags,
+    pDescription,
+    pDuration,
+    pType,
+  } = props;
 
   const auth: any = useSelector((state: any) => state.auth);
 
   const router = useRouter();
 
-  const [name, setName] = useState<string>("");
-  const [type, setType] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [tags, setTags] = useState<string>("");
-  const [duration, setDuration] = useState<number>(1);
+  const [name, setName] = useState<string>(pName);
+  const [type, setType] = useState<string>(pType);
+  const [description, setDescription] = useState<string>(pDescription);
+  const [tags, setTags] = useState<string>(pTags);
+  const [duration, setDuration] = useState<number>(pDuration);
 
   const changeName = (event: any) => {
     setName(event.target.value);
@@ -53,8 +68,8 @@ const CreateProgramModal: React.FC<Props> = (props) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/`,
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/regime/${id}`,
         {
           nom: name,
           type,
@@ -68,17 +83,14 @@ const CreateProgramModal: React.FC<Props> = (props) => {
           },
         }
       );
-      handleCreateProgramModal();
-      router.push(
-        `/dashboard/coach/programs/${response.data.id}/1/editexercises/`
-      );
+      handleCreateDietModal();
     } catch (err) {
       console.log(err);
     }
   };
   return (
     <>
-      {showCreateProgramModal && (
+      {showCreateDietModal && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative h-5/6 w-4/6 my-6 mx-auto max-w-3xl">
@@ -86,11 +98,11 @@ const CreateProgramModal: React.FC<Props> = (props) => {
               <div className="border-2 py-5 px-20 border-primary rounded-[55px] shadow-lg relative flex flex-col justify-center items-center w-full bg-tertiary outline-none focus:outline-none">
                 <div className="my-3 grid grid-cols-5 w-full">
                   <h2 className="text-primary font-semibold text-3xl text-center col-start-2 col-end-5">
-                    Create Program
+                    Edit Diet
                   </h2>
                   <div
                     className="col-start-5 col-end-6 justify-self-end text-xl text-primary font-semibold cursor-pointer"
-                    onClick={handleCreateProgramModal}
+                    onClick={handleCreateDietModal}
                   >
                     X
                   </div>
@@ -167,7 +179,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
                   <div className="my-5 ">
                     <Button
                       type="submit"
-                      text="Start"
+                      text="Edit"
                       handleButton={handleSubmit}
                       size="xl"
                     />
@@ -183,4 +195,4 @@ const CreateProgramModal: React.FC<Props> = (props) => {
   );
 };
 
-export default CreateProgramModal;
+export default EditDietModal;

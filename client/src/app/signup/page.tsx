@@ -10,7 +10,9 @@ export default function Signup() {
     >
       <Container>
         <div className="flex justify-between items-center">
-          <img alt="" src="/icons/logo.svg" className="w-10 md:w-14" />
+          <Link href="/">
+            <img alt="" src="/icons/logo.svg" className="w-10 md:w-14" />
+          </Link>
           <p className="flex md:hidden font-medium text-primary text-sm">
             Go to home page
           </p>

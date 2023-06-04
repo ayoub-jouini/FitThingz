@@ -4,8 +4,9 @@ import User from "./User";
 export interface ICommentaire {
   _id?: string;
   user: Schema.Types.ObjectId;
-  date_pub: Date;
+  date_pub?: Date;
   commentaire: string;
+  rate: number;
 }
 
 const commentaireSchema = new Schema<ICommentaire>({

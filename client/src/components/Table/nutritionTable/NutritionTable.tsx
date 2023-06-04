@@ -22,6 +22,7 @@ const NutritionTable: React.FC<Props> = (props) => {
             id={program._id}
             name={program.nom}
             type={program.type}
+            description={program.description}
             duree={program.duree}
             tags={program.tags}
           />

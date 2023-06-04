@@ -41,15 +41,7 @@ router.post(
   alimentControllers.createAliment
 );
 
-router.patch(
-  "/:id",
-  body("dosage").isNumeric(),
-  body("calories").isNumeric(),
-  body("carbs").isNumeric(),
-  body("fats").isNumeric(),
-  body("proteins").isNumeric(),
-  alimentControllers.updateAliment
-);
+router.patch("/:id", alimentControllers.updateAliment);
 
 router.delete("/:id", alimentControllers.deleteAliment);
 

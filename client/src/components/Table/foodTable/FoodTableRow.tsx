@@ -1,12 +1,15 @@
 "use client";
 
+import EditFoodModal from "../../../components/modals/EditFoodModal";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 interface Props {
-  id: number;
+  id: string;
   titre: string;
+  category: string;
+  description: string;
   dosage: string;
   calories: string;
   carbs: string;
@@ -16,11 +19,28 @@ interface Props {
 }
 
 const FoodTableRow: React.FC<Props> = (props) => {
-  const { id, titre, dosage, calories, carbs, fats, proteins, image } = props;
+  const {
+    id,
+    titre,
+    dosage,
+    calories,
+    carbs,
+    fats,
+    proteins,
+    image,
+    category,
+    description,
+  } = props;
 
   let auth: any = useSelector((state: any) => state.auth);
 
   const [display, setDisplay] = useState(true);
+
+  const [showEditFoodModal, setShowEditFoodModal] = useState<boolean>(false);
+
+  const handleEditFoodModal = () => {
+    setShowEditFoodModal(!showEditFoodModal);
+  };
 
   const handleRemove = async () => {
     const response = await axios.delete(
@@ -57,15 +77,31 @@ const FoodTableRow: React.FC<Props> = (props) => {
             <div className="text-textPrimary">{proteins}</div>
 
             <div className="flex ">
-              <div className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2">
+              <div
+                className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2 cursor-pointer"
+                onClick={handleEditFoodModal}
+              >
                 <img alt="" src="/icons/editicon.svg" />
               </div>
               <div
-                className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2"
+                className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2 cursor-pointer"
                 onClick={handleRemove}
               >
                 <img alt="" src="/icons/trashcanicon.svg" />
               </div>
+              <EditFoodModal
+                handleCreateProgramModal={handleEditFoodModal}
+                showCreateProgramModal={showEditFoodModal}
+                id={id}
+                pName={titre}
+                pCategory={category}
+                pDescription={description}
+                pDosage={Number(dosage)}
+                pCalories={Number(calories)}
+                pCarbs={Number(carbs)}
+                pFats={Number(fats)}
+                pProteins={Number(proteins)}
+              />
             </div>
           </div>
         </div>

@@ -280,7 +280,7 @@ export const createRegime = async (
     };
     jours.push(jour);
   }
-
+  let createdregime;
   try {
     const existingCoach = await Coach.findOne({ user: req.userData._id });
 
@@ -288,7 +288,7 @@ export const createRegime = async (
       const error = new HttpError("there is no coach", 404);
       return next(error);
     }
-    const createdregime = new Regime({
+    createdregime = new Regime({
       createur: req.userData._id,
       nom: regime.nom,
       image: regime.image,
@@ -309,7 +309,7 @@ export const createRegime = async (
     return next(error);
   }
 
-  res.json({ message: "created!" });
+  res.json({ message: "created!", id: createdregime._id });
 };
 
 export const updateRepas = async (
@@ -369,7 +369,7 @@ export const updateRegime = async (
       return next(error);
     }
 
-    if (existingRegime.createur !== req.userData._id) {
+    if (existingRegime.createur != req.userData._id) {
       const error = new HttpError("you can't update this regime", 404);
       return next(error);
     }

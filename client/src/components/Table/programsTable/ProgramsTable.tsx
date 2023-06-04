@@ -23,6 +23,7 @@ const ProgramsTable: React.FC<Props> = (props) => {
             name={program.nom}
             type={program.type}
             duree={program.duree}
+            description={program.description}
             tags={program.tags}
           />
         ))}

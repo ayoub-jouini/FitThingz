@@ -75,7 +75,8 @@ export const getCoachById = async (
       .populate("sportif")
       .populate("regime")
       .populate("programme")
-      .populate("exercice");
+      .populate("exercice")
+      .populate("commentaire.user");
     if (!coach) {
       const error = new HttpError("there is no coach", 404);
       return next(error);
@@ -106,7 +107,9 @@ export const getCoachByUser = async (
       .populate("sportif")
       .populate("regime")
       .populate("programme")
-      .populate("exercice");
+      .populate("exercice")
+      .populate("commentaire.user");
+
     if (!coach) {
       const error = new HttpError("there is no coach", 404);
       return next(error);
@@ -537,7 +540,7 @@ export const addCommentaire = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
-  const commentaire = req.body;
+  const commentaire = req.body.commentaire;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -552,11 +555,11 @@ export const addCommentaire = async (
       return next(error);
     }
 
-    const newCommentaire: ICommentaire = new Commentaire({
-      user: req.userData,
-      avatar: commentaire.avatar,
+    const newCommentaire: ICommentaire = {
+      user: req.userData._id,
       commentaire: commentaire.commentaire,
-    });
+      rate: commentaire.rate,
+    };
 
     existingcoach.commentaire.push(newCommentaire);
 
@@ -581,27 +584,24 @@ export const deleteCommentaire = async (
   const idCommentaire = req.params.idCommentaire;
 
   try {
-    const existingcoach = await Coach.findById(idCoach);
+    const existingcoach = await Coach.findOne({ user: idCoach });
     if (!existingcoach) {
       const error = new HttpError("coach does not exist", 404);
       return next(error);
     }
 
-    const existingCommentaire: ICommentaire = existingcoach.commentaire.find(
-      (value) => value._id === idCommentaire
+    const newCommentsArray = existingcoach.commentaire.filter(
+      (value) => value._id != idCommentaire
     );
 
-    if (
-      existingCommentaire.user !== req.userData._id &&
-      existingcoach.user !== req.userData._id
-    ) {
+    if (existingcoach.user != req.userData._id) {
       const error = new HttpError("you can't update this commentaire", 404);
       return next(error);
     }
 
-    await existingcoach.update({
-      $pull: { commentaire: { $elemMatch: { _id: idCommentaire } } },
-    });
+    existingcoach.commentaire = newCommentsArray;
+
+    await existingcoach.save();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not save Commentaire." + err,

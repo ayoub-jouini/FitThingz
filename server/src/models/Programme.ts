@@ -5,7 +5,7 @@ import Exercice, { IExercice } from "./Exercice";
 
 interface Jour {
   dayNumber: number;
-  exercices: [
+  exercices?: [
     {
       exercise: IExercice;
       number: number;

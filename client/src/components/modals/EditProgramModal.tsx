@@ -11,20 +11,33 @@ import { useRouter } from "next/navigation";
 interface Props {
   showCreateProgramModal: boolean;
   handleCreateProgramModal: () => void;
+  id: number;
+  pName: string;
+  pType: string;
+  pDescription: string;
+  pTags: string;
+  pDuration: number;
 }
 
-const CreateProgramModal: React.FC<Props> = (props) => {
-  const { showCreateProgramModal, handleCreateProgramModal } = props;
+const EditProgramModal: React.FC<Props> = (props) => {
+  const {
+    showCreateProgramModal,
+    handleCreateProgramModal,
+    id,
+    pName,
+    pType,
+    pDescription,
+    pTags,
+    pDuration,
+  } = props;
 
   const auth: any = useSelector((state: any) => state.auth);
 
-  const router = useRouter();
-
-  const [name, setName] = useState<string>("");
-  const [type, setType] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [tags, setTags] = useState<string>("");
-  const [duration, setDuration] = useState<number>(1);
+  const [name, setName] = useState<string>(pName);
+  const [type, setType] = useState<string>(pType);
+  const [description, setDescription] = useState<string>(pDescription);
+  const [tags, setTags] = useState<string>(pTags);
+  const [duration, setDuration] = useState<number>(pDuration);
 
   const changeName = (event: any) => {
     setName(event.target.value);
@@ -53,8 +66,8 @@ const CreateProgramModal: React.FC<Props> = (props) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/`,
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/programme/${id}`,
         {
           nom: name,
           type,
@@ -69,9 +82,6 @@ const CreateProgramModal: React.FC<Props> = (props) => {
         }
       );
       handleCreateProgramModal();
-      router.push(
-        `/dashboard/coach/programs/${response.data.id}/1/editexercises/`
-      );
     } catch (err) {
       console.log(err);
     }
@@ -86,7 +96,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
               <div className="border-2 py-5 px-20 border-primary rounded-[55px] shadow-lg relative flex flex-col justify-center items-center w-full bg-tertiary outline-none focus:outline-none">
                 <div className="my-3 grid grid-cols-5 w-full">
                   <h2 className="text-primary font-semibold text-3xl text-center col-start-2 col-end-5">
-                    Create Program
+                    Edit Program
                   </h2>
                   <div
                     className="col-start-5 col-end-6 justify-self-end text-xl text-primary font-semibold cursor-pointer"
@@ -167,7 +177,7 @@ const CreateProgramModal: React.FC<Props> = (props) => {
                   <div className="my-5 ">
                     <Button
                       type="submit"
-                      text="Start"
+                      text="edit"
                       handleButton={handleSubmit}
                       size="xl"
                     />
@@ -183,4 +193,4 @@ const CreateProgramModal: React.FC<Props> = (props) => {
   );
 };
 
-export default CreateProgramModal;
+export default EditProgramModal;

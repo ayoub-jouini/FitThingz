@@ -1,5 +1,6 @@
 "use client";
 
+import EditProgramModal from "../../../components/modals/EditProgramModal";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,13 +11,21 @@ interface Props {
   name: string;
   type: string;
   duree: string;
+  description: string;
   tags: string[];
 }
 
 const ProgramsTableRow: React.FC<Props> = (props) => {
-  const { id, name, type, duree, tags } = props;
+  const { id, name, type, duree, tags, description } = props;
 
   let auth: any = useSelector((state: any) => state.auth);
+
+  const [showCreateProgramModal, setShowCreateProgramModal] =
+    useState<boolean>(false);
+
+  const handleCreateProgramModal = () => {
+    setShowCreateProgramModal(!showCreateProgramModal);
+  };
 
   const [display, setDisplay] = useState(true);
 
@@ -56,7 +65,10 @@ const ProgramsTableRow: React.FC<Props> = (props) => {
             </div>
           </Link>
           <div className="flex col-span-1 justify-self-end">
-            <div className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2">
+            <div
+              className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2 "
+              onClick={handleCreateProgramModal}
+            >
               <img alt="" src="/icons/editicon.svg" />
             </div>
             <div
@@ -66,6 +78,16 @@ const ProgramsTableRow: React.FC<Props> = (props) => {
               <img alt="" src="/icons/trashcanicon.svg" />
             </div>
           </div>
+          <EditProgramModal
+            showCreateProgramModal={showCreateProgramModal}
+            handleCreateProgramModal={handleCreateProgramModal}
+            pName={name}
+            pType={type}
+            pDescription={description}
+            pTags={tags[0]}
+            pDuration={Number(duree)}
+            id={id}
+          />
         </div>
       )}
     </>

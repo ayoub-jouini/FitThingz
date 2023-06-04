@@ -508,7 +508,7 @@ export const updateAliment = async (
       return next(error);
     }
 
-    if (existingAliment.createur !== req.userData._id) {
+    if (existingAliment.createur != req.userData._id) {
       const error = new HttpError("you can't update this aliment", 404);
       return next(error);
     }

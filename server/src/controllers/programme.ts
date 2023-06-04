@@ -360,13 +360,13 @@ export const updateProgramme = async (
   }
 
   try {
-    const existingProgramme = await programme.findById(id);
+    const existingProgramme = await Programme.findById(id);
     if (!existingProgramme) {
       const error = new HttpError("programme does not exist", 404);
       return next(error);
     }
 
-    if (existingProgramme.createur !== req.userData._id) {
+    if (existingProgramme.createur != req.userData._id) {
       const error = new HttpError("you can't update this programme", 404);
       return next(error);
     }
@@ -374,12 +374,17 @@ export const updateProgramme = async (
     existingProgramme.nom = programme.nom;
     existingProgramme.type = programme.type;
     existingProgramme.description = programme.description;
-    existingProgramme.image = programme.image;
     existingProgramme.tags = programme.tags;
-
     if (programme.duree && existingProgramme.duree !== programme.duree) {
       existingProgramme.duree = programme.duree;
-      existingProgramme.jours = []; //function te5ou nb w traja3li jours
+      let jours = [];
+      for (let i = 0; i < programme.duree; i++) {
+        const jour = {
+          dayNumber: i + 1,
+        };
+        jours.push(jour);
+      }
+      existingProgramme.jours = jours; //function te5ou nb w traja3li jours
     }
     await existingProgramme.save();
   } catch (err) {

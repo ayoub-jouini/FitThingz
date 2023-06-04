@@ -18,14 +18,14 @@ function Profile() {
     const getData = async () => {
       const options = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/user/id/${auth.id}`,
+        url: `${process.env.NEXT_PUBLIC_BACK_URL}/api/coach/user/${auth.id}`,
       };
 
       let response;
 
       try {
         response = await axios.request(options);
-        setCoachData(response.data.user);
+        setCoachData(response.data.coach);
       } catch (error) {
         console.error(error);
       }
@@ -57,7 +57,7 @@ function Profile() {
     <div className="m-5">
       {coachData && (
         <>
-          <CoachProfileHeader coachData={coachData} />
+          <CoachProfileHeader coachData={coachData.user} />
           <CoachProfileNavigation
             showEdit={showEdit}
             showReview={showReview}
@@ -69,9 +69,12 @@ function Profile() {
           <CoachProfileData
             showEdit={showEdit}
             showReview={showReview}
-            coachData={coachData}
+            coachData={coachData.user}
           />
-          <ReviewTable showReview={showReview} />
+          <ReviewTable
+            reviewData={coachData.commentaire}
+            showReview={showReview}
+          />
         </>
       )}
     </div>

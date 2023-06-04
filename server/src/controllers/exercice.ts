@@ -459,11 +459,11 @@ export const updateExercice = async (
       return next(error);
     }
 
-    if (existingExercice.createur !== req.userData._id) {
+    if (existingExercice.createur != req.userData._id) {
       const error = new HttpError("you can't update this exercice", 404);
       return next(error);
     }
-
+    console.log();
     existingExercice.name = exercice.name;
     existingExercice.bodyPart = exercice.bodyPart;
     existingExercice.target = exercice.target;

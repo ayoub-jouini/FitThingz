@@ -26,6 +26,8 @@ const FoodTable: React.FC<Props> = (props) => {
           key={key}
           id={d._id}
           titre={d.titre}
+          category={d.category}
+          description={d.description}
           dosage={d.dosage}
           calories={d.calories}
           carbs={d.carbs}

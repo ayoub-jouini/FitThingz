@@ -38,9 +38,11 @@ router.patch("/sportif/accept/:id", coachControllers.acceptRequest);
 
 router.patch("/sportif/delete/:id", coachControllers.deleteRequest);
 
+router.patch("/commentaire/:id", coachControllers.addCommentaire);
+
 router.patch(
-  "/commentaire/:idCoach/:idCommentaire",
-  coachControllers.addCommentaire
+  "/commentaire/delete/:idCoach/:idCommentaire",
+  coachControllers.deleteCommentaire
 );
 
 router.patch("/disponibilite", coachControllers.disponibiliteToggel);

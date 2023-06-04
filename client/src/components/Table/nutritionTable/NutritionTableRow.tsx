@@ -1,24 +1,32 @@
 "use client";
 
+import EditDietModal from "../../../components/modals/EditDietModal";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 interface Props {
-  id: number;
+  id: string;
   name: string;
   type: string;
+  description: string;
   duree: string;
   tags: string[];
 }
 
 const NutritionTableRow: React.FC<Props> = (props) => {
-  const { id, name, type, duree, tags } = props;
+  const { id, name, type, description, duree, tags } = props;
 
   let auth: any = useSelector((state: any) => state.auth);
 
   const [display, setDisplay] = useState(true);
+
+  const [showEditDietModal, setShowEditDietModal] = useState<boolean>(false);
+
+  const handleEditDietModal = () => {
+    setShowEditDietModal(!showEditDietModal);
+  };
 
   const handleRemove = async () => {
     const response = await axios.delete(
@@ -56,7 +64,10 @@ const NutritionTableRow: React.FC<Props> = (props) => {
             </div>
           </Link>
           <div className="flex justify-self-end col-span-1">
-            <div className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2 cursor-pointer">
+            <div
+              className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2 cursor-pointer"
+              onClick={handleEditDietModal}
+            >
               <img alt="" src="/icons/editicon.svg" />
             </div>
             <div
@@ -65,6 +76,16 @@ const NutritionTableRow: React.FC<Props> = (props) => {
             >
               <img alt="" src="/icons/trashcanicon.svg" />
             </div>
+            <EditDietModal
+              handleCreateDietModal={handleEditDietModal}
+              showCreateDietModal={showEditDietModal}
+              id={id}
+              pName={name}
+              pDescription={description}
+              pType={type}
+              pDuration={Number(duree)}
+              pTags={tags[0]}
+            />
           </div>
         </div>
       )}

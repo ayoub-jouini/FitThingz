@@ -27,7 +27,7 @@ const AthleteCoachProfileData: React.FC<Props> = (props) => {
         handleHideReview={handleHideReview}
         handleShowReview={handleShowReview}
       />
-      <ReviewTable showReview={showReview} />
+      <ReviewTable reviewData={coachData.commentaire} showReview={showReview} />
       {showReview &&
         coachData.tarification.map((tariffication: any, key: any) => (
           <AtheleteCoachPricing

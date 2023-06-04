@@ -1,11 +1,12 @@
 "use client";
 
+import EditExerciseModal from "../../../components/modals/EditExerciseModal";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 interface Props {
-  id: number;
+  id: string;
   name: string;
   bodyPart: string;
   target: string;
@@ -20,6 +21,13 @@ const ExercicesTableRow: React.FC<Props> = (props) => {
   let auth: any = useSelector((state: any) => state.auth);
 
   const [display, setDisplay] = useState(true);
+
+  const [showEditExerciseModal, setShowEditExerciseModal] =
+    useState<boolean>(false);
+
+  const handleEditExrciseModal = () => {
+    setShowEditExerciseModal(!showEditExerciseModal);
+  };
 
   const handleRemove = async () => {
     const response = await axios.delete(
@@ -48,7 +56,10 @@ const ExercicesTableRow: React.FC<Props> = (props) => {
           <div className="text-textPrimary">{equipment}</div>
           {page === "myexercices" && (
             <div className="flex ">
-              <div className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2">
+              <div
+                className="w-8 h-8 shadow rounded-[10px] flex justify-center items-center mx-2 cursor-pointer"
+                onClick={handleEditExrciseModal}
+              >
                 <img alt="" src="/icons/editicon.svg" />
               </div>
               <div
@@ -57,6 +68,15 @@ const ExercicesTableRow: React.FC<Props> = (props) => {
               >
                 <img alt="" src="/icons/trashcanicon.svg" />
               </div>
+              <EditExerciseModal
+                handleCreateExerciseModal={handleEditExrciseModal}
+                showCreateExerciseModal={showEditExerciseModal}
+                id={id}
+                pName={name}
+                pBodyPart={bodyPart}
+                pEquipment={equipment[0]}
+                pTarget={target}
+              />
             </div>
           )}
         </div>

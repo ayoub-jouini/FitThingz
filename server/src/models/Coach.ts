@@ -48,12 +48,14 @@ const coachSchema = new Schema<ICoach>({
   commentaire: [
     {
       type: new Schema({
+        user: { type: Schema.Types.ObjectId, ref: User, required: true },
         date_pub: {
           type: Date,
           required: true,
           default: new Date().toISOString(),
         },
         commentaire: { type: String, required: true },
+        rate: { type: Number, required: true },
       }),
     },
   ],
