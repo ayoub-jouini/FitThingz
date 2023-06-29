@@ -26,6 +26,7 @@ router.post(
     }
     return true;
   }),
+
   body("type").custom((value) => {
     if (
       value !== "admin" &&
